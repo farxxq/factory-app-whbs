@@ -1,0 +1,12 @@
+<app-header (dblclick)="cartonBarcodeData = '7-4529-S-10-10-10-0001' ; onCartonInput($event,'1')"
+  [headerData]="'Carton Packing'" [iconTray]="assignHeaderIcons()" [logoutBtn]="false"></app-header>
+<!--  -->
+<ion-content class="ion-padding">
+  <div class="barcode-inp-box carton-barcode-container">
+    <ion-input #cartonBarcodeInput id="inpCarbarcode" placeholder="SCAN CARTON BOX" inputmode="none"
+      (ionBlur)="cInpF = false" [placeholder]="cInpF ? '' :'SCAN'" [ngClass]="cInpF? 'inputFocus':'inputNotFocus'"
+      (ionFocus)="setFocus('cartonBox')" inputMode="none" (ionInput)="onCartonInput($event)"
+      [(ngModel)]="cartonBarcodeData" type="text" (dblclick)="cartonBarcodeData = ' 7-4529-S-10-10-10-0002'"></ion-input>
+    <!--  -->
+  </div>
+</ion-content>

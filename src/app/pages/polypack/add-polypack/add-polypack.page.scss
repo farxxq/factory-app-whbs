@@ -1,0 +1,196 @@
+.info {
+  background-color: var(--ion-color-dark-shade);
+  color: #e9f0fd;
+  padding: 0 4px 10px !important;
+}
+
+.chips {
+  background-color: var(--ion-color-dark-shade);
+  overflow-x: scroll;
+  overflow-y: hidden;
+  width: 95%;
+  height: auto;
+  display: flex;
+  border-radius: 20px;
+
+  ion-chip {
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    min-width: 45px;
+    padding: 10px;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    .qty {
+      color: yellow;
+      width: 100%;
+      font-weight: bolder;
+      text-align: center;
+    }
+  }
+}
+
+.card-container {
+  margin: 0 10px;
+  max-height: 40% !important;
+}
+
+.invalid {
+  cursor: not-allowed;
+  pointer-events: auto;
+  opacity: 0.5;
+  user-select: none;
+}
+
+ion-col.undo-data {
+  display: flex;
+  justify-content: space-between;
+
+  ion-button {
+    width: 5%;
+    height: auto;
+    padding: 0;
+
+    ion-icon {
+      font-size: 25px;
+    }
+  }
+}
+
+.sizeScan-input {
+  padding: 0 10px;
+  margin-top: 10px;
+
+  ion-input {
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    // height: 100%;
+    text-align: center;
+
+    &::placeholder {
+      color: var(ion-color-medium-contrast);
+      font-style: italic;
+      text-align: center;
+      --placeholder-color: red;
+      --placeholder-opacity: 1;
+    }
+
+    &:focus {
+      border-color: var(ion-color-primary);
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+      background-color: #fff;
+    }
+  }
+
+  .inputFocus {
+    background-color: transparent;
+
+    ::ng-deep input {
+      caret-color: transparent !important;
+    }
+  }
+
+  .inputNotFocus {
+    background-color: var(--ion-color-primary);
+    color: white;
+    font-weight: 800;
+    font-family: "euclid-circular-b";
+  }
+}
+
+.animate-scan {
+  animation: row-pop 0.5s ease-in-out;
+}
+
+ion-modal#editPolyQty-modal {
+  --width: 90%;
+  --min-width: 250px;
+  --height: fit-content;
+  --border-radius: 30px;
+  --box-shadow: 0 28px 48px var(--ion-color-warning-contrast);
+
+  .editModal-container {
+    padding: 10px;
+
+    h4 {
+      text-align: center;
+    }
+
+    ion-row {
+      margin: 20px;
+
+      ion-col {
+
+        span,
+        ion-input {
+          background-color: #e9f0fd;
+          border-radius: 10px;
+          margin: 0 15px;
+          padding: 15px;
+          width: 100%;
+          display: block;
+
+          label {
+            padding: 0 15px;
+          }
+        }
+
+        ion-input::ng-deep {
+          background-color: whitesmoke;
+
+          label.input-wrapper {
+            padding: 15px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes row-pop {
+  0% {
+    transform: scale3d(1, 1, 1);
+    background-color: white;
+  }
+
+  30% {
+    transform: scale3d(1.01, 1.03, 1);
+    background-color: #e9f0fd;
+  }
+
+  60% {
+    transform: scale3d(1.02, 1.05, 1);
+    background-color: #dae7fe;
+  }
+
+  90% {
+    transform: scale3d(1.01, 1.03, 1);
+    background-color: lavender;
+  }
+
+  100% {
+    transform: scale3d(1, 1, 1);
+    background-color: white;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 2560px) {
+  .info-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      width: 80%;
+    }
+  }
+
+  .card-container {
+    max-height: 50% !important;
+  }
+}

@@ -1,0 +1,151 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start" (click)="canLeave()" style="color:blue;">
+      <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="ion-no-padding">Back</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="info">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <div>Season</div>
+          <p>{{filterDataList.season.season_name | titlecase}}</p>
+        </ion-col>
+        <ion-col size="6">
+          <div>Customer</div>
+          <p>{{filterDataList.customer.customer_short_name}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <div>Order</div>
+          <p>{{filterDataList.order.order_name}}</p>
+        </ion-col>
+      </ion-row>
+      <!-- may be we might do some chnages here....Like disabling the colors that have been submitted and navigating to the page back on all the color submissions -->
+      <ion-row>
+        <ion-col size="12">
+          <div class="label-text">Color</div>
+          <p-select [disabled]="!colorList.length" [options]="colorList" [(ngModel)]="colorModel" [filter]="true"
+            (onChange)="actionType=='map'? mapping(): generate()" filterBy="color_name" [checkmark]="true"
+            optionLabel="color_name" placeholder="Select" class="w-full md:w-56" />
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  @if(sizeList.length > 0 && actionType == 'map'){
+  <div class="card-container">
+    @for (item of sizeList; track $index; let i = $index) {
+    <ion-card>
+      <ion-card-content>
+        <ion-grid fixed>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">Size</ion-col>
+            <ion-col size="6">{{item?.size_name || 'size name'}}</ion-col>
+          </ion-row>
+          <!-- <ion-row>
+            @if(this.scannedMapSizeList[$index]['barcode_details']){
+            <ion-col size="12">
+              BarCode: {{this.scannedMapSizeList[$index]['barcode_details']}}
+            </ion-col>
+            <ion-col size="4">
+              <ion-button (click)="scanCode($index)" size="small" expand="block" color="primary">
+                <ion-icon slot="start" name="barcode"></ion-icon>
+                Map again
+              </ion-button>
+            </ion-col>
+            }@else {
+            <ion-col size="12">
+              <ion-button (click)="scanCode($index)" expand="block" color="primary">
+                <ion-icon slot="start" name="barcode"></ion-icon>
+                Map
+              </ion-button>
+            </ion-col>
+            }
+
+          </ion-row> -->
+          <ion-row>
+            <ion-col size="12" [ngStyle]="{'color': scannedMapSizeList[i]['barcode_type_details']? 'green' : 'red'}">
+              BarCode: {{scannedMapSizeList[i]['barcode_type_details'] || 'Yet to map'}}
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="12">
+              <!-- (ionBlur)="scannedMapSizeList[i]['mInpF'] = false" -->
+              @if(isScanner){
+              <div class="barcode-inp-box">
+                <ion-input #mapInput id="inpMap"
+                  [placeholder]="scannedMapSizeList[i]['barcode_type_details']? 'MAP SIZE TAG AGAIN': 'MAP SIZE TAG'"
+                  inputmode="none" [ngClass]="scannedMapSizeList[i]['mInpF']? 'inputFocus':'inputNotFocus'"
+                  (ionFocus)="setFocus(i)" inputMode="none" (ionInput)="onMapInput($event, i)"
+                  [(ngModel)]="this.scannedMapSizeList[i]['barcodeModel']" type="text"
+                  (dblclick)="mapInputData = '7-4534-S-60-60-60-0001'"></ion-input>
+              </div>
+              }@else {
+              <ion-button (click)="scanCode(i)" expand="block" color="primary">
+                <ion-icon slot="start" name="scan-outline"></ion-icon>
+                {{this.scannedMapSizeList[i]['barcode_type_details']? 'Map again': 'Map'}}
+              </ion-button>
+              }
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+
+  <div class="action-btn">
+    <ion-button color="primary" (click)="confirmSubmit('map')">
+      Submit
+    </ion-button>
+  </div>
+
+  }@else if(genColorList.length > 0 && actionType == 'gen'){
+  <div class="card-container">
+    @for(item of currentGenList['sizes']; track $index; let i = $index){
+    <ion-card *ngIf="i == 0 || item['size_name'] != currentGenList['sizes'][i-1]['size_name']">
+      <!-- <ion-card *ngIf="showIfNotRepeat(i)"> -->
+      <ion-card-content>
+        <ion-grid fixed>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">Size</ion-col>
+            <ion-col size="6">{{item['size_name'] || 'size name'}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <!-- <ion-col size="12" class="qr-row" [ngStyle]="{'color': item['barcode_number']? 'green' : 'red'}">
+              BarCode: {{item['barcode_number'] || '--'}}
+            </ion-col> -->
+            <ion-col size="12" class="qr-row" style="color: green;">
+              BarCode: {{item['barcode_number']}}
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    }
+  </div>
+  <div class="action-btn">
+    <!-- @if(isGenerated){
+    <ion-button color="primary" (click)="confirmSubmit('generated')">
+      OK
+    </ion-button>
+    } @else {
+    <ion-button color="primary" (click)="confirmSubmit('gen')">
+      Submit
+    </ion-button>
+    } -->
+    @if(!isGenerated){
+    <ion-button color="primary" (click)="confirmSubmit('gen')">
+      SUBMIT
+    </ion-button>
+    }
+  </div>
+  }
+</ion-content>

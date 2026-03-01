@@ -1,0 +1,284 @@
+<app-header [headerData]="'Cartonpack Details'" [logoutBtn]="false" [iconTray]="assignHeaderIcons()"></app-header>
+
+<ion-content class="ion-padding">
+  <div class="form-fields">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="3">
+          <div class="label-text select-dropdown">
+            <span>Season: </span>
+            <p-select [disabled]="!seasonList.length" [options]="seasonList" [(ngModel)]="seasonModel" [filter]="true"
+              filterBy="season_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(1)" optionLabel="season_name"
+              placeholder="Select" size="large" />
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="label-text select-dropdown">
+            <span>Customer: </span>
+            <p-select [disabled]="!customerList.length" [options]="customerList" [(ngModel)]="customerModel"
+              [filter]="true" filterBy="customer_short_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(2)"
+              optionLabel="customer_short_name" placeholder="Select" size="large" />
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="label-text select-dropdown">
+            <span>Order: </span>
+            <p-select [disabled]="!orderList.length" [options]="orderList" [(ngModel)]="orderModel" [filter]="true"
+              filterBy="order_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(3)" optionLabel="order_name"
+              placeholder="Select" size="large" />
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="label-text select-dropdown">
+            <span>PO: </span>
+            <p-select [disabled]="!poList.length" [options]="poList" [(ngModel)]="poModel" [filter]="true"
+              filterBy="order_ponumber" [checkmark]="true" (onChange)="viewCartonpacks()" optionLabel="order_ponumber"
+              placeholder="Select" size="large" />
+          </div>
+        </ion-col>
+        <!-- <ion-col size="1">
+          <div class="label-text select-dropdown">
+            <span>Search barcode: </span>
+            <input type="text" placeholder="Search barcode" [(ngModel)]="barcode">
+            <button (click)="barcode_highlight = true">Search</button>
+          </div>
+        </ion-col> -->
+      </ion-row>
+    </ion-grid>
+  </div>
+  @if(poList.length>0){
+  <div class="accordian-container">
+    <ion-accordion-group (ionChange)="onAccordionChange($event)" [multiple]="true" expand="inset"
+      [value]="expandAccordion">
+      <!-- for po's -->
+      @for (item of poList; track $index; let i = $index){
+      @if((poModel.order_ponumber == item.order_ponumber || poModel.order_ponumber == "All" || poModel=="" )&& i!=0){
+      <ion-accordion [value]="item.order_ponumber" toggleIcon="arrow-forward-circle" toggleIconSlot="end">
+        <ion-item slot="header" color="primary">
+          <!-- &nbsp;&nbsp; PO Qty: {{item.po_qty}} -->
+          <ion-label>PO No: {{item.order_ponumber}} </ion-label>
+        </ion-item>
+        <div class="carton-table ion-padding " slot="content">
+          <!-- for carton details tables -->
+          <div>
+            @if(!item.isEmpty){
+            <div class="table-container">
+              <table border="1px solid gray">
+                <thead>
+                  <tr>
+                    <th>
+                      Carton QR
+                    </th>
+                    <th>
+                      Color
+                    </th>
+                    <th>
+                      Size & Quantity
+                    </th>
+                    <th>
+                      Box Quantity
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!--
+                  @for (packitem of poCartonsData[(poModel && poModel.order_ponumber != 'All')? poModel.order_ponumber :
+                  poChosen.order_ponumber]['cartonpacks']; track
+                  $index; let i = $index) {
+					  -->
+                  @for (packitem of poCartonsData[item['order_ponumber']]; track $index; let i = $index)
+                  {
+                  @if(packitem){
+                  <tr
+                    [ngStyle]="barcode_highlight ? barcode == packitem.cartonpack_barcode ? {'background-color': 'yellow'}: '' : ''">
+                    <td class="cartonpack_qrcode">{{packitem.cartonpack_barcode}}
+                      <div>
+                        <span>
+                          <!-- Need to have discussion on this -->
+                          <ion-button (click)="confirmAction('info',packitem)" fill="clear">
+                            <ion-icon title="Info" name="information-circle-outline"></ion-icon>
+                          </ion-button>
+                        </span>
+                        @if(packitem['sizes'].length > 0){
+                        @if(packitem.cartonpacking_status !== 'SEALED'){
+                        @if(packitem.cartonpacking_status !== 'REPACK'){
+                        <span style="color: blue;" class="carton-status">Box Repacked</span>
+                        }
+                        <span>
+                          <ion-button (click)="confirmAction('reset',packitem)" fill="outline">
+                            <ion-icon title="Reset" name="repeat"></ion-icon>
+                          </ion-button>
+                        </span>
+                        <span>
+                          <ion-button (click)="confirmAction('cancel',packitem)" fill="solid" color="danger">
+                            <ion-icon title="Delete carton QR" name="trash"></ion-icon>
+                          </ion-button>
+                        </span>
+
+                        }
+                        @else {
+                        <span style="color: red;" class="carton-status">Box Sealed</span>
+                        }
+                        }
+
+                      </div>
+                    </td>
+                    <td>{{packitem.color}}</td>
+                    <td class="size-data">
+                      @for(size of packitem['sizes']; track $index; let k = $index){
+                      @if(size.current_carton_pcs > 0 && packitem.box_quantity){
+                      <span style="color: gray">{{size.size}}</span> : <span
+                        style="color: blue">{{size.current_carton_pcs}}</span>; &nbsp;
+                      }
+                      }
+                      @if(!packitem.box_quantity){
+                      <span style="color: red">Carton box is taken for testing</span>
+                      }
+                    </td>
+                    <td>{{packitem.box_quantity || '--'}}</td>
+                  </tr>
+                  }
+                  }
+                  <!-- (click)="allSizeQtyList(item, packitem); $event.stopPropagation();" -->
+                  <tr>
+                    <td colspan="3" style="text-align:right">
+                      Total Packed Qty
+                    </td>
+                    <td>
+                      <!-- {{poCartonsData[item['order_ponumber']]| json}} -->
+                      {{ cumulativeCartonPcs(poCartonsData[item['order_ponumber']])}}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            }@else {
+            <div>
+              <ion-label class="no-cartonpacks">No Cartonpacks available here</ion-label>
+            </div>
+            }
+
+          </div>
+        </div>
+      </ion-accordion>
+      }
+      }
+    </ion-accordion-group>
+  </div>
+  }
+
+  <!-- Modals -->
+
+  <!-- remove_pcs approval modal under discussion -->
+  <ion-modal class="sizeModal" #sizeModal [isOpen]="isSizesModalOpen" (didDismiss)="isSizesModalOpen = false"
+    trigger="open-modal">
+    <ng-template>
+      <div class="sizeModal-header">
+        <h1>Carton pack: {{cartonData.cartonpack_barcode}}</h1>
+        <h2>Color: {{cartonData.color}}</h2>
+      </div>
+      <div class="table-container sizeModal-container">
+        <table border="1px solid gray" style="font-size: 20px;">
+          <thead class="highlight-rows">
+            <tr>
+              <th>Timestamp</th>
+              <th class="remarks-td">Remarks</th>
+              <th size="2">Approval/Reject</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (item of sizeRemarksList; track $index) {
+            <tr style="text-align: center;">
+              <td colspan="4" class="size-td">{{item.size}}</td>
+            </tr>
+            @for (remarks of item['remarks']; track $index) {
+            <tr>
+              <td>{{remarks.timeStamp}}</td>
+              <td class="remarks-td">{{remarks.remarks}}</td>
+              <td size="2">
+                <span>
+                  <ion-button (click)="confirmApproval('approve',remarks)" fill="solid" color="success">
+                    <ion-icon name="checkmark"></ion-icon>
+                  </ion-button>
+                  <ion-button (click)="confirmApproval('reject',remarks)" fill="solid" color="danger">
+                    <ion-icon [title]="`approve garment ${item.size}`" name="trash-bin-outline"></ion-icon>
+                  </ion-button>
+                </span>
+              </td>
+            </tr>
+            }
+            }
+          </tbody>
+        </table>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal id="remark-modal" [isOpen]="isModalOpen" #modal trigger="open-remarkModal" backdropDismiss="false">
+    <ng-template>
+      <div class="remarkModal-container">
+        @if (toResetCartonPackName) {
+        <h4>Remarks to RESET Carton pack: <br> {{toResetCartonPackName}}</h4>
+        }@else {
+        <h4>Remarks to CANCEL Carton pack: <br> {{toCancelCartonPackName}}</h4>
+        }
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="12">
+              <p-select size="large" [options]="remarkList" [(ngModel)]="remarkModel" [filter]="true" filterBy="remarks"
+                [checkmark]="true" optionLabel="remarks" placeholder="Select" />
+            </ion-col>
+          </ion-row>
+          <ion-row class="remarks-btn">
+            <ion-col size="6">
+              <ion-button (click)="closeModal()" expand="block" fill="outline" color="danger">
+                Cancel
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button (click)="cartonAction(toResetCartonPackName ? 'reset' : 'cancel')" [disabled]="!remarkModel"
+                expand="block" fill="solid">
+                Submit
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ng-template>
+  </ion-modal>
+
+  <!-- Under discussion -->
+  <ion-modal class="approvalModal" #approvalModal [isOpen]="isapprovalsModalOpen"
+    (didDismiss)="isapprovalsModalOpen = false" trigger="open-modal">
+    <ng-template>
+      <div class="approvalModal-header">
+        <h1>Carton pack: {{cartonData.cartonpack_barcode}}</h1>
+        <h2>Color: {{cartonData.color}}</h2>
+      </div>
+      <div class="approvalModal-container">
+        Approve the {{cartonData.request_type}} process?
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="12">
+              <p-select size="large" [options]="remarkList" [(ngModel)]="remarkModel" [filter]="true" filterBy="remarks"
+                [checkmark]="true" optionLabel="remarks" placeholder="Select" />
+            </ion-col>
+          </ion-row>
+          <ion-row class="remarks-btn">
+            <ion-col size="6">
+              <ion-button (click)="closeModal()" expand="block" fill="outline" color="danger">
+                Cancel
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button (click)="cartonAction(toResetCartonPackName ? 'reset' : 'cancel')" [disabled]="!remarkModel"
+                expand="block" fill="solid">
+                Submit
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+    </ng-template>
+  </ion-modal>
+</ion-content>

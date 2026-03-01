@@ -1,0 +1,142 @@
+@import "@ionic/angular/css/core.css";
+
+/* Basic CSS for apps built with Ionic */
+@import "@ionic/angular/css/normalize.css";
+@import "@ionic/angular/css/structure.css";
+@import "@ionic/angular/css/typography.css";
+@import "@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
+@import "@ionic/angular/css/padding.css";
+@import "@ionic/angular/css/float-elements.css";
+@import "@ionic/angular/css/text-alignment.css";
+@import "@ionic/angular/css/text-transformation.css";
+@import "@ionic/angular/css/flex-utils.css";
+
+:root {
+  color-scheme: light;
+  color: #303030;
+  --ion-safe-area-top: env(safe-area-inset-top);
+  --ion-safe-area-bottom: env(safe-area-inset-bottom);
+}
+
+// ion-app {
+//   padding-top: env(safe-area-inset-top);
+//   padding-bottom: env(safe-area-inset-bottom);
+//   padding-left: env(safe-area-inset-left);
+//   padding-right: env(safe-area-inset-right);
+// }
+
+// ion-content {
+//   --padding-top: var(--ion-safe-area-top);
+//   --padding-bottom: var(--ion-safe-area-bottom);
+// }
+
+@font-face {
+  font-family: "euclid-circular-reg";
+  src: url("assets/fonts/EuclidCircularA-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "euclid-circular-m";
+  src: url("assets/fonts/EuclidCircularA-Medium.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "euclid-circular-b";
+  src: url("assets/fonts/EuclidCircularA-Bold.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+// Global alert styles
+ion-alert.alertBox {
+  .alert-wrapper {
+    font-family: "euclid-circular-reg", "euclid-circular-m", sans-serif;
+    border: none;
+    box-shadow: 0 10px 30px rgb(25, 26, 100);
+    border-radius: 12px;
+  }
+
+  .alert-head {
+    .alert-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: var(--ion-color-dark);
+    }
+  }
+
+  .alert-button {
+    font-family: "euclid-circular-reg", "euclid-circular-m", sans-serif;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+
+    // //not using these at the moment
+    // button.alert-button-role-confirm
+    // .alertConfirmBtn {
+    //   font-weight: 600;
+    //   color: black;
+    //   background: var(--ion-color-success);
+    // }
+
+    // // alert-button-role-cancel
+    // .alertCancelBtn {
+    //   font-weight: 600;
+    //   color: #fff;
+    //   background: var(--ion-color-danger);
+    // }
+  }
+}
+
+ion-toast.toast::part(message) {
+  font-size: 18px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 2560px) {
+  ion-alert.alertBox {
+    .alert-wrapper {
+      gap: 20px;
+      height: auto;
+      padding: 20px;
+      min-width: 70%;
+    }
+
+    .alert-head {
+      .alert-title {
+        font-size: 2rem;
+      }
+    }
+
+    .alert-message {
+      font-size: 2rem;
+    }
+
+    .alert-button {
+      font-size: 2.5rem;
+    }
+  }
+
+  ion-toast.toast::part(message) {
+    font-size: 25px;
+  }
+
+}
+
+
+
+
+/* Optional: Remove dark mode variables */
+// @media (prefers-color-scheme: dark) {
+//   :root {
+//     /* Override dark mode variables with light mode variables */
+//     --ion-background-color: #ffffff;
+//     --ion-text-color: #000000;
+//     // Add more overrides as needed
+//   }
+// }

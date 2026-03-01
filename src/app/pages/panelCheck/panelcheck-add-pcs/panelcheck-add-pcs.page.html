@@ -1,0 +1,333 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="nav-header">
+      <ion-buttons slot="start">
+        <ion-button
+          shape="round"
+          icon="arrow-back-outline"
+          class="ion-no-padding"
+          (click)="canLeave()"
+        >
+          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title class="ion-no-padding">Back</ion-title>
+      </ion-buttons>
+      <div class="header">
+        <!-- debugging -->
+        <!-- Laycut No. <span>{{filterDataList.lay_slip}}</span> -->
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- debugging -->
+  <!-- <div class="info">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="3">
+          <div class="info-header">
+            <span>Season</span>
+            <span class="info-span"
+              >{{filterDataList.season.season_name | titlecase}}</span
+            >
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="info-header">
+            <span>Order</span>
+            <span class="info-span">{{filterDataList.order.order_name}}</span>
+          </div>
+        </ion-col>
+        <ion-col size="3.5">
+          <div class="info-header">
+            <span>Color</span>
+            <span class="info-span">{{filterDataList.color.color_name}}</span>
+          </div>
+        </ion-col>
+        <ion-col size="2.5">
+          <div class="info-header">
+            <span>Size</span>
+            <span class="info-span">{{'size_name'}}</span>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div> -->
+  <div class="container">
+    <ion-grid>
+      <ion-row>
+        <!-- Rejected panels (parts/pcs) -->
+        <ion-col size="3.8" class="rejected-container">
+          <h4>Rejected panels</h4>
+          <div class="rejected-parts-container">
+            @for(panel of rejectPanels; track $index ; let i = $index){
+            <!-- for the panels -->
+            <ion-row class="rejected-parts">
+              <ion-col size="12">
+                <span>{{panel.part}}</span>
+                <span
+                  style="color: red"
+                  [ngStyle]="{color: panel.rejected? 'red': ''}"
+                  >{{panel.rejected}}</span
+                >
+              </ion-col>
+              <!-- <ion-col size="6">
+              <span style="color: red;" [ngStyle]="{color: panel.rejected? 'red': ''}">{{panel.rejected}}</span>
+            </ion-col> -->
+            </ion-row>
+            <!-- } -->
+            }
+          </div>
+          <ion-row class="rejected-total">
+            <ion-col size="12">
+              <span> Total rejected </span>
+              <span> {{'total_value'}} </span>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+        <!-- Bundle info -->
+        <ion-col size="8">
+          <!-- Static headers -->
+          <ion-row class="static-headers">
+            <ion-col size="5.8">
+              <span>Panels</span>
+              <span>{{laySlipData.panel_range}}</span>
+            </ion-col>
+            <ion-col size="5.8">
+              <span>Bundle qty</span>
+              <span>{{laySlipData.bundle}}</span>
+            </ion-col>
+          </ion-row>
+
+          <!-- Passed Bundle Progress -->
+          <ion-row>
+            <ion-col size="12">
+              <div class="progress">
+                <div class="progress-header">
+                  <span>Progress</span>
+                  <span>{{panelData[0]?.progress * 100}}%</span>
+                </div>
+                <ion-progress-bar
+                  [value]="(panelData[0]?.progress)"
+                  color="success"
+                  mode="ios"
+                  type="determinate"
+                ></ion-progress-bar>
+              </div>
+            </ion-col>
+          </ion-row>
+
+          <!-- Bundle counts  -->
+          <ion-row class="bundle">
+            <ion-col size="12">
+              <span> No. of bundles </span>
+              <p>
+                <span class="interactive-num"
+                  >{{panelData[0]?.curr_bundle}}</span
+                >/{{laySlipData.bundle}}
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="bundle">
+            <ion-col size="12">
+              <span> Passed Panel </span>
+              <p>
+                <span class="interactive-num">{{panelData[0]?.pass_pcs}}</span
+                >/{{laySlipData.panel_range}}
+              </p>
+            </ion-col>
+          </ion-row>
+          <ion-row class="bundle">
+            <ion-col size="12">
+              <span> Checked Panel </span>
+              <p>
+                <span class="interactive-num">{{panelData[0]?.curr_panel}}</span
+                >/{{laySlipData.panel_range}}
+              </p>
+            </ion-col>
+          </ion-row>
+
+          <!-- Interactive buttons -->
+          <ion-row class="interactive-btn">
+            <ion-col size="6">
+              <ion-button
+                class="btn-reject"
+                expand="block"
+                (click)="btnAction('reject')"
+                color="danger"
+              >
+                Reject Panel
+              </ion-button>
+              <ion-button
+                class="btn-close"
+                expand="block"
+                (click)="btnAction('close')"
+                color="primary"
+              >
+                Close Laycut
+              </ion-button>
+            </ion-col>
+            <ion-col size="6">
+              <ion-button
+                class="btn-pass"
+                expand="block"
+                (click)="btnAction('bundle')"
+                color="success"
+              >
+                Pass Bundle
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <!-- Rejection modal -->
+  <ion-modal
+    id="rejectPanel-modal"
+    [isOpen]="isModalOpen"
+    (didDismiss)="closeModal()"
+  >
+    <ng-template>
+      <div class="reject-panel-container">
+        <!-- Step 1 -->
+        <div class="step-section">
+          <div class="step-header">
+            <div class="step-badge active">1</div>
+            <h3>Select Rejected Part</h3>
+          </div>
+
+          <div class="parts-grid">
+            @for(part of rejectPanels; track $index; let i = $index){
+            <div
+              class="part-card"
+              [class.selected]="part.isSelected"
+              (click)="selectPart(part)"
+            >
+              <ion-icon name="shirt-outline"></ion-icon>
+              <p>{{ part.part }}</p>
+              @if(part.isSelected){
+              <ion-icon name="checkmark-circle" class="check-icon"> </ion-icon>
+              }
+            </div>
+            }
+          </div>
+        </div>
+
+        <!-- Step 2 & Step 3-->
+        <ion-grid fixed>
+          <ion-row>
+            <ion-col size="6">
+              <div class="step-section" [class.disabled]="!selectedPart">
+                <div class="step-header">
+                  <div
+                    class="step-badge"
+                    [ngClass]="selectedPart ? 'active': ''"
+                  >
+                    2
+                  </div>
+                  <h3>Scan QR Code</h3>
+                </div>
+                <div
+                  class="scanner-box"
+                  [ngClass]="barcodeData ? 'onScanned' : rInpF? 'inputFocus':'inputNotFocus'"
+                >
+                  <ion-item lines="none">
+                    <!-- <ion-icon name="qr-code-outline"></ion-icon> -->
+                    <ion-input
+                      class="qrScan-Input"
+                      id="inpRejbarcode"
+                      placeholder="Ready to Scan"
+                      inputmode="none"
+                      (ionChange)="onRejectBarcodeInput($event)"
+                      [(ngModel)]="barcodeData"
+                      type="text"
+                    ></ion-input>
+                  </ion-item>
+                  @if(barcodeData){
+                  <p>Select a reason and submit</p>
+                  }
+                </div>
+              </div>
+            </ion-col>
+            <ion-col size="6">
+              <div class="step-section" [class.disabled]="!isQrScanned">
+                <div class="step-header">
+                  <div
+                    class="step-badge"
+                    [ngClass]="barcodeData ? 'active': ''"
+                  >
+                    3
+                  </div>
+                  <h3>Select Reason</h3>
+                </div>
+                <div class="reason-list">
+                  <div class="reason-item">
+                    <p-select
+                      [disabled]="!isQrScanned"
+                      [options]="reasonList"
+                      [(ngModel)]="reasonModel"
+                      [filter]="true"
+                      filterBy="reason_seq_num"
+                      [checkmark]="true"
+                      optionLabel="reason"
+                      placeholder="Select reason"
+                      style="width: 100%"
+                    />
+                    <!-- idea to have reasons as a popup alert-->
+                    <!-- <ion-item>
+                      <ion-select
+                        multiple="false"
+                        placeholder="Select reason"
+                        [(ngModel)]="reasonModel"
+                        [disabled]="!reasonList.length || !isQrScanned"
+                        oktext="Select"
+                        fill="solid"
+                      >
+                        @for (item of reasonList; track $index) {
+                        <ion-select-option [value]="item.reason"
+                          >{{item.reason}}</ion-select-option
+                        >
+                        }
+                      </ion-select>
+                    </ion-item> -->
+                  </div>
+                </div>
+              </div>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <!-- Step 3 -->
+
+        <!-- Footer -->
+        <div class="modal-footer">
+          <div>
+            <ion-button fill="outline" color="danger" (click)="closeModal()">
+              Cancel
+            </ion-button>
+          </div>
+          <div>
+            <!-- to clear the selections function -->
+            <ion-button
+              size="large"
+              fill="outline"
+              [disabled]="!selectedPart"
+              (click)="clearInputs()"
+            >
+              Clear all
+            </ion-button>
+            <ion-button
+              size="large"
+              [disabled]="!reasonModel"
+              (click)="confirmRejection()"
+            >
+              Confirm Rejection
+            </ion-button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
+</ion-content>

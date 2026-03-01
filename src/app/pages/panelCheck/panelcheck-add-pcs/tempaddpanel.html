@@ -1,0 +1,276 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="ion-no-padding">Back</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="">
+  <!-- <ion-content class="ion-padding"> -->
+  <div class="info">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="3">
+          <div class="info-header"><span>Order</span>
+            <p>{{filterDataList.order.order_name}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="info-header"><span>Color</span>
+            <p>{{filterDataList.color.color_name}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="info-header"><span>Size</span>
+            <p>{{filterDataList.season.season_name |
+              titlecase}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="3">
+          <div class="info-header"><span>laycut no.</span>
+            <p>{{filterDataList.lay_slip}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="4">
+          <div class="info-header"><span>Panels</span>
+            <p>{{laySlipData.panel_range}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="4">
+          <div class="info-header"><span>Bundle size: </span>
+            <p>{{laySlipData.bundle}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <div class="chips">
+
+      <!-- we might not need chips as there will be only one size -->
+      <!-- <ion-chip mode="ios" style="background-color: var(--ion-color-primary-shade);"
+        (click)="showAllSizesEntry = -1; scrollToSizeBox(0) ">
+        <ion-label>ALL</ion-label>
+        <ion-label class="qty">{{totalInitialQty}}</ion-label>
+      </ion-chip> 
+         @for (panelData[0] of fullSizeList; track $index; let ro = $index) {
+      <ion-chip mode="ios"
+        [ngStyle]="{'--background': panelData[0].barcode ? 'var(--ion-color-primary)' : 'var(--ion-color-danger)'}"
+        (click)="sizeChip(ro,panelData[0])">
+        <ion-label>{{panelData[0].size_name}}</ion-label>
+        <ion-label class="qty">{{panelData[0].total_pcssize_poly_qty}}</ion-label>
+      </ion-chip>
+      } -->
+    </div>
+  </div>
+
+  <!-- In panel check probably you will be adding the values manually only...but you never know they might ask for this scan too...🙄  -->
+  @if(isScanner){
+  <div class="sizeScan-input">
+    <ion-input #sizeInput class="inp-size" placeholder="SCAN SIZE TAG" inputmode="none"
+      [ngClass]="sInpF? 'inputFocus':'inputNotFocus'" (ionFocus)="setFocus()" (ionInput)="onSizeInput($event)"
+      (ionBlur)="sInpF = false" [(ngModel)]="barcodeData" type="text"></ion-input>
+  </div>
+  }
+  <div class="card-container" #container>
+    <!-- Adding a provision for using scanner in phone -->
+
+    <!-- In panel check probably you will be adding the values manually only...but you never know they might ask for this scan too...🙄  -->
+    @if(isScanner){
+    @if((panelData[0].polypack_qty || showAllSizesEntry==row) || showAllSizesEntry == -1){
+    <ion-card [ngClass]="{
+                    'animate-scan': animateColorTd && panelData[0].barcode === animateColorTd.barcode,
+                  }">
+      <ion-card-content>
+        <ion-grid fixed>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">Size</ion-col>
+            <ion-col size="6">{{panelData[0]?.size || 'size name'}}</ion-col>
+          </ion-row>
+          <!-- Only after panel check only they have barcodes ready for scanning -->
+          <!-- <ion-row class="qr-scan-row">
+            <ion-col class="qrcode" size="12" [ngStyle]="panelData[0].barcode? {'color': 'green'}: {'color': 'red'}"
+              (dblclick)="barcodeData = panelData[0].barcode">
+              Barcode: {{panelData[0].barcode || "Not Assigned"}}
+            </ion-col>
+          </ion-row> -->
+          <ion-row>
+            <ion-col size="6">Progress:</ion-col>
+            <!-- we will be haivng a progress bar over here -->
+            <ion-col size="6">{{panelData[0]?.total_pcssize_elc_qty|| '--'}} {{'30%'}}</ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Bundles:</ion-col>
+            <ion-col size="6">{{panelData[0]?.bundle || '--'}}/{{laySlipData.bundle}}</ion-col>
+          </ion-row>
+          <!-- Need to add a (toggle) poquantity -->
+          <ion-row>
+            <ion-col size="6">Current:</ion-col>
+            <ion-col size="6" class="undo-data">
+              {{panelData[0]?.pcs || '--'}}/{{laySlipData.pcs}}
+
+              <!-- edit btn might be taken to list page -->
+              @if(false){
+              <!-- edit btn needs some work so it has been disabled now -->
+              <!-- @if(panelData[0]['total_pcssize_poly_qty'] && panelData[0].barcode){ -->
+              <ion-button id="open-editModal" (click)="openModal(panelData[0])" color="primary" fill="clear"
+                shape="round">
+                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+              </ion-button>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Checked:</ion-col>
+            <!-- <ion-col size="6">{{panelData[0].polypack_balance|| '--'}}</ion-col> -->
+            <ion-col size="6">{{panelData[0]?.panel_range || '--'}}/{{laySlipData.panel_range}}</ion-col>
+          </ion-row>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">
+              <div class="highlight-rows-text">Actual Size Qty:</div>
+            </ion-col>
+            <ion-col size="6">
+              {{panelData[0].polypack_qty}}
+              @if(panelData[0].polypack_qty){
+              <ion-button (click)="removeSize(panelData[0])" color="danger" fill="clear" shape="round">
+                <ion-icon slot="icon-only" name="remove-circle-outline"></ion-icon>
+              </ion-button>
+              }
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+    }
+    }
+    <!-- [ngClass]="{
+                    'animate-scan': animateColorTd && panelData[0].bundle === animateColorTd.barcode,
+                  }" -->
+    <ion-card>
+      <ion-card-content>
+        <ion-grid fixed>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">Size</ion-col>
+            <ion-col size="6">{{panelData[0]?.size || 'size name'}}</ion-col>
+          </ion-row>
+          <!-- Only after panel check only they have barcodes ready for scanning -->
+          <!-- <ion-row class="qr-scan-row">
+            <ion-col class="qrcode" size="12" [ngStyle]="panelData[0].barcode? {'color': 'green'}: {'color': 'red'}"
+              (dblclick)="barcodeData = panelData[0].barcode">
+              Barcode: {{panelData[0].barcode || "Not Assigned"}}
+            </ion-col>
+          </ion-row> -->
+          <!-- <ion-row>
+            <ion-col size="6">Progress:</ion-col>
+            <ion-col size="6">{{panelData[0]?.bundle|| '--'}} {{'30%'}}</ion-col>
+          </ion-row> -->
+          <ion-row>
+            <ion-col size="6">Bundles:</ion-col>
+            <ion-col size="6">{{panelData[0]?.curr_bundle}}/{{laySlipData.bundle}}</ion-col>
+          </ion-row>
+          <!-- Need to add a (toggle) poquantity -->
+          <ion-row>
+            <ion-col size="6">Current pcs:</ion-col>
+            <ion-col size="6" class="undo-data">
+              {{panelData[0]?.curr_pcs}}/{{laySlipData.pcs}}
+
+              <!-- edit btn might be taken to list page -->
+              @if(false){
+              <!-- edit btn needs some work so it has been disabled now -->
+              <!-- @if(panelData[0]['total_pcssize_poly_qty'] && panelData[0].barcode){ -->
+              <ion-button id="open-editModal" (click)="openModal(panelData[0])" color="primary" fill="clear"
+                shape="round">
+                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
+              </ion-button>
+              }
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col size="6">Checked panels:</ion-col>
+            <!-- <ion-col size="6">{{panelData[0].polypack_balance|| '--'}}</ion-col> -->
+            <ion-col size="6">{{panelData[0]?.curr_panel}}/{{laySlipData.panel_range}}</ion-col>
+          </ion-row>
+          <ion-row class="highlight-rows">
+            <ion-col size="6">
+              <div class="highlight-rows-text">Progress:</div>
+            </ion-col>
+            <ion-col size="6">
+              <ion-col size="6">
+                <ion-progress-bar [value]="(panelData[0]?.progress)" color="primary" mode="ios"
+                  type="determinate"></ion-progress-bar>{{'30%'}}
+              </ion-col>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
+
+
+
+    <!-- Edit modal may be moved to the list page -->
+    <ion-modal id="editPolyQty-modal" [isOpen]="isModalOpen" #modal trigger="open-editModal">
+      <ng-template>
+        <div class="editModal-container">
+          <h4>Edit Polypack size qty</h4>
+          <ion-grid fixed>
+            <ion-row>
+              <ion-col size="6">Total size Qty:
+              </ion-col>
+              <ion-col size="6">
+                <span>
+                  {{editSizepanelData[0].total_pcssize_poly_qty}}
+                </span>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">Enter the size qty to change: </ion-col>
+              <ion-col size="6">
+                <ion-input type="text" inputmode="numeric" [max]="this.editSizepanelData[0].total_pcssize_poly_qty"
+                  min="0" placeholder="--" [(ngModel)]="editPolyQty"></ion-input>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+                <ion-button (click)="closeModal()" expand="block" fill="clear">
+                  Cancel
+                </ion-button>
+              </ion-col>
+              <ion-col size="6">
+                <ion-button (click)="onEditSubmit()" [disabled]="!editPolyQty" expand=" block" fill="solid">
+                  Submit
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </div>
+      </ng-template>
+    </ion-modal>
+  </div>
+  <!-- This below is doubt may be something advance or better can be taken in here -->
+  <div>
+    <div class="total-qty-passed" style="background-color: lightgreen;">
+      <div>Total Quantity Passed:</div>
+      <p>
+        <!-- {{totalQtyPassed || '0'}} -->
+      </p>
+    </div>
+    <div class="total-qty-failed" style="background-color: lightcoral;">
+      <div>Total Quantity Failed:</div>
+      <p>
+        <!-- {{totalQtyFailed || '0'}} -->
+      </p>
+    </div>
+    
+  </div>
+  <div class="action-btn">
+      <ion-button [class.invalid]="!totalQty" color="primary" (click)="confirmSubmit()">
+        Submit
+      </ion-button>
+      <br>
+    </div>
+
+</ion-content>

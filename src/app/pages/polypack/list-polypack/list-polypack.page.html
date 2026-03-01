@@ -1,0 +1,135 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button class="ion-no-padding"></ion-back-button>
+      <ion-title class="ion-no-padding">Back</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="info">
+    <ion-grid fixed>
+      <ion-row>
+        <ion-col size="6">
+          <div>Season</div>
+          <p>{{filterDataList.season.season_name | titlecase}}</p>
+        </ion-col>
+        <ion-col size="6">
+          <div>Customer</div>
+          <p>{{filterDataList.customer.customer_short_name}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="12">
+          <div>Order</div>
+          <p>{{filterDataList.order.order_name}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+  @if(poNumList.length > 0){
+  <h4>PO Number</h4>
+  <div class="accordian-container">
+    <ion-accordion-group expand="inset" (ionChange)="!isModalOpen">
+      @for (item of poNumList; track $index){
+      <ion-accordion [value]="$index" toggleIcon="arrow-forward-circle" toggleIconSlot="end">
+        <ion-item slot="header" (click)="colorsList(item)" id="open-modal" color="primary">
+          <ion-label>{{item.order_ponumber}}</ion-label>
+        </ion-item>
+        <div class="ion-padding" slot="content">
+          <h4>Colors</h4>
+          @for(coloritem of colorList; track $index){
+          <ion-item (click)="allSizeQtyList(item,coloritem)" color="light">
+            <ion-label>{{coloritem.color_name}}</ion-label>
+            <ion-icon slot="end" name="arrow-forward-circle-outline"></ion-icon>
+          </ion-item>
+          }
+        </div>
+      </ion-accordion>
+      }
+      <!-- @for (item of poNumList.length > 0? poNumList : colorList; track $index){
+      <ion-accordion [value]="$index" toggleIcon="arrow-forward-circle" toggleIconSlot="end">
+        <ion-item slot="header" (click)="item.order_ponumber? colorsList(item) : allSizeQtyList(item)" id="open-modal"
+          color="primary">
+          <ion-label>{{item.order_ponumber ? item.order_ponumber :item.color_name}}</ion-label>
+        </ion-item>
+        @if(item.order_ponumber){
+        <div class="ion-padding" slot="content">
+          <h4>Colors</h4>
+          @for(coloritem of colorList; track $index){
+          <ion-item id="open-modal" (click)="isModalOpen = true; allSizeQtyList(item,coloritem)" color="light">
+            <ion-label>{{coloritem.color_name}}</ion-label>
+            <ion-icon slot="end" name="arrow-forward-circle-outline"></ion-icon>
+          </ion-item>
+          }
+        </div>
+        }
+      </ion-accordion>
+      } -->
+    </ion-accordion-group>
+  </div>
+  }@else {
+  <h1>No Po's for this order</h1>
+  }
+  <!-- [canDismiss]="editF", [breakpoints]="[0, 0.25, 0.5, 0.75]" -->
+  @if (fullQtyList.length > 0) {
+  <ion-modal #modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false" trigger="open-modal"
+    [initialBreakpoint]="0.75">
+    <ng-template>
+      <ion-content>
+        <div class="modal-container card-container">
+          <!-- <ion-button slot="end" (click)="editItemQty()" [color]="editF ? 'success': 'primary'">
+            @if (editF) {
+            Save <ion-icon slot="start" name="bookmark"></ion-icon>
+            }@else {
+            Edit <ion-icon slot="start" name="create"></ion-icon>
+            }
+          </ion-button> -->
+          @for (item of fullQtyList; track $index) {
+          <ion-card>
+            <ion-card-content class="modal-list">
+              <ion-grid fixed>
+                <ion-row class="highlight-rows">
+                  <ion-col size="6">Size</ion-col>
+                  <ion-col size="6">{{item?.size_name || 'size name'}}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">Ord Size Qty:</ion-col>
+                  <ion-col size="6">{{item?.total_order_size_qty || '--'}}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">ELC Size Qty:</ion-col>
+                  <ion-col size="6">{{item?.total_pcssize_elc_qty|| '--'}}</ion-col>
+                </ion-row>
+                <ion-row>
+                  <ion-col size="6">Total Packed Qty:</ion-col>
+                  <ion-col size="6">
+                    {{item.total_pcssize_poly_qty}}
+                    <!-- <ion-input #qtyInput type="text" pattern="[0-9]*$" maxlength="10" inputmode="none"
+                      [(ngModel)]="item.total_pcssize_poly_qty" disabled [value]="item?.total_pcssize_poly_qty">
+                    </ion-input>
+                     @if(editF){
+                    <ion-button (click)="item.editQtyF = !item.editQtyF" [fill]="item.editQtyF? 'clear' :'solid'"
+                      color="primary">
+                      <ion-icon slot="icon-only" name="create"></ion-icon>
+                    </ion-button>
+                    } -->
+                  </ion-col>
+                </ion-row>
+                <ion-row class="qr-scan-row">
+                  <ion-col class="qrcode" size="12" [ngStyle]="item.barcode? {'color': 'green'}: {'color': 'red'}">
+                    Barcode: {{item.barcode || '--'}}
+                  </ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+          }
+        </div>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  }
+
+</ion-content>

@@ -1,0 +1,24 @@
+<ion-content>
+  <div class="page">
+    <div class="logo">
+      <img src="../../../assets/icon/Gannetlogo.svg" />
+    </div>
+    <div class="inputFields">
+      <h3>Login to <span (dblclick)="addUserTemp()">you</span>r <span (dblclick)="addDefaultTemp()">acc</span>ount</h3>
+      <div class="inputContainer">
+        <ion-label>UserName</ion-label>
+        <ion-input type="text" name="username" [(ngModel)]="loginData.username"
+          placeholder="Enter username"></ion-input>
+        <ion-label>Password</ion-label>
+        <ion-input type="password" name="password" [(ngModel)]="loginData.password" placeholder="Enter password">
+          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
+        </ion-input>
+      </div>
+      <ion-button (click)="loginUser()" [disabled]="!(loginData.username && loginData.password)" expand="block"
+        color="primary">
+        <ion-icon slot="end" name="arrow-forward"></ion-icon>
+        Login
+      </ion-button>
+    </div>
+  </div>
+</ion-content>

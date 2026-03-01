@@ -1,0 +1,160 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
+        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      </ion-button>
+      <ion-title class="ion-no-padding">Back</ion-title>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="" [fullscreen]="true">
+  <!-- <ion-content class="ion-padding"> -->
+  <div class="info">
+    <ion-grid fixed>
+      @if (deviceType == 'mobile') {
+      <ion-row>
+        <ion-col size="6">
+          <div class="info-header"><span>Season</span>
+            <p>{{filterDataList.season.season_name |
+              titlecase}}</p>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div class="info-header"><span>Order</span>
+            <p>{{filterDataList.order.order_name}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        @if(filterDataList.poNum){
+        <ion-col size="6">
+          <div class="info-header"><span>PO</span>
+            <p>{{filterDataList.poNum.order_ponumber}}</p>
+          </div>
+        </ion-col>
+        }
+        <ion-col [size]="poNum ? 6: 12">
+          <div class="info-header"><span>Color</span>
+            <p>{{filterDataList.color.color_name}}</p>
+          </div>
+        </ion-col>
+      </ion-row>
+      }
+      @if (deviceType == 'tab'){
+      <ion-row>
+        <ion-col size="4">
+          <p>{{filterDataList.season.season_name |
+            titlecase}}</p>
+        </ion-col>
+        <ion-col size="4">
+          <p>{{filterDataList.order.order_name}}</p>
+        </ion-col>
+        <ion-col size="4">
+          <p>{{filterDataList.color.color_name}}</p>
+        </ion-col>
+      </ion-row>
+      }
+    </ion-grid>
+  </div>
+
+  @if(rawQtyList){
+  <div class="card-container" #container>
+    <ion-grid>
+      <ion-row>
+        <!-- Static data -->
+        <ion-col size="4">
+          <!-- static data -->
+          <ion-card class="static-data">
+            <ion-card-content>
+              <ion-grid fixed>
+                <!-- Size -->
+                <ion-row class="highlight-rows">
+                  <ion-col size="6">
+                    <span class="label-text">
+                      Size
+                    </span>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span class="label-text">
+                      Polypack Qty for order
+                    </span>
+                  </ion-col>
+                </ion-row>
+
+                @for (item of rawQtyList; track $index ; let row = $index) {
+                <!-- Static Size Qty for Order-->
+                <ion-row>
+                  <ion-col size="6">
+                    <div>{{item.size_name}}</div>
+                  </ion-col>
+                  <ion-col size="6">
+                    <span class="number-info">
+                      {{item.balance_polypack_qty}}
+                    </span>
+                  </ion-col>
+                </ion-row>
+                }
+              </ion-grid>
+            </ion-card-content>
+          </ion-card>
+        </ion-col>
+
+        <!-- Interactive column -->
+        <ion-col size="8">
+          <ion-row>
+            <!-- Select PO -->
+            <ion-col size="12">
+              <p-select [disabled]="!poList.length" [options]="poList" [(ngModel)]="poModel" [filter]="true"
+                filterBy="order_ponumber" [checkmark]="true" (onChange)="addQuantityInitialData()"
+                optionLabel="order_ponumber" placeholder="Select PO" />
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <!-- Size data -->
+            @if(fullSizeList){
+            <div class="size-card-container">
+              <ion-card>
+                <ion-card-content>
+                  <ion-grid fixed>
+                    <!-- Size -->
+                    <ion-row class="highlight-rows">
+                      <ion-col size="6">Size</ion-col>
+                      <ion-col size="6">Qty to Assign</ion-col>
+                    </ion-row>
+                    @for (item of fullSizeList; track $index ; let row = $index) {
+                    <ion-row>
+                      <ion-col size="6">
+                        <div class="highlight-rows-text">{{item.size_name}}</div>
+                      </ion-col>
+                      <ion-col size="6">
+                        <ion-input type="tel" inputmode="numeric" maxlength="10" [value]="item.polypack_qty"
+                          (ionInput)="onQtyInput($event, item)" (ionBlur)="validateQty(item)"
+                          placeholder="Enter Actual Size Qty">
+                        </ion-input>
+                      </ion-col>
+                    </ion-row>
+                    }
+
+                  </ion-grid>
+                </ion-card-content>
+              </ion-card>
+            </div>
+            } @else {
+            <h4 class="condition-info">{{conditionalInfo}}</h4>
+            }
+          </ion-row>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+    <!-- } -->
+  </div>
+  <div class="interactive-btn">
+    <ion-button [disabled]="!totalQty || totalQty <= 0" color="primary" expand="block" (click)="confirmSubmit()">
+      Submit
+    </ion-button>
+  </div>
+  }
+
+</ion-content>

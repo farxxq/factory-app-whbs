@@ -1,0 +1,246 @@
+    {
+      "date": "9-12-25",
+      "page_1": "cartonapack_details_page",
+      "services_page_1": {
+        "cartonpacks_details": {
+          "order_ponumber": "12345678",
+          "cartonpacks": [
+            {
+              "cartonpack_barcode": "2-1024-S-60-60-60-00010",
+              "carton_seq_num": 10,
+              "color": "Lavender",
+              "color_seq_num": "124",
+              "box_quantity": 40,
+              "sizes": [
+                {
+                  "size": "10A",
+                  "size_seq_num": "18",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3825",
+                  "current_carton_pcs": 20,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "12A",
+                  "size_seq_num": "17",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3826",
+                  "current_carton_pcs": 10,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "14A",
+                  "size_seq_num": "16",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3827",
+                  "current_carton_pcs": 10,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "16A",
+                  "size_seq_num": "15",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-5715",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "4A",
+                  "size_seq_num": "44",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3828",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "5A",
+                  "size_seq_num": "45",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3829",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "6A",
+                  "size_seq_num": "20",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3830",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "8A",
+                  "size_seq_num": "19",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3831",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                }
+              ]
+            },
+            {
+              "cartonpack_barcode": "2-1024-S-60-60-60-0001",
+              "carton_seq_num": 1,
+              "color": "Lavender",
+              "color_seq_num": "124",
+              "box_quantity": 40,
+              "sizes": [
+                {
+                  "size": "10A",
+                  "size_seq_num": "18",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3825",
+                  "current_carton_pcs": 20,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "12A",
+                  "size_seq_num": "17",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3826",
+                  "current_carton_pcs": 10,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "14A",
+                  "size_seq_num": "16",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3827",
+                  "current_carton_pcs": 10,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "16A",
+                  "size_seq_num": "15",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-5715",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "4A",
+                  "size_seq_num": "44",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3828",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                }
+              ]
+            },
+            {
+              "cartonpack_barcode": "2-1024-S-60-60-60-0002",
+              "carton_seq_num": 2,
+              "color": "Lavender",
+              "color_seq_num": "124",
+              "box_quantity": 40,
+              "sizes": [
+                {
+                  "size": "10A",
+                  "size_seq_num": "18",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-3825",
+                  "current_carton_pcs": 40,
+                  "cartonbox_qrcode_seq_num": "125"
+                },
+                {
+                  "size": "16A",
+                  "size_seq_num": "15",
+                  "order_seq_num": "4534",
+                  "barcode_data": "PDK-5715",
+                  "current_carton_pcs": 0,
+                  "cartonbox_qrcode_seq_num": "125"
+                }
+              ]
+            }
+          ]
+        },
+        "po_list": [
+          {
+            "order_ponumber": "12345678",
+            "po_qty": 500
+          },
+          {
+            "order_ponumber": "12042807",
+            "po_qty": 500
+          },
+          {
+            "order_ponumber": "09876543",
+            "po_qty": 500
+          }
+        ]
+      },
+      "page_2.1": "cartonapacking_inspection_section_remove",
+      "services_page_2.1": {
+        "remove_piece": [
+          {
+            "size": "10A",
+            "size_seq_num": "18",
+            "order_seq_num": "4534",
+            "barcode_data": "PDK-3825",
+            "current_carton_pcs": 20,
+            "cartonbox_qrcode_seq_num": "125",
+            "remarks": "remarks",
+            "remarks_seq_num": 1
+          }
+        ],
+        "update_box_remove": [
+          {
+            "cartonpack_barcode": "2-1024-S-60-60-60-00010",
+            "carton_seq_num": 10,
+            "color": "Lavender",
+            "color_seq_num": "124",
+            "sizes": [
+              {
+                "size": "10A",
+                "size_seq_num": "18",
+                "order_seq_num": "4534",
+                "barcode_data": "PDK-3825",
+                "current_carton_pcs": 20,
+                "cartonbox_qrcode_seq_num": "125",
+                "isRemove": true
+              },
+              {
+                "size": "12A",
+                "size_seq_num": "17",
+                "order_seq_num": "4534",
+                "barcode_data": "PDK-3826",
+                "current_carton_pcs": 10,
+                "cartonbox_qrcode_seq_num": "125",
+                "isRemove": false
+              }
+            ]
+          }
+        ]
+      },
+      "page_2.2": "cartonapacking_inspection_section_add",
+      "services_page_2.2": {
+        "update_box_add": [
+          {
+            "cartonpack_barcode": "2-1024-S-60-60-60-00010",
+            "carton_seq_num": 10,
+            "color": "Lavender",
+            "color_seq_num": "124",
+            "sizes": [
+              {
+                "size": "10A",
+                "size_seq_num": "18",
+                "order_seq_num": "4534",
+                "barcode_data": "PDK-3825",
+                "current_carton_pcs": 25,
+                "cartonbox_qrcode_seq_num": "125",
+                "isAdd": true
+              },
+              {
+                "size": "12A",
+                "size_seq_num": "17",
+                "order_seq_num": "4534",
+                "barcode_data": "PDK-3826",
+                "current_carton_pcs": 10,
+                "cartonbox_qrcode_seq_num": "125",
+                "isAdd": false
+              }
+            ]
+          }
+        ]
+      }
+    }

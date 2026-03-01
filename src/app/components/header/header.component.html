@@ -1,0 +1,32 @@
+<ion-header [translucent]="true">
+  <ion-toolbar class="ion-padding-inline">
+    <div class="header">
+      <div class="logo">
+        <!-- username == 'mesadmin'? changeAPIURL(): '' -->
+        <p><strong>{{headerData}}</strong></p>
+        <span (dblclick)="changeAPIURL()" style="color: #e9f0fd; cursor: pointer;">...</span>
+      </div>
+      <div class="actionBtns">
+        @if(logoutBtn){
+        <div class="iconBtn logoutBtn" (click)="canLogout()">
+          <ion-icon name="log-out"></ion-icon>
+        </div>
+        }
+        @if(homeBtn){
+        <div class="iconBtn homeBtn" (click)="goToHome()">
+          <ion-icon slot="start" name="home"></ion-icon>
+          <!-- <div>Home</div> -->
+        </div>
+        }
+        @if(iconTray.length > 0){
+        @for(icons of iconTray;track $index; let i = $index){
+        <div class="iconBtn" (click)="iconsFunc(icons)">
+          <ion-icon slot="start" [name]="icons.iconName"
+            [ngStyle]="icons.color ? {'background-color': icons.color}: ''"></ion-icon>
+        </div>
+        }
+        }
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>

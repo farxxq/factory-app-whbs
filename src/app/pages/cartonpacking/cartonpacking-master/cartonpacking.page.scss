@@ -1,0 +1,59 @@
+.barcode-inp-box {
+  width: 30rem;
+
+  ion-input {
+    border: 2px solid var(--ion-color-primary);
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    height: 100%;
+    text-align: center;
+
+    &::placeholder {
+      color: var(ion-color-medium-contrast);
+      font-style: italic;
+      text-align: center;
+      --placeholder-color: red;
+      --placeholder-opacity: 1;
+    }
+
+    &:focus {
+      border-color: var(ion-color-primary);
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+      background-color: #fff;
+    }
+  }
+
+  .inputFocus {
+    background-color: transparent;
+
+    ::ng-deep input {
+      caret-color: transparent !important;
+    }
+  }
+
+  .inputNotFocus {
+    background-color: var(--ion-color-primary);
+    color: white;
+    font-weight: 800;
+    font-family: "euclid-circular-b";
+  }
+}
+
+.carton-barcode-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  height: 100%;
+  width: 100%;
+
+  ion-input {
+    height: 100px;
+    width: 500px;
+    border-radius: 15px;
+    font-size: 30px;
+  }
+}

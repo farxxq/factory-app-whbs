@@ -1,0 +1,8 @@
+{
+  "typescript.preferences.autoImportFileExcludePatterns": [
+    "@ionic/angular/common",
+    "@ionic/angular/standalone"
+  ],
+  "editor.autoIndent": "advanced",
+  "editor.language.brackets": []
+}

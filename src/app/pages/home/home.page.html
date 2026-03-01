@@ -1,0 +1,100 @@
+<app-header [headerData]="'Select App'" [homeBtn]="false"></app-header>
+<ion-content class="ion-padding">
+  <!-- (click)="showDeviceType()" -->
+  <div class="app-container">
+    @if(userRole == 'ad_min' || data.branchcode == 0){
+    <div class="branch">
+      Branch:
+      <p-select [options]="branchList" [(ngModel)]="branchModel" optionLabel="location_name" (onChange)="setBranch()"
+        placeholder="Select Branch" />
+    </div>
+    }
+    @if(userRole){
+    <ion-grid fixed>
+      <!-- @if(deviceType == 'mobile'){ -->
+      <!-- change the above logic a bit -->
+      <ion-row>
+        <ion-col size="6">
+          <div class="app app2" (click)="navigateTo('panelcheck')">
+            <div>
+              <p>Panel Check</p>
+              <ion-icon slot="start" name="receipt-outline"></ion-icon>
+            </div>
+
+            <div class="nav-btn">
+              <ion-buttons slot="end">
+                <ion-button (click)="navigateTo('panelcheck')" fill="clear" color="light" shape="round">
+                  <ion-icon name="arrow-forward-circle" slot="end"></ion-icon>
+                </ion-button></ion-buttons>
+            </div>
+          </div>
+        </ion-col>
+
+        <ion-col size="6">
+          <div class="app app1" (click)="navigateTo('polypack')">
+            <div>
+              <p>Polypack</p>
+              <ion-icon slot="start" name="bag-check-outline"></ion-icon>
+            </div>
+            <div class="nav-btn">
+              <ion-buttons slot="end">
+                <ion-button fill="clear" color="light" shape="round" expand="">
+                  <ion-icon name="arrow-forward-circle" slot="end"></ion-icon>
+                </ion-button>
+              </ion-buttons>
+            </div>
+          </div>
+        </ion-col>
+        <!-- (click)="navigateTo('aql-procedure')" -->
+
+      </ion-row>
+      <!-- } @else{ -->
+      @if(deviceType == 'tab'){
+      <ion-row>
+        <ion-col size="6">
+          <div class="app app3" (click)="navigateTo('cartonpacking')">
+            <div>
+              <p>Carton Pack</p>
+              <ion-icon slot="start" name="scan-outline"></ion-icon>
+            </div>
+
+            <div class="nav-btn">
+              <ion-buttons slot="end">
+                <ion-button fill="clear" color="light" shape="round">
+                  <ion-icon name="arrow-forward-circle" slot="end"></ion-icon>
+                </ion-button></ion-buttons>
+            </div>
+          </div>
+        </ion-col>
+        <ion-col size="6">
+          <div class="app app3" (click)="navigateTo('cartonpacking/cartonpack-details')">
+            <div>
+              <p>Carton Box Details</p>
+              <ion-icon slot="start" name="file-tray-full-outline"></ion-icon>
+            </div>
+
+            <div class="nav-btn">
+              <ion-buttons slot="end">
+                <ion-button fill="clear" color="light" shape="round">
+                  <ion-icon name="arrow-forward-circle" slot="end"></ion-icon>
+                </ion-button></ion-buttons>
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+
+      }
+    </ion-grid>
+
+
+    }
+    @if(false){
+    <div class="descp">
+      <h1>Crafting</h1>
+      <h1> Excellence</h1>
+      <h1>in Garment</h1>
+      <h1> Exports</h1>
+    </div>
+    }
+  </div>
+</ion-content>

@@ -1,0 +1,71 @@
+<app-header [logoutBtn]="false" [headerData]="'Panel Check'" [iconTray]="assignHeaderIcons()"></app-header>
+<ion-content class="ion-padding">
+  <ion-grid class="filters">
+    @if(isScanner){
+    <ion-row>
+      <ion-col size="12">
+        <div class="sizeScan-input">
+          <ion-input #laySlipInput class="inp-size" (dblClick)="barcodeData = 'PDK-329'" placeholder="SCAN LAY SLIP"
+            inputmode="none" [ngClass]="lInpF? 'inputFocus':'inputNotFocus'" (ionFocus)="setFocus()"
+            (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false" [(ngModel)]="barcodeData" type="text">
+          </ion-input>
+        </div>
+      </ion-col>
+    </ion-row>
+    }
+    @if(!isScanner) {
+    <ion-row>
+      <ion-col>
+        <div class="label-text">Season</div>
+        <!-- added isScanner here alone -->
+        <p-select [disabled]="!seasonList.length || panelBarcode" [options]="seasonList" [(ngModel)]="seasonModel"
+          [filter]="true" filterBy="season_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(1)"
+          optionLabel="season_name" placeholder="Select" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="label-text">Customer</div>
+        <p-select [disabled]="!customerList.length || panelBarcode" [options]="customerList" [(ngModel)]="customerModel"
+          (onChange)="clearbelowAttrbutes(2)" [filter]="true" filterBy="customer_short_name" [checkmark]="true"
+          optionLabel="customer_short_name" placeholder="Select" />
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <div class="label-text">Order</div>
+        <p-select [disabled]="!orderList.length || panelBarcode" [options]="orderList" [(ngModel)]="orderModel"
+          [filter]="true" filterBy="order_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(3)"
+          optionLabel="order_name" placeholder="Select" />
+      </ion-col>
+    </ion-row>
+    <!-- when it is manual mode we need color to navigate next -->
+    <ion-row>
+      <ion-col>
+        <div class="label-text">Color</div>
+        <p-select [disabled]="!colorList.length || panelBarcode" [options]="colorList" [(ngModel)]="colorModel"
+          [filter]="true" filterBy="color_name" [checkmark]="true" optionLabel="color_name" placeholder="Select" />
+      </ion-col>
+    </ion-row>
+    <!-- below is for layslip that might be there or not no idea... -->
+    <!-- @if(poList.length > 0 && isScanner){
+        <ion-row>
+          <ion-col>
+            <div class="label-text">PO</div>
+            <p-select [disabled]="!poList.length || panelBarcode" [options]="poList" [(ngModel)]="poModel" [filter]="true"
+              filterBy="order_ponumber" [checkmark]="true" (onChange)="clearbelowAttrbutes(4)"
+              optionLabel="order_ponumber" placeholder="Select" />
+          </ion-col>
+        </ion-row>
+        } -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-button (click)="addPcsPage()" [disabled]="!colorModel" expand="block" color="primary">
+          <ion-icon slot="start" name="add-circle"></ion-icon>
+          Start panel check
+        </ion-button>
+      </ion-col>
+    </ion-row>
+    }
+  </ion-grid>
+</ion-content>

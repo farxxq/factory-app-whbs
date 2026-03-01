@@ -1,0 +1,95 @@
+* {
+  font-family: "euclid-circular-m", "euclid-circular-reg", "sans-serif";
+}
+
+.page {
+  color: #303030;
+  background: url("../../../assets/backgrounds/loginBackground.webp") no-repeat
+    fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  background-size: cover;
+  height: 100%;
+  width: 100%;
+  user-select: none;
+  .logo {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 50%;
+      margin-bottom: 25px;
+    }
+  }
+
+  .inputFields {
+    background-color: white;
+    width: 100%;
+    height: 50%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    .inputContainer {
+      display: flex;
+      flex-direction: column;
+      font-size: 18px;
+      ion-label {
+        margin: 10px 0;
+      }
+      ion-input {
+        margin-bottom: 15px;
+        border: 1px solid #d7d7d7;
+        border-radius: 10px;
+        --padding-start: 10px;
+        --padding-end: 10px;
+      }
+    }
+
+    ion-button {
+      margin: 20px 0px;
+      width: 100%;
+      height: 50px;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1440px) {
+  .page {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    h3 {
+      font-size: 30px;
+    }
+    .logo {
+      width: 50%;
+      height: 100%;
+      img {
+        width: 50%;
+        margin-bottom: 0;
+      }
+    }
+    .inputFields {
+      width: 50%;
+      height: 100%;
+      justify-content: center;
+      .inputContainer {
+        ion-input {
+          font-size: larger;
+        }
+      }
+
+      ion-button {
+        margin: 20px 0;
+        width: 100%;
+        height: 60px;
+        font-size: larger;
+      }
+    }
+  }
+}

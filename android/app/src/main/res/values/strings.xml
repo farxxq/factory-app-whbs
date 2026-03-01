@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">cartonpackingsys</string>
+    <string name="title_activity_main">cartonpackingsys</string>
+    <string name="package_name">com.whbs.cartonpackingsys</string>
+    <string name="custom_url_scheme">com.whbs.cartonpackingsys</string>
+</resources>
