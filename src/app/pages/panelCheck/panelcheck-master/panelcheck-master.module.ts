@@ -9,6 +9,7 @@ import { PanelcheckMasterPageRoutingModule } from './panelcheck-master-routing.m
 import { PanelcheckMasterPage } from './panelcheck-master.page';
 import { HeaderComponent } from '../../../components/header/header.component';
 import { Select } from 'primeng/select';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @NgModule({
   imports: [
@@ -17,8 +18,9 @@ import { Select } from 'primeng/select';
     IonicModule,
     PanelcheckMasterPageRoutingModule,
     HeaderComponent,
-    Select
+    Select,
+    FloatLabelModule,
   ],
-  declarations: [PanelcheckMasterPage]
+  declarations: [PanelcheckMasterPage],
 })
 export class PanelcheckMasterPageModule {}

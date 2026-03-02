@@ -19,7 +19,17 @@ import { Spanelcheck } from '../panelcheckService/spanelcheck';
   standalone: false,
 })
 export class PanelcheckAddPcsPage implements OnInit {
-  filterDataList: any = {};
+  filterDataList: any = {
+    season: 'seasonModel',
+    customer: 'customerModel',
+    order: 'orderModel',
+    poNum: 'poModel',
+    color: 'colorModel',
+    sizeBarcode: 'sizeBarcode',
+    // this will be given in the service and we will directly apply it from their
+    lay_slip: 'PCL25261401',
+    bundle: 10,
+  };
 
   isScanner: any = '';
 
@@ -204,7 +214,8 @@ export class PanelcheckAddPcsPage implements OnInit {
   // cancelLoading = async () => await this.reusableService.cancelLoading();
 
   ngOnInit() {
-    this.filterDataList = this.pcService.getListData();
+    // this.filterDataList = this.pcService.getListData();
+
     this.isScanner = this.storageService.getData('isScanner');
 
     setTimeout(() => {
@@ -218,9 +229,8 @@ export class PanelcheckAddPcsPage implements OnInit {
 
   async addQuantityInitialData() {
     let selectedValue = this.filterDataList;
-    if (false) {
-      //debug purpose
-      // if (!selectedValue) {
+
+    if (!selectedValue) {
       //just for development
       console.error('No info sent or it is null');
       this.navCtrl.back();
