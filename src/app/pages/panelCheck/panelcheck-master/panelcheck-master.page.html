@@ -1,26 +1,27 @@
 <app-header [logoutBtn]="false" [headerData]="'Panel Check'" [iconTray]="assignHeaderIcons()"></app-header>
 <ion-content class="ion-padding">
-  <ion-grid class="filters">
+  <div class="filters">
     @if(isScanner){
-    <ion-row>
-      <ion-col size="12">
+    <div class="row">
+      <div class="col-12">
         <div class="sizeScan-input">
           <ion-input #laySlipInput class="inp-size" (dblClick)="barcodeData = 'PDK-329'" placeholder="SCAN LAY SLIP"
-            inputmode="none" [ngClass]="lInpF? 'inputFocus':'inputNotFocus'" (ionFocus)="setFocus()"
-            (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false" [(ngModel)]="barcodeData" type="text">
-          </ion-input>
+            inputmode="none" [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'" (ionFocus)="setFocus()"
+            (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false" [(ngModel)]="barcodeData"
+            type="text"></ion-input>
         </div>
-      </ion-col>
-    </ion-row>
-    } @if(!isScanner) {
-    <ion-row>
-      <ion-col size="12">
+      </div>
+    </div>
+    }
+    @if(!isScanner){
+    <div class="row-content">
+      <div class="col">
         <div class="form-grid">
           <div class="form-field">
             <p-floatlabel variant="on">
               <p-select class="large-text" [disabled]="!seasonList.length || panelBarcode" [options]="seasonList"
                 [(ngModel)]="seasonModel" [filter]="true" inputId="Season" filterBy="season_name" [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(1)" optionLabel="season_name" size="large" />
+                (onChange)="clearbelowAttrbutes(1)" optionLabel="season_name" size="large"></p-select>
               <label for="Season">Season</label>
             </p-floatlabel>
           </div>
@@ -29,7 +30,8 @@
             <p-floatlabel variant="on">
               <p-select class="large-text" [disabled]="!customerList.length || panelBarcode" [options]="customerList"
                 [(ngModel)]="customerModel" [filter]="true" inputId="Customer" filterBy="customer_short_name"
-                [checkmark]="true" (onChange)="clearbelowAttrbutes(2)" optionLabel="customer_short_name" size="large" />
+                [checkmark]="true" (onChange)="clearbelowAttrbutes(2)" optionLabel="customer_short_name"
+                size="large"></p-select>
               <label for="Customer">Customer</label>
             </p-floatlabel>
           </div>
@@ -38,7 +40,7 @@
             <p-floatlabel variant="on">
               <p-select class="large-text" [disabled]="!orderList.length || panelBarcode" [options]="orderList"
                 [(ngModel)]="orderModel" [filter]="true" inputId="Order" filterBy="order_name" [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(3)" optionLabel="order_name" size="large" />
+                (onChange)="clearbelowAttrbutes(3)" optionLabel="order_name" size="large"></p-select>
               <label for="Order">Order</label>
             </p-floatlabel>
           </div>
@@ -47,32 +49,23 @@
             <p-floatlabel variant="on">
               <p-select class="large-text" [disabled]="!colorList.length || panelBarcode" [options]="colorList"
                 [(ngModel)]="colorModel" [filter]="true" inputId="Color" filterBy="color_name" [checkmark]="true"
-                optionLabel="color_name" size="large" />
+                optionLabel="color_name" size="large"></p-select>
               <label for="Color">Color</label>
             </p-floatlabel>
           </div>
         </div>
-      </ion-col>
-    </ion-row>
-    <!-- below is for layslip that might be there or not no idea... -->
-    <!-- @if(poList.length > 0 && isScanner){
-        <ion-row>
-          <ion-col>
-            <div class="label-text">PO</div>
-            <p-select class="large-text" [disabled]="!poList.length || panelBarcode" [options]="poList" [(ngModel)]="poModel" [filter]="true"
-              filterBy="order_ponumber" [checkmark]="true" (onChange)="clearbelowAttrbutes(4)"
-              optionLabel="order_ponumber" placeholder="Select" />
-          </ion-col>
-        </ion-row>
-        } -->
-    <ion-row>
-      <ion-col size="12">
+      </div>
+    </div>
+    }
+
+    <!-- Start Panel Check Button -->
+    <div class="row-btn">
+      <div class="col">
         <ion-button (click)="addPcsPage()" [disabled]="!colorModel" expand="block" color="primary">
           <ion-icon slot="start" name="add-circle"></ion-icon>
           Start panel check
         </ion-button>
-      </ion-col>
-    </ion-row>
-    }
-  </ion-grid>
+      </div>
+    </div>
+  </div>
 </ion-content>

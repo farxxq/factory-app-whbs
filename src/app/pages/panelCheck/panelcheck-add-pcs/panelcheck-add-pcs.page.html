@@ -5,11 +5,14 @@
         <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
           <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
         </ion-button>
-        <ion-title class="ion-no-padding">Back</ion-title>
+        <ion-title class="ion-no-padding back-title">Back</ion-title>
       </ion-buttons>
+      <div>
+        <h1 class="page-name">{{'Panel Check' | uppercase}}</h1>
+      </div>
       <div class="header">
         <!-- debugging -->
-        <!-- Laycut No. <span>{{filterDataList.lay_slip}}</span> -->
+        Laycut No. <span>{{filterDataList.lay_slip}}</span>
       </div>
     </div>
   </ion-toolbar>
@@ -150,7 +153,7 @@
             <ion-col size="6">
               <ion-button class="btn-pass" expand="block" (click)="btnAction('bundle')" color="success" size="large"
                 strong="true">
-                <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+                <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
                 Pass Bundle
               </ion-button>
             </ion-col>
@@ -161,7 +164,8 @@
   </div>
 
   <!-- Rejection modal -->
-  <ion-modal id="rejectPanel-modal" [isOpen]="isModalOpen" (didDismiss)="closeModal()">
+  <ion-modal id="rejectPanel-modal" [isOpen]="isModalOpen" backdrop-dismiss="false" swipe-to-close="false"
+    (didDismiss)="closeModal()">
     <ng-template>
       <div class="reject-panel-container">
         <!-- Step 1 -->
@@ -173,8 +177,7 @@
 
           <div class="parts-grid">
             @for(part of rejectPanels; track $index; let i = $index){
-            <div class="part-card" [class.selected]="part.isSelected" (click)="selectPart(part)">
-              <ion-icon name="shirt-outline"></ion-icon>
+            <div class="part-card" [class.selected]="part.isSelected" (click)="selectPart(part, i)">
               <p>{{ part.part }}</p>
               @if(part.isSelected){
               <ion-icon name="checkmark-circle" class="check-icon"> </ion-icon>
@@ -195,14 +198,17 @@
                   </div>
                   <h3>Scan QR Code</h3>
                 </div>
-                <div class="scanner-box" [ngClass]="barcodeData ? 'onScanned' : rInpF? 'inputFocus':'inputNotFocus'">
-                  <ion-item lines="none">
-                    <!-- <ion-icon name="qr-code-outline"></ion-icon> -->
-                    <ion-input class="qrScan-Input" id="inpRejbarcode" placeholder="Ready to Scan" inputmode="none"
-                      (ionChange)="onRejectBarcodeInput($event)" [(ngModel)]="barcodeData" type="text"></ion-input>
-                  </ion-item>
-                  @if(barcodeData){
-                  <p>Select a reason and submit</p>
+                <div class="scanner-box" [ngClass]="isQrScanned ? 'onScanned' : ''">
+                  @if(isQrScanned){
+                  <ion-icon slot="primary" name="checkmark-circle"></ion-icon>
+                  <p>{{barcodeData}}</p>
+                  }
+                  @else {
+                  <ion-icon size="large" name="qr-code-outline"></ion-icon>
+                  <h3>CLICK TO SCAN</h3>
+                  <ion-input class="qrScan-Input" #qrInput id="inpRejbarcode" placeholder="Ready to Scan"
+                    inputmode="none" (ionChange)="onRejectBarcodeInput($event)" [(ngModel)]="barcodeData"
+                    type="text"></ion-input>
                   }
                 </div>
               </div>
@@ -210,7 +216,7 @@
             <ion-col size="6">
               <div class="step-section" [class.disabled]="!isQrScanned">
                 <div class="step-header">
-                  <div class="step-badge" [ngClass]="barcodeData ? 'active': ''">
+                  <div class="step-badge" [ngClass]="isQrScanned ? 'active': ''">
                     3
                   </div>
                   <h3>Select Reason</h3>
@@ -243,18 +249,17 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-        <!-- Step 3 -->
 
         <!-- Footer -->
         <div class="modal-footer">
-          <div>
+          <div style="display: flex;">
             <ion-button fill="outline" color="danger" (click)="closeModal()">
               Cancel
             </ion-button>
           </div>
           <div>
             <!-- to clear the selections function -->
-            <ion-button size="large" fill="outline" [disabled]="!selectedPart" (click)="clearInputs()">
+            <ion-button size="large" fill="clear" color="primary" [disabled]="!selectedPart" (click)="clearInputs()">
               Clear all
             </ion-button>
             <ion-button size="large" [disabled]="!reasonModel" (click)="confirmRejection()">

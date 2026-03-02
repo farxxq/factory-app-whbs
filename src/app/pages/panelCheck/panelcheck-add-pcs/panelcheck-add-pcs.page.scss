@@ -17,19 +17,32 @@ ion-button {
   }
 }
 
+// page
+
+
 // header
 ion-header {
-  --ion-background-color: #e9f0fd;
+  --ion-background-color: var(--ion-color-primary);
+
+  .back-title {
+    color: white;
+  }
 
   .nav-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
+    .page-name {
+      font-family: 'euclid-circular-b';
+      margin: 0px;
+      color: white;
+    }
+
     .header {
       background-color: white;
       border-radius: 25px;
-      margin-right: 50px;
+      margin-right: 20px;
       padding: 8px 25px;
 
       span {
@@ -131,8 +144,9 @@ ion-header {
 
         p {
           background-color: #e9f0fd;
-          padding: 0px 40px;
           border-radius: 15px;
+          width: 25%;
+          text-align: center;
 
           .interactive-num {
             font-size: 30px;
@@ -213,29 +227,25 @@ ion-header {
 }
 
 // Reject modal
-.reject-header {
+ion-modal#rejectPanel-modal {
+  --width: 1000px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+
+  border-radius: 25px;
+
+  ion-content {
+    padding: 20px; // inner padding
+    font-size: 16px; // text size
+  }
+}
+
+.reject-panel-container {
+  padding: 15px;
+  background-color: #f9f9f9;
+  border-radius: 15px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  h2 {
-    font-size: 22px;
-    font-weight: 700;
-
-    span {
-      color: #0b50da;
-    }
-  }
-
-  .sub-info {
-    margin-top: 6px;
-    font-size: 14px;
-    opacity: 0.7;
-
-    .divider {
-      margin: 0 8px;
-    }
-  }
+  flex-direction: column;
+  gap: 20px;
 }
 
 .step-section {
@@ -285,7 +295,6 @@ ion-header {
 
 .part-card {
   position: relative;
-  background: #dae7fe;
   border: 2px solid #2d3748;
   border-radius: 12px;
   padding: 10px 35px;
@@ -322,12 +331,15 @@ ion-header {
   align-items: center;
   gap: 8px;
 
-  ion-item {
-    display: flex;
-    flex-direction: column;
+  ion-icon {
+    font-size: 60px;
+  }
 
-    ion-icon {
-      font-size: 60px;
+  ion-input {
+    background-color: transparent;
+
+    ::ng-deep input {
+      caret-color: transparent !important;
     }
   }
 
@@ -357,8 +369,21 @@ ion-header {
     font-family: "euclid-circular-b";
   }
 
-  .onScanned {
-    --background: rgb(0, 168, 0);
+
+}
+
+.onScanned {
+  background-color: rgb(0, 168, 0);
+  border: 1px solid;
+
+  p {
+    color: white;
+    font-size: 25px;
+  }
+
+  ion-icon {
+    font-size: 50px;
+    color: white;
   }
 }
 
@@ -382,6 +407,41 @@ ion-header {
   &.active {
     border-color: #0b50da;
     background: rgba(11, 80, 218, 0.1);
+  }
+}
+
+.qrScan-input {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  border: 2px dashed gray;
+  text-align: center;
+
+  ion-input {
+    border: 2px solid var(--ion-color-medium);
+    border-radius: 10px;
+    outline: none;
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+    // height: 100%;
+    text-align: center;
+
+    &::placeholder {
+      color: var(ion-color-medium-contrast);
+      font-style: italic;
+      text-align: center;
+      --placeholder-color: red;
+      --placeholder-opacity: 1;
+    }
+
+    &:focus {
+      border-color: var(ion-color-primary);
+      box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+      background-color: #fff;
+    }
   }
 }
 
@@ -426,41 +486,6 @@ ion-col.undo-data {
   }
 }
 
-.qrScan-input {
-  padding: 10px;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  border: 2px dashed gray;
-  text-align: center;
-
-  ion-input {
-    border: 2px solid var(--ion-color-medium);
-    border-radius: 10px;
-    outline: none;
-    transition:
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    // height: 100%;
-    text-align: center;
-
-    &::placeholder {
-      color: var(ion-color-medium-contrast);
-      font-style: italic;
-      text-align: center;
-      --placeholder-color: red;
-      --placeholder-opacity: 1;
-    }
-
-    &:focus {
-      border-color: var(ion-color-primary);
-      box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
-      background-color: #fff;
-    }
-  }
-}
-
 .animate-scan {
   animation: row-pop 0.5s ease-in-out;
 }
@@ -492,15 +517,4 @@ ion-col.undo-data {
   }
 }
 
-@media screen and (min-width: 768px) and (max-width: 2560px) {
-  .info-header {
-    p {
-      // width: 80%;
-    }
-  }
-
-  ion-modal {
-    --height: 720px;
-    --width: 1000px;
-  }
-}
+@media screen and (min-width: 768px) and (max-width: 2560px) {}

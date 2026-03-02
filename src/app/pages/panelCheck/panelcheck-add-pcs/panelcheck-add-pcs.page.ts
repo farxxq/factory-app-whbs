@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, AfterViewInit, OnInit, ViewChild } from '@angular/core';
 import { IonInput, IonRouterOutlet, NavController } from '@ionic/angular';
 
 import { debounceTime, Subject, Subscription } from 'rxjs';
@@ -18,13 +18,13 @@ import { Spanelcheck } from '../panelcheckService/spanelcheck';
   ],
   standalone: false,
 })
-export class PanelcheckAddPcsPage implements OnInit {
+export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
   filterDataList: any = {
-    season: 'seasonModel',
-    customer: 'customerModel',
-    order: 'orderModel',
-    poNum: 'poModel',
-    color: 'colorModel',
+    season: { season_name: 'seasonModel' },
+    customer: { customer_name: 'customerModel' },
+    order: { order_name: 'orderModel' },
+    poNum: { ponum: 'poModel' },
+    color: { color_name: 'colorModel' },
     sizeBarcode: 'sizeBarcode',
     // this will be given in the service and we will directly apply it from their
     lay_slip: 'PCL25261401',
@@ -49,9 +49,9 @@ export class PanelcheckAddPcsPage implements OnInit {
 
   // @ViewChild('modal', { static: false }) modal!: IonModal;
 
-  // private rejectInputSubject = new Subject<any>();
-  // @ViewChild('rejectBarcodeInput', { static: false })
-  // rejectBarcodeInput!: IonInput;
+  private qrInputSubject = new Subject<any>();
+  @ViewChild('qrInput', { static: false })
+  qrInput!: IonInput;
 
   // @ViewChild('container', { static: false })
   // container!: ElementRef<HTMLDivElement>;
@@ -208,14 +208,17 @@ export class PanelcheckAddPcsPage implements OnInit {
     private navCtrl: NavController,
     private ionicGuards: IonicGuards,
     private ionRouterOutlet: IonRouterOutlet,
-  ) {}
+  ) { }
 
   // showLoading = async () => await this.reusableService.showLoading();
   // cancelLoading = async () => await this.reusableService.cancelLoading();
 
   ngOnInit() {
-    // this.filterDataList = this.pcService.getListData();
+    if (this.pcService.getListData()) { //temp debugging
+      this.filterDataList = this.pcService.getListData();
+    }
 
+    // this.filterDataList = this.pcService.getListData();
     this.isScanner = this.storageService.getData('isScanner');
 
     setTimeout(() => {
@@ -251,7 +254,7 @@ export class PanelcheckAddPcsPage implements OnInit {
       orderponum: this.filterDataList.lay_slip
         ? this.filterDataList.lay_slip
         : // ? this.filterDataList.lay_slip['lay_slip']
-          null,
+        null,
     };
 
     // this.dataService.postService(params).then(async (res: any) => {
@@ -330,12 +333,15 @@ export class PanelcheckAddPcsPage implements OnInit {
 
   onRejectBarcodeInput(event: any, index?: any) {
     const value = event.detail.value;
-    this.barcodeData = value;
+    this.qrInputSubject.next(value);
 
     console.log('rejectBarcodeInput is triggered', value);
-    if (value) {
-      this.isQrScanned = true;
-    }
+    // this.barcodeData = value;
+    // if (value) {
+    //   setTimeout(() => {
+    //     this.isQrScanned = true;
+    //   }, 1000);
+    // }
   }
 
   // Interactive functions
@@ -439,30 +445,30 @@ export class PanelcheckAddPcsPage implements OnInit {
     });
   }
 
-  // ionViewWillEnter() {
-  //   // Subscribe when view is active
-  //   this.backButtonSub = this.platform.backButton.subscribeWithPriority(
-  //     10,
-  //     () => {
-  //       // Custom behavior
-  //       this.canLeave();
-  //     }
-  //   );
-  // }
-
-  // temp concept for showing all the fields and updating it manually as well as scanner wise
-  // setScannerFocus(index?: any) {
-  //   // this.mapInput.setFocus();
-  //   this.fullSizeList[index]['sInpF'] = true;
-  //   console.log('carton box focused', this.fullSizeList[index]);
-  // }
-
   // Rejection related functions
   // should have the auto focus on the input after selecting the part
-  selectPart(part: any) {
+  selectPart(part: any, idx: number) {
     this.rejectPanels.forEach((p) => (p.isSelected = false));
-    part.isSelected = true;
-    this.selectedPart = part;
+    if (!this.selectedPart || this.selectedPart.idx !== idx) {
+      this.isQrScanned = false;
+      setTimeout(() => {
+        this.setFocus();
+      }, 500);
+      this.barcodeData = '';
+
+      part.isSelected = true;
+      part.idx = idx;
+      this.selectedPart = part;
+    }
+    this.setFocus();
+
+  }
+
+  setFocus() {
+    setTimeout(() => {
+      this.qrInput.setFocus();
+    }, 500);
+    console.log('Focussed on scanner')
   }
 
   confirmRejection() {
@@ -472,6 +478,17 @@ export class PanelcheckAddPcsPage implements OnInit {
     });
     this.barcodeData = '';
     this.closeModal();
+  }
+
+  ngAfterViewInit(): void {
+    this.inputSub = this.qrInputSubject
+      .pipe(debounceTime(500))
+      .subscribe((val: any) => {
+        this.barcodeData = val;
+        setTimeout(() => {
+          if (this.barcodeData) this.isQrScanned = true;
+        }, 500);
+      });
   }
 
   canLeave() {
