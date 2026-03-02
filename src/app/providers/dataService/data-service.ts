@@ -18,11 +18,11 @@ export class DataService {
 
   // public apiUrl: string;
 
-  // public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
+  public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
 
   // public apiUrl: string = 'https://apps.whitehouseit.com/carton/'; //Staging url
 
-   public apiUrl: string = 'https://gannet.online/console/'; // Live url
+  //  public apiUrl: string = 'https://gannet.online/console/'; // Live url
 
   constructor(
     private http: HttpClient,

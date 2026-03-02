@@ -4,8 +4,17 @@ span.info-span {
 }
 
 ion-content {
-  --ion-background-color: #f9f9f9;
+  // --ion-background-color: #f9f9f9;
   font-size: 18px;
+}
+
+ion-button {
+  --color: white;
+
+  ion-icon {
+    margin: 0 10px;
+    font-size: 35px;
+  }
 }
 
 // header
@@ -32,11 +41,9 @@ ion-header {
 
 // laycut info
 .info {
-  // color: black;
-  background-color: white;
   border: 1px solid #f0f0f0;
   border-radius: 20px;
-  // height: 130px;
+  margin: 0px 10px;
 
   .info-header {
     display: flex;
@@ -55,10 +62,13 @@ ion-header {
 
 // layout container
 .container {
+
   // headers
   .static-headers {
     display: flex;
     gap: 10px;
+
+
 
     ion-col {
       background-color: #e9f0fd;
@@ -69,6 +79,10 @@ ion-header {
       display: flex;
       justify-content: space-around;
       width: 80%;
+
+      .static-num {
+        font-family: 'euclid-circular-b';
+      }
     }
   }
 
@@ -84,34 +98,52 @@ ion-header {
 
     ion-progress-bar {
       height: 10px;
-      --background: white;
       border: 1px solid #eee;
     }
   }
 
   // bundle layout
-  .bundle {
-    // padding: 0px 10px;
+  .bundle-container {
+    background-color: #f9f9f9;
+    font-weight: bold;
+    border-radius: 25px;
 
-    ion-col {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background-color: white;
-      padding: 0px 20px;
-      border-radius: 20px;
+    .bundle {
 
-      p {
-        background-color: #e9f0fd;
-        padding: 0px 40px;
-        border-radius: 15px;
+      // padding: 0px 10px;
+      .bundle-count {
+        color: var(--ion-color-primary);
+      }
 
-        .interactive-num {
-          font-size: 30px;
+      .bundle-passed {
+        color: green;
+      }
+
+      ion-col {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: white;
+        padding: 0px 20px;
+        border-radius: 20px;
+        height: 65px;
+        margin: 5px 10px;
+
+        p {
+          background-color: #e9f0fd;
+          padding: 0px 40px;
+          border-radius: 15px;
+
+          .interactive-num {
+            font-size: 30px;
+            font-family: 'euclid-circular-b';
+          }
         }
       }
     }
   }
+
+
 
   // interactive-btn
   .interactive-btn {
@@ -133,6 +165,7 @@ ion-header {
   .rejected-container {
     background-color: white;
     border-radius: 15px;
+    border: 1px solid #f0f0f0;
     text-align: center;
     margin: 0 15px 0 0;
     padding: 10px;
@@ -144,41 +177,42 @@ ion-header {
     ion-col {
       display: flex;
       justify-content: space-between;
-      padding: 10px 20px;
+      padding: 7px 20px;
+      height: 100%;
     }
 
     .rejected-parts-container {
       overflow-y: scroll;
-      height: 55%;
+      max-height: 390px; //fixed height to prevent the whole page from scrolling
 
       .rejected-parts {
-        border-bottom: 1px solid #e9f0fd;
-        border-radius: 100%;
+        border-bottom: 1.5px solid #e9f0fd;
+        padding: 5px;
+
+        .rejected-num {
+          font-size: 25px;
+          background-color: #e9f0fd;
+          width: 25%;
+          border-radius: 15px;
+          font-weight: bolder;
+        }
       }
+
+
     }
 
     .rejected-total {
       background: var(--ion-color-danger);
+      color: white;
       border-radius: 15px;
       margin: 5px 0;
+      font-family: 'euclid-circular-m';
+      font-weight: 400;
     }
   }
 }
 
 // Reject modal
-
-// .reject-panel-container {
-//   padding: 20px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 28px;
-//   background: #E9F0FD;
-//   color: #1a2233;
-//   height: 100%;
-//   overflow-y: scroll;
-
-// }
-
 .reject-header {
   display: flex;
   justify-content: space-between;
@@ -429,50 +463,6 @@ ion-col.undo-data {
 
 .animate-scan {
   animation: row-pop 0.5s ease-in-out;
-}
-
-ion-modal#editPolyQty-modal {
-  --width: 90%;
-  --min-width: 250px;
-  --height: fit-content;
-  --border-radius: 30px;
-  --box-shadow: 0 28px 48px var(--ion-color-warning-contrast);
-
-  .editModal-container {
-    padding: 10px;
-
-    h4 {
-      text-align: center;
-    }
-
-    ion-row {
-      margin: 20px;
-
-      ion-col {
-        span,
-        ion-input {
-          background-color: #e9f0fd;
-          border-radius: 10px;
-          margin: 0 15px;
-          padding: 15px;
-          width: 100%;
-          display: block;
-
-          label {
-            padding: 0 15px;
-          }
-        }
-
-        ion-input::ng-deep {
-          background-color: whitesmoke;
-
-          label.input-wrapper {
-            padding: 15px;
-          }
-        }
-      }
-    }
-  }
 }
 
 @keyframes row-pop {

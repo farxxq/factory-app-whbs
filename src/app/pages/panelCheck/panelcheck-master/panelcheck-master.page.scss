@@ -6,6 +6,7 @@ ion-grid.filters {
         flex-wrap: wrap;
         gap: 1rem;
       }
+
       .form-field {
         flex: 1 1 100%; // 2 per row
         min-width: 250px;
@@ -22,21 +23,21 @@ ion-grid.filters {
   .form-field {
     flex: 1 1 calc(50% - 1rem) !important; // 3 per row (desktop)
     // flex: 1 1 calc(33.333% - 1rem); // 3 per row (desktop)
-    --p-select-font-size: 20px;
 
     p-floatlabel {
       label {
         font-size: 25px;
       }
+
       p-select {
         height: 100px;
-        font-size: 20px;
+        font-size: 20px !important;
         padding: 10px;
         display: flex;
         align-items: center;
 
         .large-text .p-select-label {
-          font-size: 18px; // selected value inside box
+          font-size: 25px; // selected value inside box
         }
 
         .large-text .p-select-item {
@@ -47,6 +48,9 @@ ion-grid.filters {
           font-size: 16px; // filter input text
         }
       }
+
+
+
     }
   }
 }
