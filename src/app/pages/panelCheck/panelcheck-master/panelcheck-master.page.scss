@@ -1,3 +1,25 @@
+ion-tab-bar {
+  height: 10%;
+}
+
+ion-tab-button {
+  position: relative;
+  --color: #898989;
+  --color-selected: #1b1b1b;
+  transition:
+    transform 0.3s ease,
+    background 0.3s ease,
+    color 0.3s ease;
+
+}
+
+ion-tab-button.tab-selected {
+  --background: linear-gradient(135deg, #4e73df, #221cc8);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+// Panel check
 .filters {
   display: flex;
   flex-direction: column;
@@ -26,8 +48,120 @@
 
 }
 
+// Replace panels
+.scanner-box-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.scanner-box {
+  background: var(--ion-color-primary);
+  border: 2px solid transparent;
+  outline: 2px dashed #7a8392;
+  outline-offset: -3px;
+  border-radius: 12px;
+  color: white;
+  width: 30%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.25s ease;
+
+  ion-icon {
+    font-size: 6rem !important;
+  }
+
+  ion-input {
+    --background: var(--ion-color-primary);
+    --highlight-height: 0;
+    --border-width: 0;
+    --inner-border-width: 0;
+    text-align: center;
+
+    ::ng-deep input {
+      caret-color: transparent !important;
+    }
+  }
+
+  ion-input.inputFocus {
+    --background: transparent;
+    color: #898989;
+  }
+
+  ion-input.inputNotFocus {
+    --background: var(--ion-color-primary);
+    color: white;
+    font-family: "euclid-circular-b";
+    font-weight: 800;
+  }
+}
+
+.scanner-focus {
+  outline: none;
+  border: 2px solid #00ff88;
+  animation: scannerPulse 1.5s infinite;
+  background: transparent !important;
+  color: #50555d !important;
+
+  ion-input {
+    --background: transparent !important;
+    --highlight-height: 0;
+    --border-width: 0;
+    --highlight-color-focused: transparent;
+    color: #50555d !important;
+  }
+
+  ion-input::ng-deep input {
+    background: transparent !important;
+    color: #50555d !important;
+    caret-color: transparent;
+  }
+}
+
+// successful scan
+.onScanned {
+  background-color: rgb(0, 168, 0);
+  border: 1px solid;
+
+  p {
+    color: white;
+    font-size: 25px;
+  }
+
+  ion-icon {
+    font-size: 50px;
+    color: white;
+  }
+}
+
+@keyframes scannerPulse {
+  0% {
+    box-shadow: 0 0 5px #00ff88;
+  }
+
+  50% {
+    box-shadow: 0 0 25px #00ff88;
+  }
+
+  100% {
+    box-shadow: 0 0 5px #00ff88;
+  }
+}
+
 @media screen and (min-width: 768px) and (max-width: 2560px) {
-  .form-grid {    
+
+  ion-tab-button {
+    font-size: 18px;
+  }
+
+  //panel check
+  .form-grid {
     .form-field {
       flex: 1 1 calc(50% - 1rem) !important;
       min-width: 250px;
@@ -75,4 +209,7 @@
       height: auto;
     }
   }
+
+  //replace panel
+
 }

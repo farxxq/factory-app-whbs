@@ -177,7 +177,7 @@ ion-header {
 
   // rejected container
   .rejected-container {
-    background-color: white;
+    background-color: #f9f9f9;
     border-radius: 15px;
     border: 1px solid #f0f0f0;
     text-align: center;
@@ -337,6 +337,7 @@ ion-modal#rejectPanel-modal {
 
   ion-input {
     background-color: transparent;
+    text-align: center;
 
     ::ng-deep input {
       caret-color: transparent !important;
@@ -410,40 +411,38 @@ ion-modal#rejectPanel-modal {
   }
 }
 
-.qrScan-input {
-  padding: 10px;
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  border: 2px dashed gray;
-  text-align: center;
+// .qrScan-input {
+//   padding: 10px;
+//   width: 100%;
+//   height: 100%;
+//   border-radius: 10px;
+//   border: 2px dashed gray;
+//   text-align: center;
 
-  ion-input {
-    border: 2px solid var(--ion-color-medium);
-    border-radius: 10px;
-    outline: none;
-    transition:
-      border-color 0.3s ease,
-      box-shadow 0.3s ease;
-    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
-    // height: 100%;
-    text-align: center;
+//   ion-input {
+//     border: 2px solid var(--ion-color-medium);
+//     border-radius: 10px;
+//     outline: none;
+//     transition:
+//       border-color 0.3s ease,
+//       box-shadow 0.3s ease;
+//     box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+//     // height: 100%;
+//     text-align: center;
 
-    &::placeholder {
-      color: var(ion-color-medium-contrast);
-      font-style: italic;
-      text-align: center;
-      --placeholder-color: red;
-      --placeholder-opacity: 1;
-    }
+//     &::placeholder {
+//       color: var(ion-color-medium-contrast);
+//       font-style: italic;
+//       text-align: center;
+//     }
 
-    &:focus {
-      border-color: var(ion-color-primary);
-      box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
-      background-color: #fff;
-    }
-  }
-}
+//     &:focus {
+//       border-color: var(ion-color-primary);
+//       box-shadow: 0 0 8px rgba(74, 144, 226, 0.6);
+//       background-color: #fff;
+//     }
+//   }
+// }
 
 .modal-footer {
   margin-top: auto;

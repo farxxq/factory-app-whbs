@@ -9,7 +9,7 @@ import { Spanelcheck } from '../panelcheckService/spanelcheck';
 @Component({
   selector: 'app-panelcheck-master',
   templateUrl: './panelcheck-master.page.html',
-  styleUrls: ['./panelcheck-master.page.scss', '../../polypack/polypack-master/polypack-master.page.scss'],
+  styleUrls: ['./panelcheck-master.page.scss'],
   standalone: false
 })
 export class PanelcheckMasterPage implements OnInit {
@@ -17,8 +17,8 @@ export class PanelcheckMasterPage implements OnInit {
   isScanner: boolean = false;
 
   panelBarcode: any = null;
+  replaceBarcode: any = null;
   barcodeData: any = '';
-  sizeBarcode: any = '';
 
   seasonList: any = [];
   customerList: any = [];
@@ -34,6 +34,18 @@ export class PanelcheckMasterPage implements OnInit {
   colorModel: any = '';
   laySlipModel: any = ''; //layslip will be considered
   quantityModel: string | number = '';
+
+  isReplaceScanned: boolean = false;
+
+  lInpF: boolean = false;
+  private laySlipInputSubject = new Subject<any>();
+  @ViewChild('laySlipInput', { static: false }) laySlipInput!: IonInput;
+  private inputSub: any;
+  private replaceInputSub: any;
+
+  rInpF: boolean = false;
+  private replaceInputSubject = new Subject<any>();
+  @ViewChild('replaceInput', { static: false }) replaceInput !: IonInput;
 
   constructor(
     private storageService: StorageService,
@@ -197,9 +209,10 @@ export class PanelcheckMasterPage implements OnInit {
   }
 
   //Scan functions
+  // LaySlip scan
   getScannedData(barcode: string) {
     let params = {
-      path: 'carton_packing/order_barcode_num_details',
+      path: 'carton_packing/order_barcode_num_details', //service for laycut yet to be provided
       order_barcode_num: barcode.trim()
     }
 
@@ -235,21 +248,70 @@ export class PanelcheckMasterPage implements OnInit {
 
   }
 
+  // Replace scan
+  goToReplacement(barcode: string) {
+
+    let params = {
+      path: 'carton_packing/order_barcode_num_details', //service for Replacement yet to be provided
+      order_barcode_num: barcode.trim()
+    }
+
+    this.dataService.postService(params).then((res: any) => {
+      if (res['status'] == 'error') {
+        let alert = {
+          msg: res['message'],
+          btn: {
+            text: 'OK',
+            role: 'confirm',
+            func: () => {
+              this.setFocus('replace');
+              this.rInpF = false;
+            }
+          }
+        }
+
+        this.reusableService.showAlert(alert);
+        return;
+      }
+      // if (res['status'].toLowerCase() == 'success') {
+
+      this.replaceBarcode = barcode;
+      this.isReplaceScanned = true;
+      // PDK-3824
+      this.replacePcsPage(); //on scan we will directly go to the next page as per request
+      // } 
+    })
+
+    //temp
+    // this.panelBarcode = barcode;
+    // console.log(this.panelBarcode);
+
+  }
+
+  // Data triggered using subject
   onLaySlipInput(event: any, index?: any) {
     const value = event.detail.value.trim();
     console.log('laySlipInput is triggered', value);
     if (value) this.laySlipInputSubject.next(value);
   }
 
-  lInpF: boolean = false;
-  private laySlipInputSubject = new Subject<any>();
-  @ViewChild('laySlipInput', { static: false }) laySlipInput!: IonInput;
-  private inputSub: any
+  onReplaceInput(event: any, index?: any) {
+    const value = event.detail.value.trim();
+    console.log('laySlipInput is triggered', value);
+    if (value) this.replaceInputSubject.next(value);
+  }
 
-  setFocus() {
+  // Focus field
+  setFocus(type?: string) {
+    if (type == 'replace') {
+      this.replaceInput.setFocus();
+      this.rInpF = true;
+      console.log('replace input focused');
+      return;
+    }
     this.laySlipInput.setFocus();
     this.lInpF = true;
-    console.log('carton box focused');
+    console.log('layslip input focused');
   }
 
   ngAfterViewInit(): void {
@@ -266,8 +328,19 @@ export class PanelcheckMasterPage implements OnInit {
           this.barcodeData = '';
         }, 300);
       });
+
+    this.replaceInputSub = this.replaceInputSubject.pipe(debounceTime(500)).subscribe((val: any) => {
+      this.barcodeData = val;
+      if (this.barcodeData) this.goToReplacement(this.barcodeData);
+
+
+      setTimeout(() => {
+        this.barcodeData = '';
+      }, 300);
+    })
   }
 
+  // Navigate Pages
   addPcsPage() {
     let data = {
       season: this.seasonModel,
@@ -275,16 +348,41 @@ export class PanelcheckMasterPage implements OnInit {
       order: this.orderModel,
       poNum: this.poModel,
       color: this.colorModel,
-      sizeBarcode: this.sizeBarcode,
+      sizeBarcode: 'S',
       // this will be given in the service and we will directly apply it from their
       lay_slip: "PCL25261401",
       bundle: 10
     };
     this.pcService.sendListData(data);
     this.navCtrl.navigateForward('panelcheck/panelcheckaddpcs');
+
+    //flags
+    this.lInpF = false;
+  }
+
+  replacePcsPage() {
+    let data = {
+      season: this.seasonModel,
+      customer: this.customerModel,
+      order: this.orderModel,
+      poNum: this.poModel,
+      color: this.colorModel,
+      sizeBarcode: 'S',
+      // this will be given in the service and we will directly apply it from here to that page
+      lay_slip: "PCL25261401",
+      size: 'S',
+      panel_name: 'Collar',
+      reason: "Stiching issue"
+    };
+    this.pcService.sendListData(data);
+    this.navCtrl.navigateForward('panelcheck/panelcheckreplacepcs');
+
+    //flags
+    this.rInpF = false;
   }
 
 
+  // Header icons
   assignHeaderIcons() {
     let icons = [
       {
@@ -306,6 +404,32 @@ export class PanelcheckMasterPage implements OnInit {
     ]
 
     return icons;
+  }
+
+  tabChange(event: any) {
+    if (event?.tab == 'replace-panel') this.setFocus('replace')
+
+    // this.isScanner = this.storageService.getData('isScanner');
+    this.barcodeData = '';
+    this.replaceBarcode = '';
+    this.isReplaceScanned = false;
+    this.rInpF = false;
+    this.lInpF = false;
+    if (!this.isScanner) this.clearbelowAttrbutes(0);
+    this.seasonModel = '';
+    this.customerList = [];
+    this.customerModel = '';
+    this.orderList = [];
+    this.orderModel = '';
+    this.colorList = [];
+    this.colorModel = '';
+    this.poList = [];
+    this.poModel = '';
+  }
+
+  ngOnDestroy() {
+    if (this.inputSub) this.inputSub.unsubscribe();
+    if (this.replaceInputSub) this.replaceInputSub.unsubscribe();
   }
 
 }

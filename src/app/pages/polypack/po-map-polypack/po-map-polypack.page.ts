@@ -61,16 +61,16 @@ export class PoMapPolypackPage implements OnInit {
     this.deviceType = this.reusableService.deviceType();
 
 
+
     if (this.filterDataList) {
       this.poList = this.filterDataList.poList;
-      this.orderwiseQtyFunc();
+      // this.orderwiseQtyFunc(); // not needed i guess as we will be having the info in addQuantityInital
     }
 
     console.log(this.poList)
 
     // po dropdowns
     setTimeout(() => {
-      //initial and raw list for comparision
       this.addQuantityInitialData();
     }, 1000);
   }
@@ -146,25 +146,44 @@ export class PoMapPolypackPage implements OnInit {
           this.fullSizeList = this.reusableService.rearrangeData(res['sizedata'], 'size_name');
         }
         let totalnum = 0;
-        // for (const list of this.fullSizeList) {
-        //   list['polypack_qty'] = null;
+        let map = 0;
+        let order = 100;
+        let balanced = 100;
 
-        //   // let balance = 
-        //   // list.total_pcssize_elc_qty
-        //   //   ? list.total_pcssize_elc_qty <= list.total_order_size_qty
-        //   //     ? list.total_pcssize_elc_qty - list.total_pcssize_poly_qty
-        //   //     : list.total_order_size_qty - list.total_pcssize_poly_qty
-        //   //   : list.total_order_size_qty - list.total_pcssize_poly_qty;
+        for (const list of this.fullSizeList) {
+          list['polypack_qty'] = null;
 
-        //   let balance = list.total_order_size_qty - list.total_pcssize_poly_qty;
-        //   list['polypack_balance'] = Math.max(0, balance);
 
-        //   // list.total_pcssize_elc_qty
-        //   //   ? list.total_pcssize_elc_qty - list.total_pcssize_poly_qty
-        //   //   : list.total_order_size_qty - list.total_pcssize_poly_qty;
+          let balance = list.total_order_size_qty - list.total_pcssize_poly_qty;
+          list['polypack_balance'] = Math.max(0, balance);
 
-        //   // this.totalInitialQty += +list['total_pcssize_poly_qty']
-        // }
+          // list.total_pcssize_elc_qty
+          //   ? list.total_pcssize_elc_qty - list.total_pcssize_poly_qty
+          //   : list.total_order_size_qty - list.total_pcssize_poly_qty;
+
+          // this.totalInitialQty += +list['total_pcssize_poly_qty']
+
+          //temp ones delete after the service is merged
+          if (map < order) map = map + 10;
+          if (balance > 0) balanced = balanced - 10;
+          list['mapped_polypack_qty'] = map;
+          list['order_polypack_qty'] = order;
+          list['balance_polypack_qty'] = balanced;
+
+          //for attractive data
+          const remaining = list.order_polypack_qty - list.mapped_polypack_qty;
+
+          const percentage = list.order_polypack_qty
+            ? (remaining / list.order_polypack_qty) * 100
+            : 0;
+
+          list['stockClass'] = '';
+          list['progress'] = (list.mapped_polypack_qty / list.order_polypack_qty);
+          if (percentage <= 0) list['stockClass'] = 'qty-no-stock';
+          else if (percentage < 45) list['stockClass'] = 'qty-low-stock';
+          else list['stockClass'] = 'qty-in-stock';
+          console.log(remaining, percentage)
+        }
 
         // this.poNum = this.filterDataList.poNum['order_ponumber'] ? this.filterDataList.poNum['order_ponumber'] : '';
 
@@ -270,7 +289,8 @@ export class PoMapPolypackPage implements OnInit {
       (size: any) => size.size_seq_num == item.size_seq_num
     );
 
-    const balanceQty = Number(sizeData?.balance_polypack_qty || 0);
+    const balanceQty = Number(item?.balance_polypack_qty || 0);
+    // const balanceQty = Number(sizeData?.balance_polypack_qty || 0);
 
     // No balance available
     if (balanceQty < 1) {
@@ -322,6 +342,35 @@ export class PoMapPolypackPage implements OnInit {
       return accumulator + qty;
     }, 0);
     console.log(this.totalQty);
+  }
+
+  // calcStock(item: any, type?: string) {
+  //   if (type == 'progress') {
+  //     if (item.balance_polypack_qty) {
+  //       let progress = (item.balance_polypack_qty) / 100;
+  //       return progress;
+  //     } else {
+  //       return 0;
+  //     }
+  //   }
+
+  //   const remaining = item.order_polypack_qty - item.mapped_polypack_qty;
+  //   let noStock = (remaining / item.order_polypack_qty) * 100 <= 0;
+  //   let inStock = (remaining / item.order_polypack_qty) * 100 > 45;
+  //   let lowStock = (remaining / item.order_polypack_qty) * 100 < 45 && (remaining / item.order_polypack_qty) * 100 > 0
+
+  //   console.log(noStock, inStock, lowStock)
+
+  //   if (noStock) return 'qty-no-stock'
+  //   if (inStock) return 'qty-in-stock'
+  //   if (lowStock) return 'qty-low-stock'
+  //   return null;
+  // }
+
+  clearQty() {
+    this.fullSizeList.forEach(item => {
+      item.polypack_qty = null;
+    });
   }
 
   onQtyInput(event: any, item: any) {

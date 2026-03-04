@@ -466,7 +466,7 @@ export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
 
   setFocus() {
     setTimeout(() => {
-      this.qrInput.setFocus();
+      this.qrInput?.setFocus();
     }, 500);
     console.log('Focussed on scanner')
   }

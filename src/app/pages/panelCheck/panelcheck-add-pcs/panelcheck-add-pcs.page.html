@@ -3,7 +3,7 @@
     <div class="nav-header">
       <ion-buttons slot="start">
         <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
-          <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+          <ion-icon slot="start" class="back-title" name="arrow-back-outline"></ion-icon>
         </ion-button>
         <ion-title class="ion-no-padding back-title">Back</ion-title>
       </ion-buttons>
@@ -198,7 +198,7 @@
                   </div>
                   <h3>Scan QR Code</h3>
                 </div>
-                <div class="scanner-box" [ngClass]="isQrScanned ? 'onScanned' : ''">
+                <div class="scanner-box" (click)="setFocus()" [ngClass]="isQrScanned ? 'onScanned' : ''">
                   @if(isQrScanned){
                   <ion-icon slot="primary" name="checkmark-circle"></ion-icon>
                   <p>{{barcodeData}}</p>
@@ -206,9 +206,9 @@
                   @else {
                   <ion-icon size="large" name="qr-code-outline"></ion-icon>
                   <h3>CLICK TO SCAN</h3>
-                  <ion-input class="qrScan-Input" #qrInput id="inpRejbarcode" placeholder="Ready to Scan"
-                    inputmode="none" (ionChange)="onRejectBarcodeInput($event)" [(ngModel)]="barcodeData"
-                    type="text"></ion-input>
+                  <ion-input class="qrScan-Input" style="text-align: center;" #qrInput id="inpRejbarcode"
+                    placeholder="Ready to Scan" inputmode="none" (ionChange)="onRejectBarcodeInput($event)"
+                    [(ngModel)]="barcodeData" type="text"></ion-input>
                   }
                 </div>
               </div>

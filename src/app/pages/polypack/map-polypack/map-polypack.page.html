@@ -1,11 +1,17 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-buttons slot="start" (click)="canLeave()" style="color:blue;">
-      <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding">
-        <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
-      </ion-button>
-      <ion-title class="ion-no-padding">Back</ion-title>
-    </ion-buttons>
+    <div class="nav-header">
+      <ion-buttons slot="start">
+        <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
+          <ion-icon slot="start" style="color: white" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title class="ion-no-padding back-title">Back</ion-title>
+      </ion-buttons>
+      <div>
+        <h1 class="page-name">{{actionType == 'map' ? 'Map Barcode': 'Generate Barcode' | uppercase}}</h1>
+      </div>
+
+    </div>
   </ion-toolbar>
 </ion-header>
 

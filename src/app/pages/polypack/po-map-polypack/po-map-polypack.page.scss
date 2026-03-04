@@ -1,15 +1,71 @@
-.info {
-    p-select {
-        margin: 10px 0;
-        height: 53px;
-        display: flex;
-        align-items: center;
+ion-content {
+    --background: #F8F6F6;
+}
+
+ion-header {
+    --ion-background-color: var(--ion-color-primary);
+
+    .back-title {
+        color: white;
+        margin-right: 30px;
     }
+
+    .nav-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .page-name {
+            font-family: 'euclid-circular-b';
+            margin: 0px;
+            color: white;
+        }
+
+        .header {
+            background-color: white;
+            border-radius: 25px;
+            margin-right: 20px;
+            padding: 8px 25px;
+
+            span {
+                font-weight: bolder;
+            }
+        }
+    }
+}
+
+
+.info {
+    background-color: var(--ion-color-dark-shade);
+    color: #e9f0fd;
+    display: flex;
+    font-size: 18px;
+    flex-wrap: wrap;
+    gap: 10%;
+    margin: 0 0 10px 0;
+    //extra added....
+    padding: 10px;
+
+    p {
+        background-color: #e9f0fd;
+        border-radius: 10px;
+        color: black;
+        margin: 10px 0 0 0;
+        padding: 15px;
+    }
+
+    // moved p-select to container
+    // p-select {
+    //     margin: 10px 0;
+    //     height: 53px;
+    //     display: flex;
+    //     align-items: center;
+    // }
 }
 
 .card-container {
     min-height: 70%;
-    // overflow: none;
+    padding: 10px;
 
     .static-data {
         position: sticky;
@@ -30,6 +86,7 @@
     .p-select {
         width: 100%;
         border-radius: 10px;
+        margin: 0 0 10px 0;
     }
 
     .condition-info {
@@ -62,5 +119,183 @@
 }
 
 .interactive-btn {
-    margin: 10px auto;
+    margin: 10px;
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+
+    ion-button {
+        --border-radius: 10px;
+        font-size: 18px;
+        width: 30%;
+        min-height: 50px;
+    }
+}
+
+// placeholder
+.empty-state {
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #94A3B8;
+    text-align: center;
+    width: 100%;
+
+    ion-icon {
+        font-size: 48px;
+        margin-bottom: 10px;
+        color: #CBD5E1;
+    }
+
+    h3 {
+        margin: 5px 0;
+        font-weight: 600;
+    }
+
+    p {
+        font-size: 14px;
+    }
+}
+
+//table 
+.table-wrapper {
+    width: 100%;
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: auto;
+}
+
+.size-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.size-table thead th {
+    position: sticky;
+    top: 0;
+    background: #F8FAFC;
+    z-index: 10;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+
+}
+
+.size-table th {
+    text-align: center;
+    padding: 14px 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #666;
+
+    .sub-info {
+        color: #94A3B8;
+        font-size: 14px;
+    }
+}
+
+.size-table tr.total td {
+    background: #F8FAFC;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    font-family: 'euclid-circular-m';
+    font-weight: 700;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    text-align: left;
+
+    .total-num {
+        text-align: start;
+    }
+}
+
+.size-table td {
+    padding: 14px 12px;
+    border-bottom: 1px solid #d9e2ec;
+    font-size: 18px;
+    background-color: #F1F5F9;
+
+    ion-chip {
+        font-family: 'euclid-circular-b';
+        font-size: 16px;
+        border: 3px solid;
+        display: flex;
+        justify-content: center;
+        width: 7rem;
+        margin: auto;
+    }
+
+    // dynamic qty-num, progress-bar
+    .qty {
+        font-weight: bolder;
+        font-size: 20px;
+        font-family: 'euclid-circular-m';
+    }
+
+    .qty-in-stock {
+        color: #277b00;
+        --progress-background: #10B981;
+    }
+
+    .qty-low-stock {
+        color: #dd8f00;
+        --progress-background: #F59E0B;
+    }
+
+    .qty-on-stock {
+        color: #e11d418a;
+        --progress-background: #ee4c6f;
+    }
+
+    // dynamic ion-chip
+    ion-chip.qty-in-stock {
+        color: #007b24;
+        --background: #77DBBA;
+
+    }
+
+    ion-chip.qty-low-stock {
+        color: #755200;
+        --background: #FFC86A;
+    }
+
+    ion-chip.qty-on-stock {
+        color: #ab001f8a;
+        --background: #E11D48;
+
+    }
+
+    ion-progress-bar {
+        border-radius: 30px;
+        height: 10px;
+        margin: 5px 0;
+    }
+}
+
+.size-cell {
+    font-weight: 600;
+    text-align: center;
+}
+
+.qty-input-wrapper {
+    position: relative;
+    width: 130px; // adjust as needed
+}
+
+.qty-input {
+    --background: #f7f9fc;
+    --padding-start: 0;
+    --border-radius: 14px;
+
+    border: 1px solid #005fcc;
+    border-radius: 14px;
+    height: 50px;
+
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }

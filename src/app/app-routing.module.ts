@@ -91,9 +91,14 @@ const routes: Routes = [
       {
         path: 'panelcheckaddpcs',
         loadChildren: () => import('./pages/panelCheck/panelcheck-add-pcs/panelcheck-add-pcs.module').then(m => m.PanelcheckAddPcsPageModule)
-      }
+      },
+      {
+        path: 'panelcheckreplacepcs',
+        loadChildren: () => import('./pages/panelCheck/panelcheck-replace-pcs/panelcheck-replace-pcs.module').then(m => m.PanelcheckReplacePcsPageModule)
+      },
     ],
   },
+
 ];
 
 @NgModule({

@@ -5,7 +5,7 @@ ion-tab-bar {
 ion-tab-button {
   position: relative;
   --color: #898989;
-  --color-selected: #000000;
+  --color-selected: #ffffff;
   transition:
     transform 0.3s ease,
     background 0.3s ease,
@@ -68,6 +68,38 @@ ion-grid.filters {
 
   ion-row {
     margin-bottom: 10px;
+  }
+}
+
+// polypack globally
+ion-header {
+  --ion-background-color: var(--ion-color-primary);
+
+  .back-title {
+    color: white;
+  }
+
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .page-name {
+      font-family: 'euclid-circular-b';
+      margin: 0px 30px;
+      color: white;
+    }
+
+    .header {
+      background-color: white;
+      border-radius: 25px;
+      margin-right: 20px;
+      padding: 8px 25px;
+
+      span {
+        font-weight: bolder;
+      }
+    }
   }
 }
 
@@ -264,9 +296,9 @@ ion-button {
 }
 
 @media screen and (min-width: 768px) and (max-width: 2560px) {
-  ion-tab-bar {
-    height: 10%;
-  }
+  // ion-tab-bar {
+  //   height: 10%;
+  // }
 
   ion-tab-button {
     font-size: 18px;
