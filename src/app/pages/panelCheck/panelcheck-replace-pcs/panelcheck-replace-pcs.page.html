@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <div class="nav-header">
+      <ion-buttons slot="start">
+        <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
+          <ion-icon slot="start" class="back-title" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+        <ion-title class="ion-no-padding back-title">Back</ion-title>
+      </ion-buttons>
+      <div>
+        <h1 class="page-name">{{'Replace Panel' | uppercase}}</h1>
+      </div>
+      <div class="header">
+        <!-- debugging -->
+        Laycut No. <span>{{filterDataList.lay_slip}}</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <div class="page-wrapper">
+
+    <!-- INFO SECTION -->
+    <div class="info-grid">
+
+      <div class="info-card">
+        <span>Season</span>
+        <span class="value">
+          {{filterDataList.season.season_name | titlecase}}
+        </span>
+      </div>
+
+      <div class="info-card">
+        <span>Order</span>
+        <span class="value">
+          {{filterDataList.order.order_name}}
+        </span>
+      </div>
+
+      <div class="info-card">
+        <span>Color</span>
+        <span class="value">
+          {{filterDataList.color.color_name}}
+        </span>
+      </div>
+
+      <div class="info-card">
+        <span>Size</span>
+        <span class="value">
+          {{filterDataList.size}}
+        </span>
+      </div>
+
+    </div>
+
+
+    <!-- REJECTION DETAILS -->
+    <div class="rejection-card">
+
+      <div class="rejection-header">
+        <ion-icon name="alert-circle" color="danger"></ion-icon>
+        <span>Rejection details</span>
+      </div>
+
+      <div class="form-field">
+        <label>PANEL NAME</label>
+        <input type="text" disabled [value]="filterDataList.panel_name">
+      </div>
+
+      <div class="form-field">
+        <label>REASON FOR REJECTION</label>
+        <input type="text" disabled [value]="filterDataList.reason">
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER BUTTONS -->
+  <div class="footer-buttons">
+
+    <ion-button fill="outline" color="medium" (click)="cancelReplacement()">
+
+      Cancel replacement
+    </ion-button>
+
+    <ion-button color="success" (click)="confirmReplacement()">
+
+      <ion-icon name="checkmark"></ion-icon>
+      Update replacement
+    </ion-button>
+
+  </div>
+
+</ion-content>

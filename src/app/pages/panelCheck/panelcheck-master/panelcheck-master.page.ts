@@ -26,6 +26,7 @@ export class PanelcheckMasterPage implements OnInit {
   poList: any = [];
   colorList: any = [];
   laySlipList: any = []; //layslip will be considered
+  replaceList: any = [];
 
   seasonModel: any = '';
   customerModel: any = '';
@@ -266,6 +267,7 @@ export class PanelcheckMasterPage implements OnInit {
             func: () => {
               this.setFocus('replace');
               this.rInpF = false;
+              this.isReplaceScanned = false;
             }
           }
         }
@@ -280,6 +282,14 @@ export class PanelcheckMasterPage implements OnInit {
       // PDK-3824
       this.replacePcsPage(); //on scan we will directly go to the next page as per request
       // } 
+
+      this.seasonModel = res['seasonlist'][0];
+      this.customerList = res['customerlist'];
+      this.customerModel = res['customerlist'][0];
+      this.orderList = res['ordernamelist'];
+      this.orderModel = res['ordernamelist'][0];
+      this.colorList = res['colordetails'];
+      this.colorModel = res['colordetails'][0];
     })
 
     //temp
@@ -367,18 +377,22 @@ export class PanelcheckMasterPage implements OnInit {
       order: this.orderModel,
       poNum: this.poModel,
       color: this.colorModel,
-      sizeBarcode: 'S',
       // this will be given in the service and we will directly apply it from here to that page
       lay_slip: "PCL25261401",
       size: 'S',
-      panel_name: 'Collar',
-      reason: "Stiching issue"
+      reject_panel: [{
+        panel_name: 'Collar',
+        panel_name_seq_num: 1,
+        reason: 'Sticting issue',
+        reason_seq_num: 1
+      }]
     };
+    //flags
+    this.rInpF = false;
+    this.isReplaceScanned = false;
     this.pcService.sendListData(data);
     this.navCtrl.navigateForward('panelcheck/panelcheckreplacepcs');
 
-    //flags
-    this.rInpF = false;
   }
 
 

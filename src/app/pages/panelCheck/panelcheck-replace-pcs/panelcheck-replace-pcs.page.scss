@@ -1,0 +1,155 @@
+ion-header {
+  --ion-background-color: var(--ion-color-primary);
+
+  .back-title {
+    color: white;
+  }
+
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .page-name {
+      font-family: 'euclid-circular-b';
+      margin: 0px;
+      color: white;
+    }
+
+    .header {
+      background-color: white;
+      border-radius: 25px;
+      margin-right: 20px;
+      padding: 8px 25px;
+
+      span {
+        font-weight: bolder;
+      }
+    }
+  }
+}
+
+/* PAGE LAYOUT */
+
+.page-wrapper {
+    display: flex;
+    gap: 30px;
+    padding: 30px;
+    align-items: flex-start;
+}
+
+
+/* INFO GRID */
+
+.info-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+.info-card {
+    background: #f6f8fb;
+    border-radius: 15px;
+    padding: 24px;
+    text-align: center;
+    box-shadow: inset 0 0 0 1px #eef1f5;
+
+    span:first-child {
+        font-size: 13px;
+        color: #8a8f98;
+    }
+
+    .value {
+        display: block;
+        margin-top: 6px;
+        font-size: 18px;
+        font-weight: 600;
+        color: #1b1f24;
+    }
+}
+
+
+/* REJECTION CARD */
+
+.rejection-card {
+    flex: 1;
+    border: 1px solid #f1b8b8;
+    border-radius: 12px;
+    padding: 25px;
+}
+
+.rejection-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    span {
+        font-weight: 600;
+        color: #b42318;
+    }
+}
+
+.form-field {
+    margin-bottom: 18px;
+
+    label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #8a8f98;
+        display: block;
+        margin-bottom: 6px;
+    }
+
+    input {
+        width: 100%;
+        padding: 12px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #fafafa;
+    }
+}
+
+
+/* FOOTER BUTTONS */
+
+.footer-buttons {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 30px;
+
+    ion-button {
+        --border-radius: 10px;
+    }
+}
+
+
+/* ---------- MOBILE RESPONSIVE ---------- */
+
+@media (max-width: 768px) {
+
+    .page-wrapper {
+        flex-direction: column;
+        gap: 20px;
+        padding: 20px;
+    }
+
+    .info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .rejection-card {
+        width: 100%;
+    }
+
+    .footer-buttons {
+        flex-direction: column;
+        gap: 12px;
+
+        ion-button {
+            width: 100%;
+        }
+    }
+
+}

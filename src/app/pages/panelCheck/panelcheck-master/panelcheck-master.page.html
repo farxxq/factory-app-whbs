@@ -10,10 +10,14 @@
           <div class="row">
             <div class="col-12">
               <div class="sizeScan-input">
-                <ion-input #laySlipInput class="inp-size" (dblClick)="barcodeData = 'PDK-329'"
+                <ion-input #laySlipInput class="inp-size" fill="solid" (dblClick)="barcodeData = 'PDK-329'"
                   placeholder="SCAN LAY SLIP" inputmode="none" [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'"
-                  (ionFocus)="setFocus()" (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false"
-                  [(ngModel)]="barcodeData" type="text"></ion-input>
+                  [ngClass]="{
+                  'inputNotFocus':!lInpF,
+                  'inputFocus': lInpF,
+                  'scanner-focus': lInpF
+                  }" (ionFocus)="setFocus()" (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false"
+                  (ionFocus)="lInpF = true" [(ngModel)]="barcodeData" type="text"></ion-input>
               </div>
             </div>
           </div>
@@ -93,22 +97,12 @@
             @else {
             <ion-icon name="qr-code-outline"></ion-icon>
             <h3>SCAN TO REPLACE</h3>
-            <ion-input 
-              fill="solid" 
-              class="qrScan-Input" 
-              #replaceInput 
-              id="inpRejbarcode" 
-              placeholder="Ready to Scan"
-              inputmode="none" (ionInput)="onReplaceInput($event)" 
-              (ionFocus)="rInpF = true" 
-              (ionBlur)="rInpF = false"
-              [(ngModel)]="barcodeData" 
-              type="text" 
-              [ngClass]="{
+            <ion-input fill="solid" class="qrScan-Input" #replaceInput id="inpRejbarcode" placeholder="Ready to Scan"
+              inputmode="none" (ionInput)="onReplaceInput($event)" (ionFocus)="rInpF = true" (ionBlur)="rInpF = false"
+              [(ngModel)]="barcodeData" type="text" [ngClass]="{
             'inputNotFocus': !rInpF,
               'inputFocus': rInpF, 
-            }"
-            ></ion-input>
+            }"></ion-input>
             }
           </div>
         </div>
@@ -118,12 +112,13 @@
 
     <ion-tab-bar slot="bottom" style="--background: #e9f0fd;">
       <ion-tab-button tab="panel-check">
-        <ion-icon name="scan-outline"></ion-icon>
-        Panel Check
+        <ion-icon name="file-tray-stacked-outline"></ion-icon>
+        <ion-label>Panel Check</ion-label>
       </ion-tab-button>
-      <ion-tab-button tab="replace-panel" selected="true">
-        <ion-icon name="bag-add-outline"></ion-icon>
-        Replace Panel
+
+      <ion-tab-button tab="replace-panel">
+        <ion-icon name="scan-outline"></ion-icon>
+        <ion-label>Replace Panel</ion-label>
       </ion-tab-button>
     </ion-tab-bar>
   </ion-tabs>
