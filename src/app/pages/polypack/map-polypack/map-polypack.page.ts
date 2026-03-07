@@ -66,8 +66,11 @@ export class MapPolypackPage implements OnInit {
   }
 
   async getColorLists() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/getcolors');
+
     let params = {
-      path: 'carton_packing/getcolors',
+      path: api,
+      // path: 'apppolypack/controllers/getcolors.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
     };
 
@@ -92,8 +95,11 @@ export class MapPolypackPage implements OnInit {
   }
 
   async mapping() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/getsize');
+
     let params = {
-      path: 'carton_packing/getsize',
+      path: api,
+      // path: 'apppolypack/controllers/getsize.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
       colorseqnum: this.colorModel['color_seq_num'],
     };
@@ -121,8 +127,10 @@ export class MapPolypackPage implements OnInit {
   }
 
   async generate() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/barcodegenerate');
+
     let params = {
-      path: 'carton_packing/barcodegenerate',
+      path: api,
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
@@ -239,10 +247,12 @@ export class MapPolypackPage implements OnInit {
         }
       }
       console.log(barcodeDetails, 'barcodeDetails');
+      let api = this.polypackService.changeApiPolypack('carton_packing/orderdetailsbarcodemapping');
 
       //http post
       let params = {
-        path: 'carton_packing/orderdetailsbarcodemapping',
+        path: api,
+        // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
         colorseqnum: this.colorModel['color_seq_num'],
         customerseqnum: this.filterDataList.customer['customer_seq_num'],
         orderseqnum: this.filterDataList.order['order_seq_num'],
@@ -288,8 +298,12 @@ export class MapPolypackPage implements OnInit {
           genBarCodeDetails.push(data);
         }
 
+        let api = this.polypackService.changeApiPolypack('carton_packing/orderdetailsbarcodemapping');
+
+
         params = {
-          path: 'carton_packing/orderdetailsbarcodemapping',
+          path: api,
+          // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
           colorseqnum: this.colorList[i]['color_seq_num'],
           customerseqnum: this.filterDataList.customer['customer_seq_num'],
           orderseqnum: this.filterDataList.order['order_seq_num'],
@@ -337,6 +351,7 @@ export class MapPolypackPage implements OnInit {
       //http post
       // let params = {
       //   path: 'carton_packing/orderdetailsbarcodemapping',
+      //   path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
       //   colorseqnum: this.colorModel['color_seq_num'],
       //   customerseqnum: this.filterDataList.customer['customer_seq_num'],
       //   orderseqnum: this.filterDataList.order['order_seq_num'],

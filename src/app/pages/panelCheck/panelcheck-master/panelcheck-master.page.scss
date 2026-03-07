@@ -65,7 +65,7 @@ ion-tab-button ion-label {
 .filters {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: 80%;
   padding: 15px;
 
   .row-content {
@@ -84,20 +84,33 @@ ion-tab-button ion-label {
         min-width: 250px;
 
       }
+
+      p-select {
+        width: 100%;
+      }
     }
   }
 
-
+  ion-button {
+    --padding-top: 20px;
+    --padding-bottom: 20px;
+    --padding-start: 30px;
+    --padding-end: 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 12px;
+    // height: auto;
+  }
 }
 
 .sizeScan-input {
   width: fit-content;
   margin: 10px auto;
 
-  ion-input {
-    height: 200px;
-    width: 300px;
-  }
+  // ion-input {
+  //   height: 200px;
+  //   width: 300px;
+  // }
 }
 
 // Replace panels
@@ -117,7 +130,7 @@ ion-tab-button ion-label {
   border-radius: 12px;
   color: white;
   // width: 30%;
-  height: 50%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   justify-content: center;

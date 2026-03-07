@@ -15,12 +15,15 @@ import { StorageService } from "../../providers/storage/storage-service";
 export class HeaderComponent implements OnInit {
   @Input() headerData!: string;
   @Input() homeBtn: boolean = true;
+  @Input() checkoutBtn: boolean = true;
   @Input() logoutBtn: boolean = true;
   @Input() iconTray: [{ iconName: string, navTo: string, color?: string, func?: any }] | [] = [];
 
   // Variables
   username: string = "";
   showMenu: boolean = false;
+
+  isModalOpen: boolean = false;
 
   constructor(
     private storageService: StorageService,
@@ -35,7 +38,7 @@ export class HeaderComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.isModalOpen = true;
   }
 
   getUser() {
@@ -62,6 +65,41 @@ export class HeaderComponent implements OnInit {
     }
 
     this.reusableService.showAlert(alert);
+  }
+
+  isCheckIn = false
+  isCheckOut = false;
+  id: any = '';
+  canCheckin_out() {
+    let rfid = this.storageService.getData('rfid');
+
+    if (rfid.operator) {
+      this.isCheckOut = true;
+      rfid.operator = null;
+      this.storageService.setData('rfid', rfid)
+      console.log('Checked out');
+      let toast = {
+        msg: `${this.id} has been checked out`,
+        color: 'warning'
+      }
+
+      this.reusableService.showToast(toast);
+    } else {
+      rfid.operator = this.id;
+      this.storageService.setData('rfid', rfid);
+      let toast = {
+        msg: `${this.id} has been Checked In`,
+        color: 'success'
+      }
+
+      this.reusableService.showToast(toast);
+    }
+
+
+  }
+
+  closeModal() {
+
   }
 
   logout() {

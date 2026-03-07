@@ -9,6 +9,15 @@ import {
 } from '@capacitor-mlkit/barcode-scanning';
 import { ReusableService } from '../reusables/reusable-service';
 import { BehaviorSubject } from 'rxjs';
+import { NavController } from '@ionic/angular';
+
+// app_type
+// Check panel = PC
+// ELC = Q
+// Polypack = PP
+// Cartonpack = CP
+
+export type APP_TYPE = 'PC' | 'Q' | 'PP' | 'CP';
 
 @Injectable({
   providedIn: 'root',
@@ -16,18 +25,22 @@ import { BehaviorSubject } from 'rxjs';
 export class DataService {
   tracerArr: any = [];
 
-  // public apiUrl: string;
+  ip = this.storageService.getData('ip') || '';
 
-  public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
+  ipAdd = this.ip == 'localip' ? 'http://192.168.16.127/gannet_v5/' : this.ip; //temp only for debugging
 
+  public apiUrl: string = `https://${this.ipAdd}/` // Live url
+  // public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
+
+  // **NOTE** : NOT IN USE DUE TO FACTORY SECURITY REASONS AND WIFI DISRUPTIONS
   // public apiUrl: string = 'https://apps.whitehouseit.com/carton/'; //Staging url
-
-  //  public apiUrl: string = 'https://gannet.online/console/'; // Live url
+  //  public apiUrl: string = 'https://gannet.online/console/'; // Live url 
 
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
-    private reusableService: ReusableService
+    private reusableService: ReusableService,
+    private navCtrl: NavController
   ) {
   }
 
@@ -43,9 +56,28 @@ export class DataService {
 
     await this.reusableService.showLoading();
 
+    let userData = this.storageService.getData('userData');
+    let uinno = userData.uinno;
+    let app_type: APP_TYPE = this.storageService.getData('app_type');
+    let qc_device_details = this.storageService.getData('qc_device_details'); //will have the tab device details itseems
+    let rfid = this.storageService.getData('rfid_operator')
+
+    // temp try but didn't work
+    // if (this.apiUrl == `https://${this.ipAdd}/pdkgannet.whindia.in/`) {
+    //   let path = '';
+    //   let data = params.path.split('/')[0];
+    //   if (app_type == 'PP') {
+    //     path = 'apppolypack/controllers/';
+    //   } else if (app_type == 'CP') {
+    //     path = 'appcartonpack/controllers/';
+    //   }
+    //   params.path = path + params.path + '.php'
+    // } else {
+    //   console.log('local api, params:', params);
+    // }
+
     let postData = new FormData();
 
-    let userData = this.storageService.getData('userData');
 
     if (userData) {
       postData.append('key', 'MTAwMCMjTEtNSiMjMTc1ODI2NjM5MDQ4OTAwMA==');
@@ -54,7 +86,10 @@ export class DataService {
       postData.append('companyshortname', userData.companyshortname);
       postData.append('processseqnum', '1');
       postData.append('locationseqnum', userData.branchcode);
-      // postData.append('locationseqnum', '4');
+      postData.append('qc_device_details', JSON.stringify(qc_device_details));
+      postData.append('app_type', app_type);
+      postData.append('uinno', uinno);
+      postData.append('rfid', rfid); //discuss on this (rfid for operator?, supervisor?)
     }
 
     for (var q in params) {
@@ -127,7 +162,7 @@ export class DataService {
     }
 
     return new Promise(async (resolve, reject) => {
-      this.http.post(this.apiUrl + params['path'].trim(), postData).subscribe(
+      this.http.post('https://gannet.online/console/' + params['path'].trim(), postData).subscribe(
         (res) => {
           resolve(res);
           // this.tracerArr.push(res);
@@ -142,6 +177,70 @@ export class DataService {
                 : 'Please Connect to the Internet and then try again',
           };
           this.reusableService.cancelLoading();
+          this.reusableService.showAlert(alert);
+          console.log(err);
+          reject(err);
+        }
+      );
+    });
+  }
+
+  //APP_TYPE opened
+  async app_typeService() {
+    try {
+      await this.reusableService.cancelLoading();
+    } catch (error) {
+
+    }
+    // setTimeout(() => {
+    //   this.reusableService.showLoading();
+    // }, 500);
+
+    await this.reusableService.showLoading();
+
+    let postData = new FormData();
+
+    let userData = this.storageService.getData('userData');
+    let ip = this.storageService.getData('ip');
+    let app_type: APP_TYPE = this.storageService.getData('app_type');
+    let qc_device_details = this.storageService.getData('qc_device_details');
+
+    if (userData) {
+      postData.append('key', 'MTAwMCMjTEtNSiMjMTc1ODI2NjM5MDQ4OTAwMA==');
+      postData.append('createdip', '111');
+      postData.append('userid', userData.user_id);
+      postData.append('companyshortname', userData.companyshortname);
+      postData.append('processseqnum', '1');
+      postData.append('locationseqnum', userData.branchcode);
+      postData.append('qc_device_details', qc_device_details);
+      postData.append('app_type', app_type);
+      postData.append('ip', ip);
+    }
+
+    return new Promise(async (resolve, reject) => {
+
+      this.http.post('https://gannet.online/console/login/getapp_type', postData).subscribe(
+        async (res) => {
+          resolve(res);
+          // this.tracerArr.push(res);
+        },
+        (err) => {
+          let alert = {
+            header: err.status > 0 ? '⚠️Error' : '🚫 Offline',
+            subHeader: err.status > 0 ? `Status code: ${err.status}` : '',
+            msg:
+              err.status > 0
+                ? err.message
+                : 'Please Connect to the Internet and then try again',
+            btn: [
+              {
+                text: 'OK',
+                role: 'confirm',
+                func: () => { this.navCtrl.navigateRoot(['/home']) }
+              }
+            ]
+          };
+
           this.reusableService.showAlert(alert);
           console.log(err);
           reject(err);
@@ -196,5 +295,9 @@ export class DataService {
       this.reusableService.showToast(toast);
       return null;
     }
+  }
+
+  checkRfid() {
+    console.log('to convert rfid')
   }
 }

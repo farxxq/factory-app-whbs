@@ -111,8 +111,10 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
 
   // Barcode scanner Funcs
   async startScan() {
+    let api = this.cartonService.changeApi('cartonpacking_scan/getcartonpackinglist');
     let params = {
-      path: 'cartonpacking_scan/getcartonpackinglist',
+      path: api,
+      // path: 'appcartonpack/controllers/getcartonpackinglist.php'
       cartonbox_qrcode:
         this.cartonBarcodeData.trim('') || this.copycartonBarcodeData,
     };

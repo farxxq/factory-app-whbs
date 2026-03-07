@@ -44,15 +44,26 @@ export class HomePage implements OnInit {
 
   }
 
-  navigateTo(appName: string) {
+  navigateTo(appName: string, app_type: string) {
     if (this.data.branchcode == 0) {
       let alert = {
         msg: 'Please select a branch'
       }
       this.reusableService.showAlert(alert);
     } else {
+      this.storageService.setData('app_type', app_type);      
+      this.dataService.app_typeService().then((res: any) => {
+        
+        let uinno = res['uinno'];
 
-      this.navCtrl.navigateRoot([`${appName}`]);
+        let userData = this.storageService.getData('userData') || {};
+        
+        userData.uinno = uinno;
+        this.storageService.setData('userData', userData);
+      })
+      setTimeout(() => {
+        this.navCtrl.navigateRoot([`${appName}`]);
+      }, 100);
     }
   }
 
@@ -71,12 +82,5 @@ export class HomePage implements OnInit {
   showDeviceType() {
     confirm(this.deviceType)
   }
-
-
-
-
-
-
-
 
 }

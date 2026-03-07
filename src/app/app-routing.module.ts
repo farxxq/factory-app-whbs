@@ -4,8 +4,18 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: 'login',
-    loadChildren: () =>
-      import('./pages/login/login.module').then((m) => m.LoginPageModule),
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('./pages/auth/login/login.module').then((m) => m.LoginPageModule),
+      }
+    ],
+
+  },
+  {
+    path: 'profile',
+    loadChildren: () => import('./pages/auth/profile/profile.module').then(m => m.ProfilePageModule)
   },
   {
     path: '',
@@ -98,7 +108,6 @@ const routes: Routes = [
       },
     ],
   },
-
 ];
 
 @NgModule({

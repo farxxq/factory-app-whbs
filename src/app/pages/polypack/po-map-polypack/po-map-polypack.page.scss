@@ -17,7 +17,7 @@ ion-header {
 
         .page-name {
             font-family: 'euclid-circular-b';
-            margin: 0px;
+            margin: 0 10px;
             color: white;
         }
 
@@ -218,9 +218,9 @@ ion-header {
     background-color: #F1F5F9;
 
     ion-chip {
+        color: white;
         font-family: 'euclid-circular-b';
         font-size: 16px;
-        border: 3px solid;
         display: flex;
         justify-content: center;
         width: 7rem;
@@ -244,26 +244,25 @@ ion-header {
         --progress-background: #F59E0B;
     }
 
-    .qty-on-stock {
+    .qty-no-stock {
         color: #e11d418a;
-        --progress-background: #ee4c6f;
+        --progress-background: #FF6347;
     }
 
     // dynamic ion-chip
     ion-chip.qty-in-stock {
-        color: #007b24;
-        --background: #77DBBA;
-
+        color: white;
+        --background: #007b24;
     }
 
     ion-chip.qty-low-stock {
-        color: #755200;
-        --background: #FFC86A;
+        color: white;
+        --background: orange;
     }
 
-    ion-chip.qty-on-stock {
-        color: #ab001f8a;
-        --background: #E11D48;
+    ion-chip.qty-no-stock {
+        color: white;
+        --background: #FF6347;
 
     }
 
@@ -286,10 +285,7 @@ ion-header {
 
 .qty-input {
     --background: #f7f9fc;
-    --padding-start: 0;
     --border-radius: 14px;
-
-    border: 1px solid #005fcc;
     border-radius: 14px;
     height: 50px;
 

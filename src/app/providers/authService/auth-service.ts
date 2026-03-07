@@ -1,12 +1,15 @@
 import { Injectable } from '@angular/core';
 //services
 import { DataService } from '../dataService/data-service';
+import { StorageService } from '../storage/storage-service';
+import { ReusableService } from '../reusables/reusable-service';
 //http
 import { HttpClient } from '@angular/common/http';
 //Nav
 import { NavController } from '@ionic/angular';
-import { StorageService } from '../storage/storage-service';
-import { ReusableService } from '../reusables/reusable-service';
+//device details
+import { Device } from '@capacitor/device';
+import { Network } from '@capacitor/network';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +34,31 @@ export class AuthService {
     private reusableService: ReusableService
   ) { }
 
+
+  async getDeviceInfo() {
+
+    const info = await Device.getInfo();
+    const id = await Device.getId();
+    const net = await Network.getStatus();
+
+    const deviceDetails = {
+      model: info.model,
+      platform: info.platform,
+      osVersion: info.osVersion,
+      manufacturer: info.manufacturer,
+      uuid: id.identifier,
+      connectionType: net.connectionType
+    };
+
+    console.log(deviceDetails);
+
+    this.storageService.setData('qc_device_details', deviceDetails);
+  }
+
   login(userData: any) {
+    //setting the device info
+    this.getDeviceInfo();
+
     let postData = new FormData();
 
     postData.append('username', userData.username);

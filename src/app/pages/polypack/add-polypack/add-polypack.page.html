@@ -139,12 +139,12 @@
             </ion-col>
             <ion-col size="6">
               {{ item?.total_qty_against_order}}
-
-              @if(!isScanner && item['total_pcssize_poly_qty'] && item.barcode) {
+              <!-- for now this edit is taken down -->
+              <!-- @if(!isScanner && item['total_pcssize_poly_qty'] && item.barcode) {
               <ion-button id="open-editModal" (click)="openModal(item)" color="primary" fill="clear" shape="round">
                 <ion-icon slot="icon-only" name="create-outline"></ion-icon>
               </ion-button>
-              }
+              } -->
             </ion-col>
           </ion-row>
           }
@@ -153,7 +153,7 @@
             <ion-col size="6">
               @if(filterDataList.poNum.length > 0) {
               PO Qty:
-              } @else if(!isScanner){
+              } @else{
               Ord Qty:
               }
             </ion-col>

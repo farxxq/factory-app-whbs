@@ -118,10 +118,12 @@ export class AddPolypackPage implements OnInit {
       await this.reusableService.showToast(toast);
       return;
     }
+    let api = this.polypackService.changeApiPolypack('carton_packing/getordersizeqty');
 
     //http post
     let params = {
-      path: 'carton_packing/getordersizeqty',
+      path: api,
+      // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       orderponum: this.poNum,
@@ -560,9 +562,12 @@ export class AddPolypackPage implements OnInit {
   }
 
   onSubmit(edit_type?: boolean) {
+    let api = this.polypackService.changeApiPolypack('carton_packing/cartonpackinginsert');
+
     //http post
     let params = {
-      path: 'carton_packing/cartonpackinginsert',
+      path: api,
+      // path: 'apppolypack/controllers/cartonpackinginsert.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],

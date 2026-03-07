@@ -159,23 +159,28 @@ export class CartonpackDetailsPage implements OnInit {
     let key = '';
 
     if (frm == 0) {
+      let api = this.cartonService.changeApiPolypack('carton_packing/getseasonlist');
       params = {
-        path: 'carton_packing/getseasonlist',
+        path: api,
       };
       arrlist = 'seasonList';
       reslist = 'seasonlist';
       key = 'season_name';
     } else if (frm == 1) {
+      let api = this.cartonService.changeApiPolypack('carton_packing/getcustomerlist');
+
       params = {
-        path: 'carton_packing/getcustomerlist',
+        path: api,
         seasonseqnum: this.seasonModel['season_seq_num'],
       };
       arrlist = 'customerList';
       reslist = 'customerlist';
       key = 'customer_short_name';
     } else if (frm == 2) {
+      let api = this.cartonService.changeApiPolypack('carton_packing/getordername');
+
       params = {
-        path: 'carton_packing/getordername',
+        path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
       };
@@ -183,8 +188,10 @@ export class CartonpackDetailsPage implements OnInit {
       reslist = 'ordernamelist';
       key = 'order_name';
     } else if (frm == 3) {
+      let api = this.cartonService.changeApiPolypack('carton_packing/getponumlist');
+
       params = {
-        path: 'carton_packing/getponumlist',
+        path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
         orderseqnum: this.orderModel['order_seq_num'],
@@ -199,7 +206,7 @@ export class CartonpackDetailsPage implements OnInit {
       if (res['status'].toLowerCase() == 'success') {
         this[arrlist] = this.reusableService.rearrangeData(res[reslist], key);
         console.log(`${key}`, this[arrlist])
-        if (params?.['path'] == 'carton_packing/getponumlist') {
+        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           // this[arrlist] = this.reusableService.rearrangeData(res[reslist], key);
 
           if (res[reslist].length > 0) {
@@ -230,7 +237,7 @@ export class CartonpackDetailsPage implements OnInit {
           }
         }
       } else if (res['status'].toLowerCase() == 'error') {
-        if (params?.['path'] == 'carton_packing/getponumlist') {
+        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           if (this.poList.length == 0) {
             let alert = {
               msg: res['message'],
@@ -278,9 +285,11 @@ export class CartonpackDetailsPage implements OnInit {
     }
     this.expandAccordion = data;
     this.expandAccordion = this.poModel.order_ponumber;
+    let api = this.cartonService.changeApi('cartonpacking_scan/cartonpacked_details'); //changing api from local to live core.php
+
 
     let params = {
-      path: 'cartonpacking_scan/cartonpacked_details',
+      path: api,
       orderseqnum: this.orderModel.order_seq_num,
       order_ponumber: this.poModel && this.poModel.order_ponumber !== 'All' ? this.poModel.order_ponumber : this.poChosen.order_ponumber
       //default params in the dataService itself
@@ -433,8 +442,12 @@ export class CartonpackDetailsPage implements OnInit {
     }
 
     console.log(action, 'action')
+
     // condition based params
     let path = (action == 'reset') ? 'cartonpacking_scan/save_scanned_sizes' : 'cartonpacking_scan/delete_cartonpacking_sizes'
+    let api = this.cartonService.changeApi(path); //changing api from local to live core.php
+
+    // let path = (action == 'reset') ? 'appcartonpack/controllers/save_scanned_sizes.php' : 'appcartonpack/controllers/delete_cartonpacking_sizes.php'
 
     let poNum = this.poModel && this.poModel.order_ponumber !== 'All' ? this.poModel.order_ponumber : this.poChosen.order_ponumber
 
@@ -443,7 +456,7 @@ export class CartonpackDetailsPage implements OnInit {
     data.push(this.cartonData);
 
     let params = {
-      path: path,
+      path: api,
       cartonbox_qrcode_seq_num: this.cartonData.cartonbox_qrcode_seq_num,
       qrcode_format: this.cartonData.cartonpack_barcode,
       cartonbox_header_seq_num: this.cartonData.cartonbox_header_seq_num,

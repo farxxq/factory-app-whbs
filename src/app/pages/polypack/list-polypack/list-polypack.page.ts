@@ -53,15 +53,17 @@ export class ListPolypackPage implements OnInit {
 
 
     console.log('Po', item, 'color', coloritem);
+    let api = this.polypackService.changeApiPolypack('carton_packing/getordersizeqty');
 
     //http post
     let params = {
-      path: 'carton_packing/getordersizeqty',
+      path: api,
+      // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum:
         this.poNumList.length > 0
-          ? coloritem[ 'color_seq_num' ]
-          : item[ 'color_seq_num' ],
-      orderseqnum: this.filterDataList.order[ 'order_seq_num' ],
+          ? coloritem['color_seq_num']
+          : item['color_seq_num'],
+      orderseqnum: this.filterDataList.order['order_seq_num'],
       orderponum: item.order_ponumber ? item.order_ponumber : null,
     };
 
@@ -69,8 +71,8 @@ export class ListPolypackPage implements OnInit {
 
     this.dataService.postService(params).then(async (res: any) => {
       // await this.showLoading();
-      if (res[ 'status' ].toLowerCase() == 'success') {
-        this.fullQtyList = this.reusableService.rearrangeData(res[ 'sizedata' ], 'size_name');
+      if (res['status'].toLowerCase() == 'success') {
+        this.fullQtyList = this.reusableService.rearrangeData(res['sizedata'], 'size_name');
 
         this.isModalOpen = true;
         console.log('fullQtyList', this.fullQtyList);
@@ -87,21 +89,24 @@ export class ListPolypackPage implements OnInit {
   }
 
   async poNumberList() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/getponumlist');
+
     let params = {
-      path: 'carton_packing/getponumlist',
-      orderseqnum: this.filterDataList.order[ 'order_seq_num' ],
+      path: api,
+      //  path: 'apppolypack/controllers/getponumlist.php',
+      orderseqnum: this.filterDataList.order['order_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
-      if (res[ 'status' ].toLowerCase() == 'success') {
-        this.poNumList = this.reusableService.rearrangeData(res[ 'ponumberlist' ], 'order_ponumber');
+      if (res['status'].toLowerCase() == 'success') {
+        this.poNumList = this.reusableService.rearrangeData(res['ponumberlist'], 'order_ponumber');
 
         if (this.poNumList.length == 0) {
           this.colorsList('');
         }
-      } else if (res[ 'status' ].toLowerCase() == 'error') {
+      } else if (res['status'].toLowerCase() == 'error') {
         let toast = {
-          message: res[ 'message' ],
+          message: res['message'],
           color: 'danger',
         };
 
@@ -111,9 +116,12 @@ export class ListPolypackPage implements OnInit {
   }
 
   async colorsList(po?: any) {
+    let api = this.polypackService.changeApiPolypack('carton_packing/getcolors');
+
     let params = {
-      path: 'carton_packing/getcolors',
-      orderseqnum: this.filterDataList.order[ 'order_seq_num' ],
+      path: api,
+      // path: 'apppolypack/controllers/getcolors.php',
+      orderseqnum: this.filterDataList.order['order_seq_num'],
       orderponum: po.order_ponumber ? po.order_ponumber : null,
     };
 
@@ -121,9 +129,9 @@ export class ListPolypackPage implements OnInit {
 
     // await this.showLoading();
     this.dataService.postService(params).then(async (res: any) => {
-      if (res[ 'status' ].toLowerCase() == 'success') {
-        this.colorList = this.reusableService.rearrangeData(res[ 'colordetails' ], 'color_name');
-        if (res[ 'colordetails' ].length == 0) {
+      if (res['status'].toLowerCase() == 'success') {
+        this.colorList = this.reusableService.rearrangeData(res['colordetails'], 'color_name');
+        if (res['colordetails'].length == 0) {
           let toast = {
             message: 'Color list is empty',
             color: 'warning',
@@ -131,9 +139,9 @@ export class ListPolypackPage implements OnInit {
 
           this.reusableService.showToast(toast);
         }
-      } else if (res[ 'status' ].toLowerCase() == 'error') {
+      } else if (res['status'].toLowerCase() == 'error') {
         let toast = {
-          message: res[ 'message' ],
+          message: res['message'],
           color: 'danger',
         };
 
@@ -164,21 +172,23 @@ export class ListPolypackPage implements OnInit {
       );
 
       console.log(sizedata);
+      let api = this.polypackService.changeApiPolypack('carton_packing/cartonpackinginsert');
 
       let params = {
-        path: 'carton_packing/cartonpackinginsert',
-        colorseqnum: this.fullQtyList.color[ 'color_seq_num' ],
-        customerseqnum: this.fullQtyList.customer[ 'customer_seq_num' ],
-        orderseqnum: this.fullQtyList.order[ 'order_seq_num' ],
-        seasonseqnum: this.fullQtyList.season[ 'season_seq_num' ],
+        path: api,
+        // path: 'apppolypack/controllers/cartonpackinginsert.php',
+        colorseqnum: this.fullQtyList.color['color_seq_num'],
+        customerseqnum: this.fullQtyList.customer['customer_seq_num'],
+        orderseqnum: this.fullQtyList.order['order_seq_num'],
+        seasonseqnum: this.fullQtyList.season['season_seq_num'],
         orderponum: this.fullQtyList.poNum
-          ? this.fullQtyList.poNum[ 'order_ponumber' ]
+          ? this.fullQtyList.poNum['order_ponumber']
           : null,
         sizedata: JSON.stringify(sizedata),
       };
       // http
       this.dataService.postService(params).then((res: any) => {
-        if (res[ 'status' ].toLowerCase == 'success') {
+        if (res['status'].toLowerCase == 'success') {
         }
       });
       // //flags

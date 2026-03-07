@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 import { ReusableService } from '../../../providers/reusables/reusable-service';
 import { keyframes } from '@angular/animations';
+import { DataService } from '../../../providers/dataService/data-service';
 
 @Injectable({
   providedIn: 'root',
@@ -31,7 +32,7 @@ export class Scartonpacking {
     this.refocusSubject.next();
   }
 
-  constructor(private reusableService: ReusableService) { }
+  constructor(private reusableService: ReusableService, private dataService: DataService) { }
 
   // Cartonpack details
   sendCartonDetails(data: any) {
@@ -427,5 +428,33 @@ export class Scartonpacking {
     };
 
     await this.reusableService.showAlert(alert);
+  }
+
+  //temp apichanges : to change the api from local gannetv5 to pdkwhindia
+  changeApi(api: string) {
+    let apiGlobal = this.dataService.apiUrl;
+    let apiChanges = api.split('/')[1];
+
+    if (apiGlobal == 'https://pdkgannet.whindia.in/') {
+      apiChanges = 'appcartonpack/controllers/' + apiChanges + '.php';
+    } else {
+      return apiChanges = api
+    }
+    console.warn('apiChanges', apiChanges)
+    return apiChanges;
+  }
+
+
+  changeApiPolypack(api: string) {
+    let apiGlobal = this.dataService.apiUrl;
+    let apiChanges = api.split('/')[1];
+
+    if (apiGlobal == 'https://pdkgannet.whindia.in/') {
+      apiChanges = 'apppolypack/controllers/' + apiChanges + '.php';
+    } else {
+      return apiChanges = api
+    }
+    console.warn('apiChanges', apiChanges)
+    return apiChanges;
   }
 }

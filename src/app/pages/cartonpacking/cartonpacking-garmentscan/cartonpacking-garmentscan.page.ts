@@ -221,10 +221,11 @@ export class CartonpackingGarmentscanPage implements OnInit {
     // flags
     let colorList = [];
     this.colorModel = '';
+    let api = this.cartonService.changeApi('cartonpacking_scan/getpodetails');
 
     //http post
     let params = {
-      path: 'cartonpacking_scan/getpodetails',
+      path: api,
       order_seq_num: this.cartonBoxQrDetails.order_seq_num,
       ponumber: this.mapped_po ? this.mapped_po : this.poModel['order_ponumber'],
       cartonbox_qrcode_seq_num: this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
@@ -390,9 +391,11 @@ export class CartonpackingGarmentscanPage implements OnInit {
       // cancel remark_type = 4
 
       // this remark_seq_num updates the row in the alter table overriding the previous (remove)remark_seq_num so we might need to add a new column...(NOTE: need to discuss on this)
+      let api = this.cartonService.changeApi('cartonpacking_scan/getcartonpacking_remark_list');
 
       let params = {
-        path: 'cartonpacking_scan/getcartonpacking_remark_list',
+        path: api,
+        // path: 'appcartonpack/controllers/getcartonpacking_remark_list.php',
         remark_type: action == 'repack' ? '2' : '1'
       };
 
@@ -464,10 +467,12 @@ export class CartonpackingGarmentscanPage implements OnInit {
     console.log('removing scan with remarks', this.remarkModel);
     this.sizeToRemove['remarks'] = this.remarkModel.remarks;
     this.sizeToRemove['remarks_seq_num'] = this.remarkModel.remarks_seq_num;
+    let api = this.cartonService.changeApi('cartonpacking_scan/cartonpacking_alter_remove');
 
     //http post
     let params = {
-      path: 'cartonpacking_scan/cartonpacking_alter_remove',
+      path: api,
+      // path: 'appcartonpack/controllers/cartonpacking_alter_remove.php',
       cartonbox_qrcode_seq_num:
         this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
       qrcode_format: this.cartonBoxQrDetails.qrcode_format,
@@ -558,10 +563,12 @@ export class CartonpackingGarmentscanPage implements OnInit {
     let isRemarkSeqNum = this.remarkModel ? this.remarkModel.remarks_seq_num : '';
     let test_pcs = this.isAvailablePcs ? 'Yes' : 'No';
     let remove_pcs = this.isRemovePcs ? 'Yes' : 'No';
+    let api = this.cartonService.changeApi('cartonpacking_scan/save_scanned_sizes');
 
     //http post
     let params = {
-      path: 'cartonpacking_scan/save_scanned_sizes',
+      path: api,
+      // path: 'appcartonpack/controllers/save_scanned_sizes.php',
       cartonbox_qrcode_seq_num:
         this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
       qrcode_format: this.cartonBoxQrDetails.qrcode_format,
@@ -616,8 +623,10 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
   // close(SEALED) thing might be used with this func
   onClose() {
+    let api = this.cartonService.changeApi('cartonpacking_scan/carton_box_close');
+
     let params = {
-      path: 'cartonpacking_scan/carton_box_close',
+      path: api,
       cartonbox_qrcode_seq_num:
         this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
       cartonbox_header_seq_num:
@@ -723,9 +732,12 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
   i = 0;
   liveQuantityCheck() {
+    let api = this.cartonService.changeApi('cartonpacking_scan/getpodetails');
+
     console.log('LiveQuantity check working', (this.i += 1));
     let params = {
-      path: 'cartonpacking_scan/getpodetails',
+      path: api,
+      // path: 'appcartonpack/controllers/getpodetails.php',
       order_seq_num: this.cartonBoxQrDetails.order_seq_num,
       ponumber: this.poModel['order_ponumber'],
       cartonbox_qrcode: this.cartonBoxQrDetails.qrcode_format,

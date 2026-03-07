@@ -9,15 +9,16 @@
           @if(isScanner){
           <div class="row">
             <div class="col-12">
-              <div class="sizeScan-input">
-                <ion-input #laySlipInput class="inp-size" fill="solid" (dblClick)="barcodeData = 'PDK-329'"
-                  placeholder="SCAN LAY SLIP" inputmode="none" [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'"
-                  [ngClass]="{
+              <div class="scanner-box sizeScan-input" [ngClass]="{
                   'inputNotFocus':!lInpF,
                   'inputFocus': lInpF,
                   'scanner-focus': lInpF
-                  }" (ionFocus)="setFocus()" (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false"
-                  (ionFocus)="lInpF = true" [(ngModel)]="barcodeData" type="text"></ion-input>
+                  }" (click)="setFocus()">
+                <ion-icon name="qr-code-outline"></ion-icon>
+                <ion-input #laySlipInput class="inp-size" fill="solid" (dblClick)="barcodeData = 'PDK-329'"
+                  placeholder="SCAN LAY SLIP" inputmode="none" [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'"
+                  (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false" (ionFocus)="lInpF = true"
+                  [(ngModel)]="barcodeData" type="text"></ion-input>
               </div>
             </div>
           </div>
@@ -70,7 +71,7 @@
 
           <!-- Start Panel Check Button -->
           <div class="row-btn">
-            <div class="col">
+            <div class="">
               <ion-button (click)="addPcsPage()" [disabled]="!colorModel" expand="block" color="primary">
                 <ion-icon slot="start" name="add-circle"></ion-icon>
                 Start panel check

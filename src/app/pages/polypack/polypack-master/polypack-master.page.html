@@ -2,7 +2,7 @@
 
   <!--Qr Mapping page -->
   <ion-tab tab="size-map">
-    <app-header [logoutBtn]="false" [headerData]="'Size Mapping'" [iconTray]="assignMapPageHeaderIcons()"></app-header>
+    <!-- <app-header [logoutBtn]="false" [headerData]="'Size Mapping'" [iconTray]="assignMapPageHeaderIcons()"></app-header> -->
     <ion-content class="ion-padding">
       <ion-segment value="map" mode="ios" [swipeGesture]="false" (ionChange)="segmentChanged($event)">
         <ion-segment-button value="map" content-id="map">
@@ -100,8 +100,8 @@
   <!-- Add polypack page -->
   <!--  -->
   <ion-tab selectedTab="add-polypack" tab="add-polypack">
-    <app-header [logoutBtn]="false" [iconTray]="assignAddPolyPageHeaderIcons()"
-      [headerData]="'Add Poly Pack'"></app-header>
+    <!-- <app-header [logoutBtn]="false" [iconTray]="assignAddPolyPageHeaderIcons()"
+      [headerData]="'Add Poly Pack'"></app-header> -->
     <ion-content class="ion-padding">
       <ion-grid class="filters">
         @if(deviceType == 'tab' && isScanner){
@@ -193,7 +193,7 @@
 
   <!-- Map order based qty page -->
   <ion-tab tab="mappo-polypack">
-    <app-header [logoutBtn]="false" [headerData]="'Map PO'"></app-header>
+    <!-- <app-header [logoutBtn]="false" [headerData]="'Map PO'"></app-header> -->
     <ion-content class="ion-padding">
       <ion-grid class="filters">
         <ion-row>
@@ -252,7 +252,7 @@
 
   <!-- List polypack page -->
   <ion-tab tab="list-polypack">
-    <app-header [logoutBtn]="false" [headerData]="'Poly Pack List'"></app-header>
+    <!-- <app-header [logoutBtn]="false" [headerData]="'Poly Pack List'"></app-header> -->
     <ion-content class="ion-padding">
       <ion-grid class="filters">
         <ion-row>

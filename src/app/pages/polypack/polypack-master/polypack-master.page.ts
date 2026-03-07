@@ -138,33 +138,39 @@ export class PolypackMasterPage implements OnInit {
 
     // local apis
     if (frm == 0) {
+      let api = this.polypackService.changeApiPolypack('carton_packing/getseasonlist');
       params = {
-        path: 'carton_packing/getseasonlist',
+        path: api,
       };
       arrlist = 'seasonList';
       reslist = 'seasonlist';
       key = 'season_name';
     } else if (frm == 1) {
+      let api = this.polypackService.changeApiPolypack('carton_packing/getcustomerlist');
+
       params = {
-        path: 'carton_packing/getcustomerlist',
+        path: api,
         seasonseqnum: this.seasonModel['season_seq_num'],
       };
       arrlist = 'customerList';
       reslist = 'customerlist';
       key = 'customer_short_name';
     } else if (frm == 2) {
+      let api = this.polypackService.changeApiPolypack('carton_packing/getordername');
+
       params = {
-        path: 'carton_packing/getordername',
+        path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
-        tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'orderList';
       reslist = 'ordernamelist';
       key = 'order_name';
     } else if (frm == 3) {
+      let api = this.polypackService.changeApiPolypack('carton_packing/getponumlist');
+
       params = {
-        path: 'carton_packing/getponumlist',
+        path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
         orderseqnum: this.orderModel['order_seq_num'],
@@ -172,9 +178,12 @@ export class PolypackMasterPage implements OnInit {
       arrlist = 'poList';
       reslist = 'ponumberlist';
       key = 'order_ponumber'
-    } else if (frm == 4) {
+    }
+    else if (frm == 4) {
+      let api = this.polypackService.changeApiPolypack('carton_packing/getcolors');
       params = {
         path: 'carton_packing/getcolors',
+        // path: 'apppolypack/controllers/getcolors.php',
         orderseqnum: this.orderModel['order_seq_num'],
         orderponum: this.poModel['order_ponumber'] ? this.poModel['order_ponumber'] : null,
       };
@@ -185,6 +194,7 @@ export class PolypackMasterPage implements OnInit {
     // else if (frm == 5) {
     //   params = {
     //     path: 'carton_packing/getsize',
+    //     path: 'apppolypack/controllers/getsize.php',
     //     orderseqnum: this.orderModel['order_seq_num'],
     //     colorseqnum: this.colorModel['color_seq_num'],
     //   };
@@ -206,7 +216,8 @@ export class PolypackMasterPage implements OnInit {
 
           this.reusableService.showAlert(alert);
         }
-        if (params?.['path'] == 'carton_packing/getponumlist') {
+        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
+          // if (params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           if (this.poList.length > 0) {
             this.poF = true;
             // let poItems = [];
@@ -238,7 +249,8 @@ export class PolypackMasterPage implements OnInit {
           }
         }
       } else if (res['status'].toLowerCase() == 'error') {
-        if (params?.['path'] == 'carton_packing/getponumlist') {
+        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
+          // if (params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           if (this.poList.length == 0) {
             let alert = {
               msg: res['message'],
@@ -442,8 +454,10 @@ export class PolypackMasterPage implements OnInit {
 
 
   getScannedData(barcode: string) {
+    let api = this.polypackService.changeApiPolypack('carton_packing/order_barcode_num_details');
+
     let params = {
-      path: 'carton_packing/order_barcode_num_details',
+      path: api,
       order_barcode_num: barcode.trim()
     }
 

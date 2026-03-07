@@ -76,8 +76,11 @@ export class PoMapPolypackPage implements OnInit {
   }
 
   async orderwiseQtyFunc() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/getorderpomappingqty');
+
     let params = {
-      path: 'carton_packing/getorderpomappingqty',
+      path: api,
+      // path: 'apppolypack/controllers/getorderpomappingqty.php',
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
@@ -94,7 +97,6 @@ export class PoMapPolypackPage implements OnInit {
   }
 
   async addQuantityInitialData(action?: string) {
-
     //flags
     this.fullSizeList = '';
     this.orderwiseQtyFunc();
@@ -112,9 +114,11 @@ export class PoMapPolypackPage implements OnInit {
       return;
     }
 
+    let api = this.polypackService.changeApiPolypack('carton_packing/getordersizeqty');
     //http post
     let params = {
-      path: 'carton_packing/getordersizeqty',
+      path: api,
+      // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       orderponum: this.poModel && !action ? this.poModel.order_ponumber : '',
@@ -164,11 +168,11 @@ export class PoMapPolypackPage implements OnInit {
           // this.totalInitialQty += +list['total_pcssize_poly_qty']
 
           //temp ones delete after the service is merged
-          if (map < order) map = map + 10;
-          if (balance > 0) balanced = balanced - 10;
-          list['mapped_polypack_qty'] = map;
-          list['order_polypack_qty'] = order;
-          list['balance_polypack_qty'] = balanced;
+          // if (map < order) map = map + 10;
+          // if (balance > 0) balanced = balanced - 10;
+          // list['mapped_polypack_qty'] = map;
+          // list['order_polypack_qty'] = order;
+          // list['balance_polypack_qty'] = balanced;
 
           //for attractive data
           const remaining = list.order_polypack_qty - list.mapped_polypack_qty;
@@ -234,9 +238,11 @@ export class PoMapPolypackPage implements OnInit {
   }
 
   onSubmit() {
+    let api = this.polypackService.changeApiPolypack('carton_packing/cartonpackingpomappingstore');
+
     //http post
     let params = {
-      path: 'carton_packing/cartonpackingpomappingstore',
+      path: api,
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
@@ -314,20 +320,28 @@ export class PoMapPolypackPage implements OnInit {
         msg: `${enteredQty} exceeds available balance (${balanceQty})`,
         btn: [
           {
-            text: 'Reset',
+            text: 'OK',
             role: 'cancel',
             func: () => {
               item.polypack_qty = null;
               this.totalAddedQty();
             }
           },
-          {
-            text: 'Proceed',
-            role: 'confirm',
-            func: () => {
-              this.totalAddedQty();
-            }
-          }
+          // {
+          //   text: 'Reset',
+          //   role: 'cancel',
+          //   func: () => {
+          //     item.polypack_qty = null;
+          //     this.totalAddedQty();
+          //   }
+          // },
+          // {
+          //   text: 'Proceed',
+          //   role: 'confirm',
+          //   func: () => {
+          //     this.totalAddedQty();
+          //   }
+          // }
         ]
       });
       return;
