@@ -6,6 +6,7 @@
           shape="round"
           icon="arrow-back-outline"
           class="ion-no-padding"
+          (click)="goBack()"
         >
           <ion-icon
             slot="start"
@@ -29,16 +30,16 @@
         <ion-icon name="person-circle-outline"></ion-icon>
       </div>
       <div class="profile-details">
-        <h2>{{ userData?.name }}</h2>
-        <p>{{ userData?.email }}</p>
+        <h2>{{ userData?.username }}</h2>
+        <p>{{ userData?.role }}</p>
         <!-- Add more profile details as needed -->
       </div>
     </div>
   </div>
   <div>
     <ion-buttons slot="end">
-      <ion-button (click)="canCheckout()" color="danger">
-        <ion-icon slot="start" name="logout-outline"></ion-icon>
+      <ion-button (click)="canCheckout()" color="danger" fill="solid">
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
         Check out
       </ion-button>
     </ion-buttons>

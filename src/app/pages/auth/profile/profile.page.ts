@@ -75,6 +75,7 @@ export class ProfilePage implements OnInit {
 
       this.reusableService.showToast(toast);
     }
+
     // else {
     //   rfid.operator = this.id;
     //   this.storageService.setData('rfid', rfid);
@@ -85,5 +86,10 @@ export class ProfilePage implements OnInit {
 
     //   this.reusableService.showToast(toast);
     // }
+  }
+
+  goBack() {
+    this.navCtrl.back();
+    console.log('Going back');
   }
 }

@@ -121,6 +121,13 @@ const routes: Routes = [
             (m) => m.PanelcheckReplacePcsPageModule,
           ),
       },
+      {
+        path: 'panelcheck-hourly-report',
+        loadChildren: () =>
+          import('./pages/panelCheck/supervisor/panelcheck-hourly-report/panelcheck-hourly-report.module').then(
+            (m) => m.PanelcheckHourlyReportPageModule,
+          ),
+      },
     ],
   },
 ];
