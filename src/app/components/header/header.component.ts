@@ -1,15 +1,15 @@
-import { CommonModule } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
-import { IonicModule, NavController } from "@ionic/angular";
-import { AuthService } from "../../providers/authService/auth-service";
-import { DataService } from "../../providers/dataService/data-service";
-import { ReusableService } from "../../providers/reusables/reusable-service";
-import { StorageService } from "../../providers/storage/storage-service";
+import { CommonModule } from '@angular/common';
+import { Component, Input, OnInit } from '@angular/core';
+import { IonicModule, NavController } from '@ionic/angular';
+import { AuthService } from '../../providers/authService/auth-service';
+import { DataService } from '../../providers/dataService/data-service';
+import { ReusableService } from '../../providers/reusables/reusable-service';
+import { StorageService } from '../../providers/storage/storage-service';
 
 @Component({
-  selector: "app-header",
-  templateUrl: "./header.component.html",
-  styleUrls: ["./header.component.scss"],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
   imports: [IonicModule, CommonModule],
 })
 export class HeaderComponent implements OnInit {
@@ -17,10 +17,12 @@ export class HeaderComponent implements OnInit {
   @Input() homeBtn: boolean = true;
   @Input() checkoutBtn: boolean = true;
   @Input() logoutBtn: boolean = true;
-  @Input() iconTray: [{ iconName: string, navTo: string, color?: string, func?: any }] | [] = [];
+  @Input() iconTray:
+    | [{ iconName: string; navTo: string; color?: string; func?: any }]
+    | [] = [];
 
   // Variables
-  username: string = "";
+  username: string = '';
   showMenu: boolean = false;
 
   isModalOpen: boolean = false;
@@ -30,7 +32,7 @@ export class HeaderComponent implements OnInit {
     private authService: AuthService,
     public navCtrl: NavController,
     private reusableService: ReusableService,
-    private dataService: DataService
+    private dataService: DataService,
   ) {
     this.getUser();
     this.authService.isLogin();
@@ -42,32 +44,32 @@ export class HeaderComponent implements OnInit {
   }
 
   getUser() {
-    let userData = this.storageService.getData("userData");
+    let userData = this.storageService.getData('userData');
     if (userData) this.username = userData.username;
   }
 
   canLogout() {
     let alert = {
-      msg: "Do you want to logout?",
+      msg: 'Do you want to logout?',
       btn: [
         {
           text: 'No',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Yes',
           role: 'confirm',
           func: () => {
             this.logout();
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    };
 
     this.reusableService.showAlert(alert);
   }
 
-  isCheckIn = false
+  isCheckIn = false;
   isCheckOut = false;
   id: any = '';
   canCheckin_out() {
@@ -76,12 +78,12 @@ export class HeaderComponent implements OnInit {
     if (rfid.operator) {
       this.isCheckOut = true;
       rfid.operator = null;
-      this.storageService.setData('rfid', rfid)
+      this.storageService.setData('rfid', rfid);
       console.log('Checked out');
       let toast = {
         msg: `${this.id} has been checked out`,
-        color: 'warning'
-      }
+        color: 'warning',
+      };
 
       this.reusableService.showToast(toast);
     } else {
@@ -89,37 +91,32 @@ export class HeaderComponent implements OnInit {
       this.storageService.setData('rfid', rfid);
       let toast = {
         msg: `${this.id} has been Checked In`,
-        color: 'success'
-      }
+        color: 'success',
+      };
 
       this.reusableService.showToast(toast);
     }
-
-
   }
 
-  closeModal() {
-
-  }
+  closeModal() {}
 
   logout() {
     this.authService.logout();
     // this.showMenu = false;
-    console.log("Logged out");
+    console.log('Logged out');
   }
 
   goToHome() {
     this.navCtrl.navigateRoot('home');
-    console.log("Navigate to home");
+    console.log('Navigate to home');
   }
 
   goTo(path: string) {
     this.navCtrl.navigateForward(path);
-    console.log(`Navigated to ${path}`)
+    console.log(`Navigated to ${path}`);
   }
 
   iconsFunc(data: any) {
-
     if (data.func) {
       data.func();
       console.log('Icon function', data.func);
@@ -139,14 +136,14 @@ export class HeaderComponent implements OnInit {
 
     this.apiLocal = !this.apiLocal;
     this.dataService.apiUrl = this.apiLocal
-      ? "https://gannet.online/console/"
-      : "http://192.168.16.127/gannet_v5/";
+      ? 'https://gannet.online/console/'
+      : 'http://192.168.16.127/gannet_v5/';
 
     console.log(this.dataService.apiUrl, 'header', this.apiLocal, 'apiLocal');
     let toast = {
       message: `⚠️ api change to ${this.dataService.apiUrl} by admin`,
-      color: 'danger'
-    }
+      color: 'danger',
+    };
 
     this.reusableService.showToast(toast);
 
@@ -154,5 +151,4 @@ export class HeaderComponent implements OnInit {
       this.apiToggleLock = false;
     }, 300);
   }
-
 }

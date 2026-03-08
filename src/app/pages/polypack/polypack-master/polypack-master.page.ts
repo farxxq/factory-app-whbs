@@ -45,14 +45,13 @@ export class PolypackMasterPage implements OnInit {
   actionType: string = '';
   isScanner: boolean = false;
 
-
   constructor(
     public dataService: DataService,
     public authService: AuthService,
     private reusableService: ReusableService,
     private storageService: StorageService,
     private polypackService: Spolypack,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.authService.isLogin();
   }
@@ -60,7 +59,7 @@ export class PolypackMasterPage implements OnInit {
   ngOnInit() {
     this.deviceType = this.storageService.getData('deviceType');
     let alert = {
-      msg: "External Scanner connected?",
+      msg: 'External Scanner connected?',
       btn: [
         {
           text: 'NO',
@@ -70,12 +69,12 @@ export class PolypackMasterPage implements OnInit {
             let toast = {
               message: '📷 Camera type is enabled',
               position: 'bottom',
-              color: 'medium'
-            }
+              color: 'medium',
+            };
 
             this.reusableService.showToast(toast);
             this.isScanner = this.storageService.getData('isScanner');
-          }
+          },
         },
         {
           text: 'YES',
@@ -85,15 +84,15 @@ export class PolypackMasterPage implements OnInit {
             let toast = {
               message: '[ ] Scanner type is enabled',
               position: 'bottom',
-              color: 'medium'
-            }
+              color: 'medium',
+            };
 
             this.reusableService.showToast(toast);
             this.isScanner = this.storageService.getData('isScanner');
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    };
 
     this.reusableService.showAlert(alert);
   }
@@ -104,7 +103,7 @@ export class PolypackMasterPage implements OnInit {
     let deviceType = this.storageService.getData('deviceType');
 
     this.isScanner = this.storageService.getData('isScanner');
-    console.log(this.isScanner)
+    console.log(this.isScanner);
   }
 
   rawListArr = [
@@ -138,7 +137,9 @@ export class PolypackMasterPage implements OnInit {
 
     // local apis
     if (frm == 0) {
-      let api = this.polypackService.changeApiPolypack('carton_packing/getseasonlist');
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/getseasonlist',
+      );
       params = {
         path: api,
       };
@@ -146,7 +147,9 @@ export class PolypackMasterPage implements OnInit {
       reslist = 'seasonlist';
       key = 'season_name';
     } else if (frm == 1) {
-      let api = this.polypackService.changeApiPolypack('carton_packing/getcustomerlist');
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/getcustomerlist',
+      );
 
       params = {
         path: api,
@@ -156,7 +159,9 @@ export class PolypackMasterPage implements OnInit {
       reslist = 'customerlist';
       key = 'customer_short_name';
     } else if (frm == 2) {
-      let api = this.polypackService.changeApiPolypack('carton_packing/getordername');
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/getordername',
+      );
 
       params = {
         path: api,
@@ -167,25 +172,31 @@ export class PolypackMasterPage implements OnInit {
       reslist = 'ordernamelist';
       key = 'order_name';
     } else if (frm == 3) {
-      let api = this.polypackService.changeApiPolypack('carton_packing/getponumlist');
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/getponumlist',
+      );
 
       params = {
         path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
         orderseqnum: this.orderModel['order_seq_num'],
+        tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'poList';
       reslist = 'ponumberlist';
-      key = 'order_ponumber'
-    }
-    else if (frm == 4) {
-      let api = this.polypackService.changeApiPolypack('carton_packing/getcolors');
+      key = 'order_ponumber';
+    } else if (frm == 4) {
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/getcolors',
+      );
       params = {
         path: 'carton_packing/getcolors',
         // path: 'apppolypack/controllers/getcolors.php',
         orderseqnum: this.orderModel['order_seq_num'],
-        orderponum: this.poModel['order_ponumber'] ? this.poModel['order_ponumber'] : null,
+        orderponum: this.poModel['order_ponumber']
+          ? this.poModel['order_ponumber']
+          : null,
       };
       arrlist = 'colorList';
       reslist = 'colordetails';
@@ -207,16 +218,19 @@ export class PolypackMasterPage implements OnInit {
       if (res['status'].toLowerCase() == 'success') {
         if (res[reslist].length > 0) {
           this[arrlist] = this.reusableService.rearrangeData(res[reslist], key);
-          console.log('rearrangeSeasonList', this[arrlist])
+          console.log('rearrangeSeasonList', this[arrlist]);
         } else {
           let data = arrlist.split('L')[0].toLocaleUpperCase();
           let alert = {
-            msg: `⚠️ No ${data}'s`
-          }
+            msg: `⚠️ No ${data}'s`,
+          };
 
           this.reusableService.showAlert(alert);
         }
-        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
+        if (
+          params?.['path'] == 'carton_packing/getponumlist' ||
+          params?.['path'] == 'apppolypack/controllers/getponumlist.php'
+        ) {
           // if (params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           if (this.poList.length > 0) {
             this.poF = true;
@@ -249,7 +263,10 @@ export class PolypackMasterPage implements OnInit {
           }
         }
       } else if (res['status'].toLowerCase() == 'error') {
-        if (params?.['path'] == 'carton_packing/getponumlist' || params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
+        if (
+          params?.['path'] == 'carton_packing/getponumlist' ||
+          params?.['path'] == 'apppolypack/controllers/getponumlist.php'
+        ) {
           // if (params?.['path'] == 'apppolypack/controllers/getponumlist.php') {
           if (this.poList.length == 0) {
             let alert = {
@@ -260,7 +277,7 @@ export class PolypackMasterPage implements OnInit {
                   role: 'confirm',
                   func: () => {
                     // this.assignListService(4)
-                    console.log('choose from color as no PO\'s')
+                    console.log("choose from color as no PO's");
                   },
                 },
               ],
@@ -268,7 +285,6 @@ export class PolypackMasterPage implements OnInit {
 
             this.reusableService.showAlert(alert);
           }
-
         }
       }
     });
@@ -346,7 +362,9 @@ export class PolypackMasterPage implements OnInit {
           },
         ],
       };
-      this.orderModel.barcode_type == "G" ? this.mappingPage('gen') : await this.reusableService.showAlert(alert);
+      this.orderModel.barcode_type == 'G'
+        ? this.mappingPage('gen')
+        : await this.reusableService.showAlert(alert);
       console.log('This will do the generate thing...');
     }
   }
@@ -364,7 +382,6 @@ export class PolypackMasterPage implements OnInit {
     this.navCtrl.navigateForward('polypack/map-polypack');
   }
 
-
   addQuantityPage(type: string) {
     let data = {
       season: this.seasonModel,
@@ -373,7 +390,7 @@ export class PolypackMasterPage implements OnInit {
       poNum: this.poModel,
       color: this.colorModel,
       sizeBarcode: this.sizeBarcode,
-      type: type
+      type: type,
     };
     this.polypackService.sendAddData(data);
     this.navCtrl.navigateForward('polypack/add-polypack');
@@ -386,7 +403,7 @@ export class PolypackMasterPage implements OnInit {
       order: this.orderModel,
       poList: this.poList,
       color: this.colorModel,
-      type: 'edit'
+      type: 'edit',
     };
     this.polypackService.sendAddData(data);
     this.navCtrl.navigateForward('polypack/pomap-polypack');
@@ -411,15 +428,17 @@ export class PolypackMasterPage implements OnInit {
           this.isScanner = !this.isScanner;
           this.storageService.setData('isScanner', this.isScanner);
           let toast = {
-            message: this.isScanner ? '📷 Scanner mapping is enabled' : '📝 Camera mapping is enabled',
+            message: this.isScanner
+              ? '📷 Scanner mapping is enabled'
+              : '📝 Camera mapping is enabled',
             position: 'bottom',
-            color: 'medium'
-          }
+            color: 'medium',
+          };
 
           this.reusableService.showToast(toast);
         },
-      }
-    ]
+      },
+    ];
 
     return icons;
   }
@@ -432,40 +451,41 @@ export class PolypackMasterPage implements OnInit {
           this.isScanner = !this.isScanner;
           this.storageService.setData('isScanner', this.isScanner); //unhygenic toggle here...
           let toast = {
-            message: this.isScanner ? '📷 Scanner type is enabled' : '📝 Manual entry is enabled',
+            message: this.isScanner
+              ? '📷 Scanner type is enabled'
+              : '📝 Manual entry is enabled',
             position: 'bottom',
-            color: 'medium'
-          }
+            color: 'medium',
+          };
 
           this.reusableService.showToast(toast);
           this.clearbelowAttrbutes(0);
           this.sizeBarcode = null;
-          console.log(
-            !this.seasonList.length || this.sizeBarcode, 'res'
-          );
+          console.log(!this.seasonList.length || this.sizeBarcode, 'res');
         },
-      }
-    ]
+      },
+    ];
 
     return icons;
   }
 
   //scan funcs
 
-
   getScannedData(barcode: string) {
-    let api = this.polypackService.changeApiPolypack('carton_packing/order_barcode_num_details');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/order_barcode_num_details',
+    );
 
     let params = {
       path: api,
-      order_barcode_num: barcode.trim()
-    }
+      order_barcode_num: barcode.trim(),
+    };
 
     this.dataService.postService(params).then((res: any) => {
       if (res['status'] == 'error') {
         let alert = {
-          msg: res['message']
-        }
+          msg: res['message'],
+        };
 
         this.reusableService.showAlert(alert);
         return;
@@ -482,27 +502,25 @@ export class PolypackMasterPage implements OnInit {
       this.colorList = res['colordetails'];
       this.colorModel = res['colordetails'][0];
       if (res['ponumberlist'][0]['order_ponumber'] != null) {
-        console.log(res['ponumberlist'][0]['order_ponumber'] != null)
+        console.log(res['ponumberlist'][0]['order_ponumber'] != null);
         this.poList = res['ponumberlist'];
         this.poF = true;
       } else {
         this.poF = false;
         let toast = {
-          message: 'No PO\'s for the Scanned order?',
-          color: 'danger'
+          message: "No PO's for the Scanned order?",
+          color: 'danger',
         };
 
         this.reusableService.showToast(toast);
       }
       this.poModel = '';
-      // } 
-
-    })
+      // }
+    });
 
     //temp
     // this.sizeBarcode = barcode;
     // console.log(this.sizeBarcode);
-
   }
 
   onSizeInput(event: any, index?: any) {
@@ -514,7 +532,7 @@ export class PolypackMasterPage implements OnInit {
   sInpF: boolean = false;
   private sizeInputSubject = new Subject<any>();
   @ViewChild('sizeInput', { static: false }) sizeInput!: IonInput;
-  private inputSub: any
+  private inputSub: any;
   setFocus() {
     this.sizeInput.setFocus();
     this.sInpF = true;
@@ -526,7 +544,7 @@ export class PolypackMasterPage implements OnInit {
       .pipe(debounceTime(500))
       .subscribe((val: any) => {
         this.barcodeData = val;
-        if (this.barcodeData) this.getScannedData(this.barcodeData)//function to take it to next page(more like getting the data here);
+        if (this.barcodeData) this.getScannedData(this.barcodeData); //function to take it to next page(more like getting the data here);
 
         setTimeout(() => {
           this.barcodeData = '';

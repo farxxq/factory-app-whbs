@@ -12,14 +12,14 @@ import { ReusableService } from 'src/app/providers/reusables/reusable-service';
 })
 export class LoginPage implements OnInit {
   isSetIp: boolean = false;
-  ip: any = 'https://pdkgannet.whindia.in/';
+  ip: any = 'pdkgannet.whindia.in';
 
   constructor(
     public authService: AuthService,
     public dataService: DataService,
     public storageService: StorageService,
-    private reusableService: ReusableService
-  ) { }
+    private reusableService: ReusableService,
+  ) {}
 
   ngOnInit() {
     let data = this.storageService.getData('ip');
@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
     if (!data) {
       let alert = {
         msg: `Please inform Admin to setup IP`,
-      }
+      };
 
       this.reusableService.showAlert(alert);
       console.error('no ip found');
@@ -55,14 +55,14 @@ export class LoginPage implements OnInit {
   addUserTemp() {
     this.loginData = {
       username: 'balaied@whitehouseindia.com',
-      password: 'pdkied'
-    }
+      password: 'pdkied',
+    };
   }
 
   ipSection() {
     if (this.loginData.username == '') {
-      this.loginData.username = 'admin',
-        this.loginData.password = 'admin_setip@123'
+      this.loginData.username = 'admin';
+      this.loginData.password = 'admin_setip@123';
     }
   }
 
@@ -74,8 +74,8 @@ export class LoginPage implements OnInit {
       if (!data) {
         let toast = {
           message: `Error in setting up IP`,
-          color: 'danger'
-        }
+          color: 'danger',
+        };
 
         this.reusableService.showToast(toast);
         console.error('Error in saving ip to storage try again');
@@ -87,30 +87,36 @@ export class LoginPage implements OnInit {
       let toast = {
         message: `${this.ip} ip address has been set`,
         color: 'success',
-        position: 'middle'
-      }
+        position: 'middle',
+      };
 
       this.reusableService.showToast(toast);
     }
   }
 
   loginUser() {
-    if (this.loginData.username == 'admin' && this.loginData.password == 'admin_setip@123') {
+    if (
+      this.loginData.username == 'admin' &&
+      this.loginData.password == 'admin_setip@123'
+    ) {
       this.isSetIp = true;
       this.loginData = {
         username: '',
-        password: ''
-      }
+        password: '',
+      };
       return;
     }
 
     let ip = this.storageService.getData('ip');
-    if (ip) {
+    let isAdmin =
+      this.loginData.username == 'admin' &&
+      this.loginData.password == 'admin_setip@123';
+    if (ip || isAdmin) {
       this.authService.login(this.loginData);
     } else {
       let alert = {
-        msg: 'Please ask Admin to set the IP before logging in'
-      }
+        msg: 'Please ask Admin to set the IP before logging in',
+      };
 
       this.reusableService.showAlert(alert);
     }

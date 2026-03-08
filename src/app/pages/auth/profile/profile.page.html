@@ -1,13 +1,46 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>profile</ion-title>
+    <div class="nav-header">
+      <ion-buttons slot="start">
+        <ion-button
+          shape="round"
+          icon="arrow-back-outline"
+          class="ion-no-padding"
+        >
+          <ion-icon
+            slot="start"
+            style="color: white"
+            name="arrow-back-outline"
+          ></ion-icon>
+        </ion-button>
+        <ion-title class="ion-no-padding back-title">Back</ion-title>
+      </ion-buttons>
+      <div>
+        <h1 class="page-name">{{'Profile' | uppercase}}</h1>
+      </div>
+    </div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="profile-container">
+    <div class="profile-card">
+      <div class="profile-image">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </div>
+      <div class="profile-details">
+        <h2>{{ userData?.name }}</h2>
+        <p>{{ userData?.email }}</p>
+        <!-- Add more profile details as needed -->
+      </div>
+    </div>
+  </div>
+  <div>
+    <ion-buttons slot="end">
+      <ion-button (click)="canCheckout()" color="danger">
+        <ion-icon slot="start" name="logout-outline"></ion-icon>
+        Check out
+      </ion-button>
+    </ion-buttons>
+  </div>
 </ion-content>

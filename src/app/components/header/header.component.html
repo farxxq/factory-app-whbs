@@ -3,38 +3,43 @@
     <div class="header">
       <div class="logo">
         <!-- username == 'mesadmin'? changeAPIURL(): '' -->
-        <p><strong>{{headerData}}</strong></p>
+        <p>
+          <strong>{{ headerData }}</strong>
+        </p>
         <!-- make the above as a gannet logo and on clicking that we take the user to the home -->
-        <span (dblclick)="changeAPIURL()" style="color: #e9f0fd; cursor: pointer;">...</span>
+        <span
+          (dblclick)="changeAPIURL()"
+          style="color: #e9f0fd; cursor: pointer"
+          >...</span
+        >
       </div>
       <div class="actionBtns">
         <!-- language button and profile page button -->
-        <!-- <div class="iconBtn checkoutBtn" (click)="canCheckin_out()">
+        <div class="iconBtn" (click)="canCheckin_out()">
           <ion-icon name="language"></ion-icon>
         </div>
-        <div class="iconBtn checkoutBtn" (click)="canCheckin_out()">
+        <div class="iconBtn" (click)="goTo('profile')">
           <ion-icon name="person-circle-outline"></ion-icon>
-        </div> -->
-        <!-- @if(checkoutBtn){ -->
-        <div class="iconBtn checkoutBtn" (click)="canCheckin_out()">
-          <ion-icon name="log-out"></ion-icon>
         </div>
+        <!-- @if(checkoutBtn){ -->
+        <!-- <div class="iconBtn checkoutBtn" (click)="canCheckin_out()">
+          <ion-icon name="log-out"></ion-icon>
+        </div> -->
         <!-- [color]="isCheckIn ? 'primary' : 'danger'" -->
         <!-- } -->
-        @if(homeBtn){
+        <!-- @if(homeBtn){
         <div class="iconBtn homeBtn" (click)="goToHome()">
           <ion-icon slot="start" name="home"></ion-icon>
-          <!-- <div>Home</div> -->
         </div>
-        }
-        @if(iconTray.length > 0){
+        } -->
+        <!-- @if(iconTray.length > 0){
         @for(icons of iconTray;track $index; let i = $index){
         <div class="iconBtn" (click)="iconsFunc(icons)">
           <ion-icon slot="start" [name]="icons.iconName"
             [ngStyle]="icons.color ? {'background-color': icons.color}: ''"></ion-icon>
         </div>
         }
-        }
+        } -->
       </div>
     </div>
   </ion-toolbar>

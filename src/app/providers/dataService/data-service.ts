@@ -25,31 +25,32 @@ export type APP_TYPE = 'PC' | 'Q' | 'PP' | 'CP';
 export class DataService {
   tracerArr: any = [];
 
-  ip = this.storageService.getData('ip') || '';
+  ip = this.storageService.getData('ip');
 
   ipAdd = this.ip == 'localip' ? 'http://192.168.16.127/gannet_v5/' : this.ip; //temp only for debugging
 
-  public apiUrl: string = `https://${this.ipAdd}/` // Live url
+  public apiUrl: string = `https://${this.ipAdd}/`; // Live url
   // public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
 
   // **NOTE** : NOT IN USE DUE TO FACTORY SECURITY REASONS AND WIFI DISRUPTIONS
   // public apiUrl: string = 'https://apps.whitehouseit.com/carton/'; //Staging url
-  //  public apiUrl: string = 'https://gannet.online/console/'; // Live url 
+  //  public apiUrl: string = 'https://gannet.online/console/'; // Live url
 
   constructor(
     private http: HttpClient,
     private storageService: StorageService,
     private reusableService: ReusableService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
+    console.log('API URL:', this.apiUrl);
+    console.log('API URL:', this.ip);
+    console.log('API URL:', this.ipAdd);
   }
 
   async postService(params: any) {
     try {
       await this.reusableService.cancelLoading();
-    } catch (error) {
-
-    }
+    } catch (error) {}
     // setTimeout(() => {
     //   this.reusableService.showLoading();
     // }, 500);
@@ -60,7 +61,7 @@ export class DataService {
     let uinno = userData.uinno;
     let app_type: APP_TYPE = this.storageService.getData('app_type');
     let qc_device_details = this.storageService.getData('qc_device_details'); //will have the tab device details itseems
-    let rfid = this.storageService.getData('rfid_operator')
+    let rfid = this.storageService.getData('rfid_operator');
 
     // temp try but didn't work
     // if (this.apiUrl == `https://${this.ipAdd}/pdkgannet.whindia.in/`) {
@@ -77,7 +78,6 @@ export class DataService {
     // }
 
     let postData = new FormData();
-
 
     if (userData) {
       postData.append('key', 'MTAwMCMjTEtNSiMjMTc1ODI2NjM5MDQ4OTAwMA==');
@@ -99,9 +99,7 @@ export class DataService {
     setTimeout(async () => {
       try {
         await this.reusableService.cancelLoading();
-      } catch (error) {
-
-      }
+      } catch (error) {}
     }, 10000);
 
     return new Promise(async (resolve, reject) => {
@@ -142,7 +140,7 @@ export class DataService {
           this.reusableService.showAlert(alert);
           console.log(err);
           reject(err);
-        }
+        },
       );
     });
   }
@@ -162,26 +160,31 @@ export class DataService {
     }
 
     return new Promise(async (resolve, reject) => {
-      this.http.post('https://gannet.online/console/' + params['path'].trim(), postData).subscribe(
-        (res) => {
-          resolve(res);
-          // this.tracerArr.push(res);
-        },
-        (err) => {
-          let alert = {
-            header: err.status > 0 ? '⚠️Error' : '🚫 Offline',
-            subHeader: err.status > 0 ? `Status code: ${err.status}` : '',
-            msg:
-              err.status > 0
-                ? err.message
-                : 'Please Connect to the Internet and then try again',
-          };
-          this.reusableService.cancelLoading();
-          this.reusableService.showAlert(alert);
-          console.log(err);
-          reject(err);
-        }
-      );
+      this.http
+        .post(
+          'https://gannet.online/console/' + params['path'].trim(),
+          postData,
+        )
+        .subscribe(
+          (res) => {
+            resolve(res);
+            // this.tracerArr.push(res);
+          },
+          (err) => {
+            let alert = {
+              header: err.status > 0 ? '⚠️Error' : '🚫 Offline',
+              subHeader: err.status > 0 ? `Status code: ${err.status}` : '',
+              msg:
+                err.status > 0
+                  ? err.message
+                  : 'Please Connect to the Internet and then try again',
+            };
+            this.reusableService.cancelLoading();
+            this.reusableService.showAlert(alert);
+            console.log(err);
+            reject(err);
+          },
+        );
     });
   }
 
@@ -189,9 +192,7 @@ export class DataService {
   async app_typeService() {
     try {
       await this.reusableService.cancelLoading();
-    } catch (error) {
-
-    }
+    } catch (error) {}
     // setTimeout(() => {
     //   this.reusableService.showLoading();
     // }, 500);
@@ -218,34 +219,37 @@ export class DataService {
     }
 
     return new Promise(async (resolve, reject) => {
+      this.http
+        .post('https://gannet.online/console/login/getapp_type', postData)
+        .subscribe(
+          async (res) => {
+            resolve(res);
+            // this.tracerArr.push(res);
+          },
+          (err) => {
+            let alert = {
+              header: err.status > 0 ? '⚠️Error' : '🚫 Offline',
+              subHeader: err.status > 0 ? `Status code: ${err.status}` : '',
+              msg:
+                err.status > 0
+                  ? err.message
+                  : 'Please Connect to the Internet and then try again',
+              btn: [
+                {
+                  text: 'OK',
+                  role: 'confirm',
+                  func: () => {
+                    this.navCtrl.navigateRoot(['/home']);
+                  },
+                },
+              ],
+            };
 
-      this.http.post('https://gannet.online/console/login/getapp_type', postData).subscribe(
-        async (res) => {
-          resolve(res);
-          // this.tracerArr.push(res);
-        },
-        (err) => {
-          let alert = {
-            header: err.status > 0 ? '⚠️Error' : '🚫 Offline',
-            subHeader: err.status > 0 ? `Status code: ${err.status}` : '',
-            msg:
-              err.status > 0
-                ? err.message
-                : 'Please Connect to the Internet and then try again',
-            btn: [
-              {
-                text: 'OK',
-                role: 'confirm',
-                func: () => { this.navCtrl.navigateRoot(['/home']) }
-              }
-            ]
-          };
-
-          this.reusableService.showAlert(alert);
-          console.log(err);
-          reject(err);
-        }
-      );
+            this.reusableService.showAlert(alert);
+            console.log(err);
+            reject(err);
+          },
+        );
     });
   }
 
@@ -298,6 +302,6 @@ export class DataService {
   }
 
   checkRfid() {
-    console.log('to convert rfid')
+    console.log('to convert rfid');
   }
 }

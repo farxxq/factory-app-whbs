@@ -1,0 +1,30 @@
+ion-header {
+  --ion-background-color: var(--ion-color-primary);
+
+  .back-title {
+    color: white;
+  }
+
+  .nav-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .page-name {
+      font-family: "euclid-circular-b";
+      margin: 0px 30px;
+      color: white;
+    }
+
+    .header {
+      background-color: white;
+      border-radius: 25px;
+      margin-right: 20px;
+      padding: 8px 25px;
+
+      span {
+        font-weight: bolder;
+      }
+    }
+  }
+}

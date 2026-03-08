@@ -25,18 +25,17 @@ export class AuthService {
     USER1: ['ad_min'],
     USER2: ['IE'],
     USER3: ['PACKING'],
-  }
+  };
 
   constructor(
     public storageService: StorageService,
     public http: HttpClient,
     public navCtrl: NavController,
-    private reusableService: ReusableService
-  ) { }
-
+    private reusableService: ReusableService,
+    private dataService: DataService,
+  ) {}
 
   async getDeviceInfo() {
-
     const info = await Device.getInfo();
     const id = await Device.getId();
     const net = await Network.getStatus();
@@ -47,7 +46,7 @@ export class AuthService {
       osVersion: info.osVersion,
       manufacturer: info.manufacturer,
       uuid: id.identifier,
-      connectionType: net.connectionType
+      connectionType: net.connectionType,
     };
 
     console.log(deviceDetails);
@@ -95,7 +94,7 @@ export class AuthService {
               position: 'middle',
             };
 
-            userData = ''
+            userData = '';
 
             this.reusableService.showToast(toast);
           }
@@ -113,7 +112,7 @@ export class AuthService {
           this.reusableService.cancelLoading();
           this.reusableService.showAlert(alert);
           reject(err);
-        }
+        },
       );
     });
   }
@@ -126,13 +125,16 @@ export class AuthService {
 
   isLogin() {
     let user = this.storageService.getData('userData');
-    if (!user) {
+    let ip = this.storageService.getData('ip');
+    if (!user && !ip) {
       this.navCtrl.navigateRoot(['/login']);
       console.log('logout horaha islogin se');
+      let msg = ip ? '⚠️ Please set the IP address' : '⚠️ Please login';
       let toast = {
-        message: '⚠️ Please login',
-        color: 'danger'
-      }
+        message: msg,
+        color: 'danger',
+        position: 'middle',
+      };
 
       this.reusableService.showToast(toast);
       return;
@@ -142,9 +144,9 @@ export class AuthService {
 
   getUserRole(role: string) {
     for (const [user, roles] of Object.entries(this.prescribedUserRole)) {
-      let rolesArr = roles as String
+      let rolesArr = roles as String;
       if (rolesArr.includes(role)) {
-        this.userRole = user
+        this.userRole = user;
       }
     }
 
