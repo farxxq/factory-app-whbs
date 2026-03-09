@@ -16,6 +16,7 @@ import { ButtonModule } from 'primeng/button';
 import { DatePicker } from 'primeng/datepicker';
 
 import { Select } from 'primeng/select';
+import { CartonpackDetailsPageModule } from '../cartonpack-details/cartonpack-details.module';
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { Select } from 'primeng/select';
     ButtonModule,
     DatePicker,
     Select,
+    CartonpackDetailsPageModule
   ],
   declarations: [CartonpackingPage],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],

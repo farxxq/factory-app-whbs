@@ -35,12 +35,11 @@ export class HeaderComponent implements OnInit {
     private dataService: DataService,
   ) {
     this.getUser();
-    this.authService.isLogin();
     console.log('HeaderComponent constructed');
   }
 
   ngOnInit() {
-    this.isModalOpen = true;
+    this.authService.isLogin();
   }
 
   getUser() {
@@ -98,7 +97,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  closeModal() { }
+  closeModal() {}
 
   logout() {
     this.authService.logout();
@@ -136,8 +135,8 @@ export class HeaderComponent implements OnInit {
 
     this.apiLocal = !this.apiLocal;
     this.dataService.apiUrl = this.apiLocal
-      // ? 'https://gannet.online/console/'
-      ? 'https://pdkgannet.whindia.in'
+      ? // ? 'https://gannet.online/console/'
+        'https://pdkgannet.whindia.in'
       : 'http://192.168.16.127/gannet_v5/';
 
     console.log(this.dataService.apiUrl, 'header', this.apiLocal, 'apiLocal');

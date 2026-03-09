@@ -6,7 +6,6 @@ import { ReusableService } from '../../../providers/reusables/reusable-service';
 import { StorageService } from '../../../providers/storage/storage-service';
 import { Spolypack } from '../service/spolypack';
 import { debounceTime, Subject } from 'rxjs';
-import { RfidLoginModalComponent } from 'src/app/components/rfid-login-modal/rfid-login-modal.component';
 
 @Component({
   selector: 'app-polypack-master',
@@ -100,10 +99,10 @@ export class PolypackMasterPage implements OnInit {
     this.reusableService.showAlert(alert);
 
     // operatorlogin
-    // let rfid = this.storageService.getData('rfid') ||'';
-    // if(!rfid.operator){
-    //   // this.reusableService.loginOperator();
-    // }
+    let rfid = this.storageService.getData('rfid') ||'';
+    if(!rfid.operator){
+      this.reusableService.loginOperator();
+    }
   }
 
   ngAfterContentInit(): void {
@@ -480,7 +479,6 @@ export class PolypackMasterPage implements OnInit {
   }
 
   //scan funcs
-
   getScannedData(barcode: string) {
     let api = this.polypackService.changeApiPolypack(
       'carton_packing/order_barcode_num_details',

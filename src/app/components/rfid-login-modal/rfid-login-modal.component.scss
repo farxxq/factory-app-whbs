@@ -7,12 +7,13 @@
 }
 
 .login-card {
-  width: 360px;
+  // width: 360px;
   background: #ffffff;
   border-radius: 14px;
   padding: 28px;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  height: 100%;
 }
 
 .icon {
@@ -62,6 +63,26 @@ p {
   }
 }
 
+.divider {
+  display: flex;
+  align-items: center;
+  margin: 18px 0;
+  color: #888;
+
+  span {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #ddd;
+  }
+}
+
 .keypad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -86,9 +107,8 @@ p {
     color: #d84b4b;
   }
 
-  .submit {
-    background: #2d6cdf;
-    color: white;
+  ion-button.submit {
+   --border-radius: 5px;
   }
 }
 
@@ -103,9 +123,43 @@ p {
     color: #2d6cdf;
   }
 
+  .scan-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #00aaff;
+    border-radius: 8px;
+    text-align: center;
+    background: #fff;
+  }
+
   .links {
     display: flex;
     justify-content: space-between;
     font-size: 11px;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 2560px) {
+  .input-wrapper {
+    input {
+      font-size: 20px;
+    }
+  }
+
+  footer {
+    .scan-input {
+      display: block;
+      font-size: 18px;
+      border: 1px solid blue;
+      border-radius: 10px;
+    }
+  }
+
+  .keypad {
+    button {
+      height: 60px;
+      font-size: 25px;
+    }
   }
 }

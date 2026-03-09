@@ -68,7 +68,10 @@ export class LoginPage implements OnInit {
 
   setIp() {
     if (this.ip) {
-      this.storageService.setData('ip', this.ip);
+
+      if(this.ip == 'localip'){
+        this.storageService.setData('ip', 'http://192.168.16.127/gannet_v5/');
+      }
       let data = this.storageService.getData('ip');
 
       if (!data) {

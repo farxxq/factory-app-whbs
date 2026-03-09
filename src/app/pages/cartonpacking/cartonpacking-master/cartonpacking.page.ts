@@ -32,7 +32,6 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
   @ViewChild('cartonBarcodeInput', { static: false })
   cartonBarcodeInput!: IonInput;
 
-
   private cartonInputSubject = new Subject<string>();
   private inputSub: any;
 
@@ -78,13 +77,17 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
     private reusableService: ReusableService,
     private storageService: StorageService,
     private cartonService: Scartonpacking,
-    private navCtrl: NavController
+    private navCtrl: NavController,
   ) {
     this.authService.isLogin();
   }
 
   ngOnInit() {
     this.deviceType = this.storageService.getData('deviceType');
+    let rfid = this.storageService.getData('rfid') || '';
+    if (!rfid.operator) {
+      this.reusableService.loginOperator();
+    }
   }
 
   ngAfterContentInit(): void {
@@ -99,7 +102,7 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
             func: () => {
               this.navCtrl.navigateRoot('/home');
               console.log(
-                `screen ${deviceType} isn\'t compatible so navigated back to home`
+                `screen ${deviceType} isn\'t compatible so navigated back to home`,
               );
             },
           },
@@ -109,9 +112,15 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
     }
   }
 
+  tabChange(event: Event) {
+    console.log(event);
+  }
+
   // Barcode scanner Funcs
   async startScan() {
-    let api = this.cartonService.changeApi('cartonpacking_scan/getcartonpackinglist');
+    let api = this.cartonService.changeApi(
+      'cartonpacking_scan/getcartonpackinglist',
+    );
     let params = {
       path: api,
       // path: 'appcartonpack/controllers/getcartonpackinglist.php'
@@ -122,18 +131,21 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
     // http post
     this.dataService.postService(params).then((res: any) => {
       if (res['status'].toLowerCase() == 'success') {
-
-        this.cartonBarcodeDataArr = this.storageService.getData('cartonBox_scanned') || [];
+        this.cartonBarcodeDataArr =
+          this.storageService.getData('cartonBox_scanned') || [];
 
         if (!this.cartonBarcodeDataArr.includes(this.cartonBarcodeData)) {
-          this.cartonBarcodeDataArr.push(this.cartonBarcodeData)
+          this.cartonBarcodeDataArr.push(this.cartonBarcodeData);
         }
 
-        this.storageService.setData('cartonBox_scanned', this.cartonBarcodeDataArr);
+        this.storageService.setData(
+          'cartonBox_scanned',
+          this.cartonBarcodeDataArr,
+        );
 
         this.poList = res['ponumberlist'];
         this.cartonBoxQrDetails = res['cartonpacklist'];
-        let mapped_po = res['mapped_po']
+        let mapped_po = res['mapped_po'];
         console.log('poList', this.poList);
 
         let cartonData = {
@@ -149,10 +161,12 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
               role: 'confirm',
               func: () => {
                 this.cartonInputSubject.next('');
-                console.warn(`The Cartonpack : ${this.cartonBoxQrDetails[0].qrcode_format} has been DELETED`)
-              }
-            }
-          }
+                console.warn(
+                  `The Cartonpack : ${this.cartonBoxQrDetails[0].qrcode_format} has been DELETED`,
+                );
+              },
+            },
+          };
 
           this.reusableService.showAlert(alert);
           return;
@@ -164,11 +178,9 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
           this.cartonBarcodeData = '';
         }, 500);
 
-
         //flags
         this.cInpF = false;
       } else if (res['status'].toLowerCase() == 'error') {
-
         let alert = {
           msg: `Invalid Qr: ${this.cartonBarcodeData}`,
         };
@@ -203,7 +215,6 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
     console.log('cartonBox scan clicked');
     console.log('cartonBoxQrDetails', this.cartonBoxQrDetails);
   }
-
 
   //Barcode input box related
   cInpF: boolean = false;
@@ -242,11 +253,13 @@ export class CartonpackingPage implements OnInit, AfterViewInit {
   }
 
   assignHeaderIcons() {
-    let icons = [{
-      iconName: 'file-tray-full',
-      navTo: '/cartonpacking/cartonpack-details'
-    }]
+    let icons = [
+      {
+        iconName: 'file-tray-full',
+        navTo: '/cartonpacking/cartonpack-details',
+      },
+    ];
 
-    return icons
+    return icons;
   }
 }

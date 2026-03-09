@@ -167,6 +167,7 @@ export class ReusableService {
     const modal =await this.modalCtrl.create({
       component: RfidLoginModalComponent,
       cssClass: 'operator-login-modal',
+       backdropDismiss: false
     });
 
     await modal.present();

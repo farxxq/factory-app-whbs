@@ -139,6 +139,7 @@ export class AuthService {
       this.reusableService.showToast(toast);
       return;
     }
+    console.log(user);
     return user.role;
   }
 

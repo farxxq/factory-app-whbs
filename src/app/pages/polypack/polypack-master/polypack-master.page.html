@@ -172,7 +172,7 @@
 
     <!-- Add polypack page -->
     <!--  -->
-    <ion-tab selectedTab="add-polypack" tab="add-polypack">
+    <ion-tab tab="add-polypack">
       <!-- <app-header [logoutBtn]="false" [iconTray]="assignAddPolyPageHeaderIcons()"
       [headerData]="'Add Poly Pack'"></app-header> -->
       <ion-content class="ion-padding">
@@ -489,7 +489,7 @@
     <!-- <ion-button color="primary" (click)="scanCode()">Click</ion-button>
   <h1>{{barcodeData}}</h1> -->
 
-    <ion-tab-bar slot="bottom" style="--background: #e9f0fd">
+    <ion-tab-bar [selectedTab]="'add-polypack'" slot="bottom" style="--background: #e9f0fd">
       <ion-tab-button tab="size-map">
         <ion-icon name="scan-outline"></ion-icon>
         <ion-label>Size Mapping</ion-label>

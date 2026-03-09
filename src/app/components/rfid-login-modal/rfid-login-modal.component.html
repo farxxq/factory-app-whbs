@@ -1,7 +1,5 @@
 <ion-content class="modal-wrapper">
-
   <div class="login-card">
-
     <div class="icon">
       <ion-icon name="id-card-outline"></ion-icon>
     </div>
@@ -16,11 +14,9 @@
         [(ngModel)]="operatorId"
         readonly
       />
-      <ion-icon name="eye-outline"></ion-icon>
     </div>
 
     <div class="keypad">
-
       <button (click)="addNumber('1')">1</button>
       <button (click)="addNumber('2')">2</button>
       <button (click)="addNumber('3')">3</button>
@@ -38,22 +34,31 @@
       </button>
 
       <button (click)="addNumber('0')">0</button>
-
-      <button class="submit" (click)="submit()">
-        <ion-icon name="arrow-forward"></ion-icon>
-      </button>
-
+      <ion-button class="submit" (click)="submit()" [disabled]="!operatorId">
+        <!-- <ion-icon name="arrow-forward" slot="end"></ion-icon> -->
+        Submit
+      </ion-button>
     </div>
-
     <div class="footer">
-      <span class="scan">📡 Awaiting badge scan...</span>
-
-      <div class="links">
-        <span>Change Terminal</span>
-        <span>Help / Support</span>
+      <div class="scanner-box">
+        <ion-input
+          #scanInput
+          class="scan-input"
+          placeholder="Scan RFID..."
+          [(ngModel)]="operatorId"
+          (ionInput)="onRfidInput($event)"
+          (ionBlur)="keepScannerFocus()"
+          inputmode="none"
+        ></ion-input>
+        <!-- <input
+          type="text"
+          class="scan-input"
+          placeholder="Scan RFID..."
+          [(ngModel)]="operatorId"
+          (blur)="convertRFID()"
+          /> -->
+        <!-- readonly -->
       </div>
     </div>
-
   </div>
-
 </ion-content>

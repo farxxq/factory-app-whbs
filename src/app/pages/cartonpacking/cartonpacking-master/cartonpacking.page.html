@@ -4,22 +4,50 @@
 ></app-header>
 <!--  -->
 <ion-content class="ion-padding">
-  <div class="barcode-inp-box carton-barcode-container">
-    <ion-input
-      #cartonBarcodeInput
-      id="inpCarbarcode"
-      placeholder="SCAN CARTON BOX"
-      inputmode="none"
-      (ionBlur)="cInpF = false"
-      [placeholder]="cInpF ? '' :'SCAN'"
-      [ngClass]="cInpF? 'inputFocus':'inputNotFocus'"
-      (ionFocus)="setFocus('cartonBox')"
-      inputMode="none"
-      (ionInput)="onCartonInput($event)"
-      [(ngModel)]="cartonBarcodeData"
-      type="text"
-      (dblclick)="cartonBarcodeData = ' 7-4529-S-10-10-10-0002'"
-    ></ion-input>
-    <!--  -->
-  </div>
+  <ion-tabs (ionTabsDidChange)="tabChange($event)">
+    <ion-tab selectedTab="dashboard" tab="dashboard">
+      <ion-content class="ion-padding"> Dashboard </ion-content>
+    </ion-tab>
+    <ion-tab tab="carton-pack">
+      <ion-content class="ion-padding">
+        <div class="barcode-inp-box carton-barcode-container">
+          <ion-input
+            #cartonBarcodeInput
+            id="inpCarbarcode"
+            placeholder="SCAN CARTON BOX"
+            inputmode="none"
+            (ionBlur)="cInpF = false"
+            [placeholder]="cInpF ? '' :'SCAN'"
+            [ngClass]="cInpF? 'inputFocus':'inputNotFocus'"
+            (ionFocus)="setFocus('cartonBox')"
+            (ionInput)="onCartonInput($event)"
+            [(ngModel)]="cartonBarcodeData"
+            type="text"
+            (dblclick)="cartonBarcodeData = ' 7-4529-S-10-10-10-0002'"
+          ></ion-input>
+          <!--  -->
+        </div>
+      </ion-content>
+    </ion-tab>
+    <ion-tab tab="carton-details">
+      <ion-content class="ion-padding">
+        <app-cartonpack-details></app-cartonpack-details>
+      </ion-content>
+    </ion-tab>
+
+    <ion-tab-bar slot="bottom" [selectedTab]="'carton-pack'">
+      <ion-tab-button tab="dashboard">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+        <ion-label>Dashboard</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="carton-pack">
+        <ion-icon name="file-tray-outline"></ion-icon>
+        <ion-label>Carton Packing</ion-label>
+      </ion-tab-button>
+      <ion-tab-button tab="carton-details">
+        <ion-icon name="file-tray-stacked-outline"></ion-icon>
+        <ion-label>Carton Box Details</ion-label>
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
 </ion-content>

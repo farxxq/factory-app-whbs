@@ -26,10 +26,7 @@ export class DataService {
   tracerArr: any = [];
 
   ip = this.storageService.getData('ip');
-
-  ipAdd = this.ip == 'localip' ? 'http://192.168.16.127/gannet_v5/' : this.ip; //temp only for debugging
-
-  public apiUrl: string = `https://${this.ipAdd}/`; // Live url
+  public apiUrl: string = this.ip == 'localip' ? 'http://192.168.16.127/gannet_v5/' : `https://${this.ip}/`; // Live url
   // public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
 
   // **NOTE** : NOT IN USE DUE TO FACTORY SECURITY REASONS AND WIFI DISRUPTIONS
@@ -44,7 +41,6 @@ export class DataService {
   ) {
     console.log('API URL:', this.apiUrl);
     console.log('API URL:', this.ip);
-    console.log('API URL:', this.ipAdd);
   }
 
   async postService(params: any) {

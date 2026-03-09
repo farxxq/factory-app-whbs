@@ -2,8 +2,17 @@
   <ion-toolbar>
     <div class="nav-header">
       <ion-buttons slot="start">
-        <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
-          <ion-icon slot="start" class="back-title" name="arrow-back-outline"></ion-icon>
+        <ion-button
+          shape="round"
+          icon="arrow-back-outline"
+          class="ion-no-padding"
+          (click)="canLeave()"
+        >
+          <ion-icon
+            slot="start"
+            class="back-title"
+            name="arrow-back-outline"
+          ></ion-icon>
         </ion-button>
         <ion-title class="ion-no-padding back-title">Back</ion-title>
       </ion-buttons>
@@ -21,13 +30,14 @@
       @if (deviceType == 'mobile') {
       <ion-row>
         <ion-col size="6">
-          <div class="info-header"><span>Season</span>
-            <p>{{filterDataList.season.season_name |
-              titlecase}}</p>
+          <div class="info-header">
+            <span>Season</span>
+            <p>{{filterDataList.season.season_name | titlecase}}</p>
           </div>
         </ion-col>
         <ion-col size="6">
-          <div class="info-header"><span>Order</span>
+          <div class="info-header">
+            <span>Order</span>
             <p>{{filterDataList.order.order_name}}</p>
           </div>
         </ion-col>
@@ -35,23 +45,23 @@
       <ion-row>
         @if(filterDataList.poNum){
         <ion-col size="6">
-          <div class="info-header"><span>PO</span>
+          <div class="info-header">
+            <span>PO</span>
             <p>{{filterDataList.poNum.order_ponumber}}</p>
           </div>
         </ion-col>
         }
         <ion-col [size]="poNum ? 6: 12">
-          <div class="info-header"><span>Color</span>
+          <div class="info-header">
+            <span>Color</span>
             <p>{{filterDataList.color.color_name}}</p>
           </div>
         </ion-col>
       </ion-row>
-      }
-      @if (deviceType == 'tab'){
+      } @if (deviceType == 'tab'){
       <ion-row>
         <ion-col size="4">
-          <p>{{filterDataList.season.season_name |
-            titlecase}}</p>
+          <p>{{filterDataList.season.season_name | titlecase}}</p>
         </ion-col>
         <ion-col size="4">
           <p>{{filterDataList.order.order_name}}</p>
@@ -73,21 +83,31 @@
           <ion-row>
             <!-- Select PO -->
             <ion-col size="8">
-              <p-select [disabled]="!poList.length" [options]="poList" [(ngModel)]="poModel" [filter]="true"
-                filterBy="order_ponumber" [checkmark]="true" (onChange)="addQuantityInitialData()"
-                optionLabel="order_ponumber" placeholder="Select PO" />
+              <p-select
+                [disabled]="!poList.length"
+                [options]="poList"
+                [(ngModel)]="poModel"
+                [filter]="true"
+                filterBy="order_ponumber"
+                [checkmark]="true"
+                (onChange)="addQuantityInitialData()"
+                optionLabel="order_ponumber"
+                placeholder="Select PO"
+              />
             </ion-col>
           </ion-row>
           <ion-row>
             @if(fullSizeList.length > 0){
             <div class="table-wrapper">
               <table class="size-table">
-
                 <!-- HEADER -->
                 <thead>
                   <tr>
                     <th>Size</th>
-                    <th> Status <br><span class="sub-info">Order Qty VS Assigned Qty</span></th>
+                    <th>
+                      Status <br />
+                      <span class="sub-info">Assigned Qty VS Order Qty</span>
+                    </th>
                     <th>Remaining to assign</th>
                     <!-- 
                     <th>Projected</th>
@@ -101,21 +121,27 @@
                 <tbody>
                   @for (item of fullSizeList; track $index; let i = $index) {
                   <tr>
-
                     <!-- SIZE -->
-                    <td class="size-cell">
-                      {{ item.size_name }}
-                    </td>
+                    <td class="size-cell">{{ item.size_name }}</td>
 
                     <!-- Status/Reference -->
                     <td>
                       <!-- inventory_qty/used_qty units -->
-                      <span class="qty" [ngClass]="item.stockClass">{{item.mapped_polypack_qty}}</span>/<span>{{
-                        item.order_polypack_qty }}</span>
+                      <span class="qty" [ngClass]="item.stockClass">
+                        {{item.mapped_polypack_qty}}
+                      </span>
+                      /
+                      <span>
+                        {{ item.order_polypack_qty }}
+                      </span>
                       pcs
                       <!-- so it is like (totalOrder - mapped)/ 100 and if this results to atmost 0.4 we show warning
                        -->
-                      <ion-progress-bar type="determinate" [value]="item.progress" [ngClass]="item.stockClass">
+                      <ion-progress-bar
+                        type="determinate"
+                        [value]="item.progress"
+                        [ngClass]="item.stockClass"
+                      >
                       </ion-progress-bar>
                       <!-- {{ item.balance_polypack_qty }} -->
                     </td>
@@ -123,15 +149,24 @@
                     <!-- Remaining qty in order -->
                     <td>
                       <!-- show it inside like chip with the amount remaining that can be considered (total_order_size_qty - mapped_polypack_qty) left-->
-                      <ion-chip [ngClass]="item.stockClass">{{item.balance_polypack_qty}}</ion-chip>
+                      <ion-chip [ngClass]="item.stockClass"
+                        >{{item.balance_polypack_qty}}</ion-chip
+                      >
                     </td>
 
                     <!-- Qty to Map -->
                     <td>
                       <div class="qty-input-wrapper">
-                        <ion-input fill="outline" type="tel" [disabled]="!item.balance_polypack_qty" inputmode="numeric"
-                          [value]="item.polypack_qty" (ionInput)="onQtyInput($event, item)"
-                          (ionBlur)="validateQty(item)" class="qty-input">
+                        <ion-input
+                          fill="outline"
+                          type="tel"
+                          [disabled]="!item.balance_polypack_qty"
+                          inputmode="numeric"
+                          [value]="item.polypack_qty"
+                          (ionInput)="onQtyInput($event, item)"
+                          (ionBlur)="validateQty(item)"
+                          class="qty-input"
+                        >
                         </ion-input>
                       </div>
                     </td>
@@ -143,7 +178,6 @@
                     <td class="total-num">{{totalQty}}</td>
                   </tr>
                 </tbody>
-
               </table>
             </div>
             }@else {
@@ -160,14 +194,23 @@
     <!-- } -->
   </div>
   <div class="interactive-btn">
-    <ion-button [disabled]="!totalQty || totalQty <= 0" color="primary" fill="outline" expand="block"
-      (click)="clearQty()">
+    <ion-button
+      [disabled]="!totalQty || totalQty <= 0"
+      color="primary"
+      fill="outline"
+      expand="block"
+      (click)="clearQty()"
+    >
       Clear All
     </ion-button>
-    <ion-button [disabled]="!totalQty || totalQty <= 0" color="success" expand="block" (click)="confirmSubmit()">
+    <ion-button
+      [disabled]="!totalQty || totalQty <= 0"
+      color="success"
+      expand="block"
+      (click)="confirmSubmit()"
+    >
       Submit
     </ion-button>
   </div>
   }
-
 </ion-content>
