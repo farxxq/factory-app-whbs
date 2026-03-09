@@ -56,8 +56,8 @@
         expand="block"
         color="primary"
       >
-        <ion-icon slot="end" name="arrow-forward"></ion-icon>
-        Login
+      {{ip? 'Login' : 'Set Ip Address'}}
+        <ion-icon slot="end" [name]="ip? 'arrow-forward' : 'globe-outline'"></ion-icon>
       </ion-button>
     </div>
     }

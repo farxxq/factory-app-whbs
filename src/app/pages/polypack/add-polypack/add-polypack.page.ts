@@ -174,6 +174,7 @@ export class AddPolypackPage implements OnInit {
           setTimeout(() => {
             let barcode = this.filterDataList.sizeBarcode;
             this.startScan(barcode);
+            this.totalAddedQty()
           }, 300)
         }
 

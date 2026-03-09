@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { register } from 'swiper/element/bundle';
 import { ReusableService } from './providers/reusables/reusable-service';
 import { DataService } from './providers/dataService/data-service';
+import { addIcons } from 'ionicons';
 
 register(); //for swiper js
 
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
-  styleUrls: [ 'app.component.scss' ],
+  styleUrls: ['app.component.scss'],
   standalone: false,
 })
 export class AppComponent {
@@ -31,8 +32,13 @@ export class AppComponent {
       this.reusableService.showAlert(alert);
     }
 
-    alert('Version inspection');
+    alert('Version panelcheck');
     alert(this.dataService.apiUrl);
+
+
+    addIcons({
+      'gannet-logo': '../assets/icon/Gannetlogo.svg'
+    });
   }
 
 }

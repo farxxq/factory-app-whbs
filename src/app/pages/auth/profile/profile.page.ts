@@ -21,9 +21,11 @@ export class ProfilePage implements OnInit {
     public navCtrl: NavController,
     private reusableService: ReusableService,
     private dataService: DataService,
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getUser();
+  }
 
   getUser() {
     this.userData = this.storageService.getData('userData');
@@ -31,6 +33,7 @@ export class ProfilePage implements OnInit {
   }
 
   canLogout() {
+    let msg = '';
     let alert = {
       msg: 'Do you want to logout?',
       btn: [

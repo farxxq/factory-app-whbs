@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import {
   AlertController,
   LoadingController,
+  ModalController,
   ToastController,
 } from '@ionic/angular';
 
 import { Platform } from '@ionic/angular';
+import { RfidLoginModalComponent } from 'src/app/components/rfid-login-modal/rfid-login-modal.component';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +24,7 @@ export class ReusableService {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private loadCtrl: LoadingController,
+    private modalCtrl: ModalController
     // private platform: Platform
   ) { }
 
@@ -157,5 +160,15 @@ export class ReusableService {
     } else {
       return console.log('rearrange data is empty');
     }
+  }
+
+  //operator login
+    async loginOperator() {
+    const modal =await this.modalCtrl.create({
+      component: RfidLoginModalComponent,
+      cssClass: 'operator-login-modal',
+    });
+
+    await modal.present();
   }
 }

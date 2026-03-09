@@ -1,23 +1,23 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar class="ion-padding-inline">
     <div class="header">
       <div class="logo">
-        <!-- username == 'mesadmin'? changeAPIURL(): '' -->
-        <p>
-          <strong>{{ headerData }}</strong>
-        </p>
+          <ion-icon name="gannet-logo"></ion-icon>
         <!-- make the above as a gannet logo and on clicking that we take the user to the home -->
-        <span
-          (dblclick)="changeAPIURL()"
-          style="color: #e9f0fd; cursor: pointer"
-          >...</span
-        >
+        @if(username == 'mesadmin'){
+        <span (dblclick)="changeAPIURL()" style="color: #e9f0fd; cursor: pointer">...</span>
+        }
       </div>
       <div class="actionBtns">
-        <!-- language button and profile page button -->
-        <div class="iconBtn" (click)="canCheckin_out()">
-          <ion-icon name="language"></ion-icon>
+        <div class="iconBtn homeBtn" (click)="goToHome()">
+          <ion-icon slot="start" name="home"></ion-icon>
         </div>
+        <!-- language button -->
+        <!-- <div class="iconBtn" (click)="canCheckin_out()">
+          <ion-icon name="language"></ion-icon>
+        </div> -->
+
+        <!-- profile page button -->
         <div class="iconBtn" (click)="goTo('profile')">
           <ion-icon name="person-circle-outline"></ion-icon>
         </div>

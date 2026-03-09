@@ -61,7 +61,7 @@ export class DataService {
     let uinno = userData.uinno;
     let app_type: APP_TYPE = this.storageService.getData('app_type');
     let qc_device_details = this.storageService.getData('qc_device_details'); //will have the tab device details itseems
-    let rfid = this.storageService.getData('rfid_operator');
+    let rfid = this.storageService.getData('rfid') || '';
 
     // temp try but didn't work
     // if (this.apiUrl == `https://${this.ipAdd}/pdkgannet.whindia.in/`) {
@@ -89,7 +89,7 @@ export class DataService {
       postData.append('qc_device_details', JSON.stringify(qc_device_details));
       postData.append('app_type', app_type);
       postData.append('uinno', uinno);
-      postData.append('rfid', rfid); //discuss on this (rfid for operator?, supervisor?)
+      postData.append('rfid_operator', rfid.operator); //discuss on this (rfid for operator?, supervisor?)
     }
 
     for (var q in params) {

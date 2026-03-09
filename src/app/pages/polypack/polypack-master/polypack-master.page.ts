@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInput, NavController } from '@ionic/angular';
+import { IonInput, ModalController, NavController } from '@ionic/angular';
 import { AuthService } from '../../../providers/authService/auth-service';
 import { DataService } from '../../../providers/dataService/data-service';
 import { ReusableService } from '../../../providers/reusables/reusable-service';
 import { StorageService } from '../../../providers/storage/storage-service';
 import { Spolypack } from '../service/spolypack';
 import { debounceTime, Subject } from 'rxjs';
+import { RfidLoginModalComponent } from 'src/app/components/rfid-login-modal/rfid-login-modal.component';
 
 @Component({
   selector: 'app-polypack-master',
@@ -52,12 +53,14 @@ export class PolypackMasterPage implements OnInit {
     private storageService: StorageService,
     private polypackService: Spolypack,
     private navCtrl: NavController,
+    private modalCtrl: ModalController,
   ) {
     this.authService.isLogin();
   }
 
   ngOnInit() {
     this.deviceType = this.storageService.getData('deviceType');
+    // Scanner type
     let alert = {
       msg: 'External Scanner connected?',
       btn: [
@@ -95,10 +98,16 @@ export class PolypackMasterPage implements OnInit {
     };
 
     this.reusableService.showAlert(alert);
+
+    // operatorlogin
+    // let rfid = this.storageService.getData('rfid') ||'';
+    // if(!rfid.operator){
+    //   // this.reusableService.loginOperator();
+    // }
   }
 
   ngAfterContentInit(): void {
-    this.assignListService(0);
+    this.assignListService(0); 
 
     let deviceType = this.storageService.getData('deviceType');
 
@@ -167,6 +176,7 @@ export class PolypackMasterPage implements OnInit {
         path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
+        tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'orderList';
       reslist = 'ordernamelist';
@@ -191,7 +201,7 @@ export class PolypackMasterPage implements OnInit {
         'carton_packing/getcolors',
       );
       params = {
-        path: 'carton_packing/getcolors',
+        path: api,
         // path: 'apppolypack/controllers/getcolors.php',
         orderseqnum: this.orderModel['order_seq_num'],
         orderponum: this.poModel['order_ponumber']
@@ -453,7 +463,7 @@ export class PolypackMasterPage implements OnInit {
           let toast = {
             message: this.isScanner
               ? '📷 Scanner type is enabled'
-              : '📝 Manual entry is enabled',
+              : '📝 Manual entry type is enabled',
             position: 'bottom',
             color: 'medium',
           };

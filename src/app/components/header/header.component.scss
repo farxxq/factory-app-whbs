@@ -1,5 +1,5 @@
 ion-header {
-  --ion-background-color: #e9f0fd;
+  --ion-background-color: var(--ion-color-primary);
 
   ion-toolbar .header {
     display: flex;
@@ -8,23 +8,30 @@ ion-header {
     width: 100%;
     padding-inline: 10px;
     font-family: "euclid-circular-b", "euclid-circular-m";
+    color: #e9f0fd;
 
     .logo {
       height: auto;
-      display: flex;
 
-      p {
-        font-size: 20px;
+      ion-icon {
+        font-size: 80px;
+        padding: 0;
+        margin: 0;
+        height: 30px;
       }
 
-      img {
-        width: 100px;
-        margin: 15px 0;
+      // p {
+      //   font-size: 20px;
+      // }
 
-        @media screen and (max-width: 600px) {
-          width: 80px;
-        }
-      }
+      // img {
+      //   width: 100px;
+      //   margin: 15px 0;
+
+      //   @media screen and (max-width: 600px) {
+      //     width: 80px;
+      //   }
+      // }
     }
 
     .actionBtns {
@@ -56,9 +63,14 @@ ion-header {
         p {
           font-size: 1.3rem;
         }
+
+        ion-icon {
+          font-size: 100px;
+        }
       }
 
       .actionBtns {
+
         .checkoutBtn,
         .homeBtn,
         .iconBtn {

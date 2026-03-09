@@ -1,0 +1,59 @@
+<ion-content class="modal-wrapper">
+
+  <div class="login-card">
+
+    <div class="icon">
+      <ion-icon name="id-card-outline"></ion-icon>
+    </div>
+
+    <h2>Next Operator Login</h2>
+    <p>Please scan badge or enter ID to continue operation</p>
+
+    <div class="input-wrapper">
+      <input
+        type="text"
+        placeholder="Enter Operator ID"
+        [(ngModel)]="operatorId"
+        readonly
+      />
+      <ion-icon name="eye-outline"></ion-icon>
+    </div>
+
+    <div class="keypad">
+
+      <button (click)="addNumber('1')">1</button>
+      <button (click)="addNumber('2')">2</button>
+      <button (click)="addNumber('3')">3</button>
+
+      <button (click)="addNumber('4')">4</button>
+      <button (click)="addNumber('5')">5</button>
+      <button (click)="addNumber('6')">6</button>
+
+      <button (click)="addNumber('7')">7</button>
+      <button (click)="addNumber('8')">8</button>
+      <button (click)="addNumber('9')">9</button>
+
+      <button class="delete" (click)="delete()">
+        <ion-icon name="backspace-outline"></ion-icon>
+      </button>
+
+      <button (click)="addNumber('0')">0</button>
+
+      <button class="submit" (click)="submit()">
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+
+    </div>
+
+    <div class="footer">
+      <span class="scan">📡 Awaiting badge scan...</span>
+
+      <div class="links">
+        <span>Change Terminal</span>
+        <span>Help / Support</span>
+      </div>
+    </div>
+
+  </div>
+
+</ion-content>
