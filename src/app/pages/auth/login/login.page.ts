@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
     public dataService: DataService,
     public storageService: StorageService,
     private reusableService: ReusableService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     let data = this.storageService.getData('ip');
@@ -69,8 +69,10 @@ export class LoginPage implements OnInit {
   setIp() {
     if (this.ip) {
 
-      if(this.ip == 'localip'){
+      if (this.ip == 'localip') {
         this.storageService.setData('ip', 'http://192.168.16.127/gannet_v5/');
+      } else {
+        this.storageService.setData('ip', this.ip);
       }
       let data = this.storageService.getData('ip');
 
