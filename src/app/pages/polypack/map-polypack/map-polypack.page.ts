@@ -42,7 +42,6 @@ export class MapPolypackPage implements OnInit {
   @ViewChild('mapInput', { static: false })
   mapInput!: IonInput;
 
-
   private mapInputSubject = new Subject<string>();
   private inputSub: any;
 
@@ -52,12 +51,12 @@ export class MapPolypackPage implements OnInit {
     private polypackService: Spolypack,
     private navCtrl: NavController,
     private ionicGuards: IonicGuards,
-    private storageService: StorageService
+    private storageService: StorageService,
   ) {
     this.filterDataList = this.polypackService.getMapData();
     this.deviceType = this.reusableService.deviceType();
     this.isScanner = this.storageService.getData('isScanner');
-    console.log(this.filterDataList)
+    console.log(this.filterDataList);
   }
 
   ngOnInit() {
@@ -66,12 +65,15 @@ export class MapPolypackPage implements OnInit {
   }
 
   async getColorLists() {
-    let api = this.polypackService.changeApiPolypack('carton_packing/getcolors');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/getcolors',
+    );
 
     let params = {
       path: api,
       // path: 'apppolypack/controllers/getcolors.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
@@ -100,6 +102,7 @@ export class MapPolypackPage implements OnInit {
     let params = {
       path: api,
       // path: 'apppolypack/controllers/getsize.php',
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       colorseqnum: this.colorModel['color_seq_num'],
     };
@@ -107,7 +110,10 @@ export class MapPolypackPage implements OnInit {
     this.dataService.postService(params).then(async (res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         //  res['sizedetails'];
-        this.sizeList = this.reusableService.rearrangeData(res['sizedetails'], 'size_name')
+        this.sizeList = this.reusableService.rearrangeData(
+          res['sizedetails'],
+          'size_name',
+        );
         this.scannedMapSizeList = JSON.parse(JSON.stringify(this.sizeList));
         console.log(this.scannedMapSizeList, 'initial');
         for (const size of this.scannedMapSizeList) {
@@ -127,26 +133,31 @@ export class MapPolypackPage implements OnInit {
   }
 
   async generate() {
-    let api = this.polypackService.changeApiPolypack('carton_packing/barcodegenerate');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/barcodegenerate',
+    );
 
     let params = {
       path: api,
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         this.generateList = res['barcode_details'];
-        console.log(res['barcode_details']['colors'][0]['sizes'])
+        console.log(res['barcode_details']['colors'][0]['sizes']);
         this.generateList.colors.forEach((color: any) => {
-          color.sizes = this.reusableService.rearrangeData(color.sizes, 'size_name');
+          color.sizes = this.reusableService.rearrangeData(
+            color.sizes,
+            'size_name',
+          );
         });
 
-
         this.genColorList = JSON.parse(
-          JSON.stringify(this.generateList.colors)
+          JSON.stringify(this.generateList.colors),
         );
 
         for (let item of this.genColorList) {
@@ -156,10 +167,10 @@ export class MapPolypackPage implements OnInit {
         }
 
         this.isGenerated = this.currentGenList.sizes.some(
-          size => size.barcode_type_details
+          (size) => size.barcode_type_details,
         );
 
-        console.log(this.currentGenList, 'currentGenList')
+        console.log(this.currentGenList, 'currentGenList');
         console.log(this.genColorList, 'initial');
         console.log(this.generateList, 'generateList');
       } else if (res['status'].toLowerCase() == 'error') {
@@ -181,7 +192,7 @@ export class MapPolypackPage implements OnInit {
     }
 
     let isPresent = this.scannedMapSizeList.find(
-      (size: any) => size.barcode_type_details == data
+      (size: any) => size.barcode_type_details == data,
     );
 
     console.log(isPresent);
@@ -189,7 +200,7 @@ export class MapPolypackPage implements OnInit {
     if (isPresent) {
       let alert = {
         header: '⚠️ Code Scanned!',
-        msg: 'Same code scanned already'
+        msg: 'Same code scanned already',
       };
 
       this.reusableService.showAlert(alert);
@@ -247,7 +258,9 @@ export class MapPolypackPage implements OnInit {
         }
       }
       console.log(barcodeDetails, 'barcodeDetails');
-      let api = this.polypackService.changeApiPolypack('carton_packing/orderdetailsbarcodemapping');
+      let api = this.polypackService.changeApiPolypack(
+        'carton_packing/orderdetailsbarcodemapping',
+      );
 
       //http post
       let params = {
@@ -255,6 +268,7 @@ export class MapPolypackPage implements OnInit {
         // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
         colorseqnum: this.colorModel['color_seq_num'],
         customerseqnum: this.filterDataList.customer['customer_seq_num'],
+        lineseqnum: this.filterDataList.line['line_seq_num'],
         orderseqnum: this.filterDataList.order['order_seq_num'],
         seasonseqnum: this.filterDataList.season['season_seq_num'],
         barcode_mappings: JSON.stringify(barcodeDetails),
@@ -282,7 +296,6 @@ export class MapPolypackPage implements OnInit {
     } else if (action == 'gen') {
       let genBarCodeDetails = [];
 
-
       let params = {};
       let success: boolean = false;
       let message: string = '';
@@ -298,21 +311,23 @@ export class MapPolypackPage implements OnInit {
           genBarCodeDetails.push(data);
         }
 
-        let api = this.polypackService.changeApiPolypack('carton_packing/orderdetailsbarcodemapping');
-
+        let api = this.polypackService.changeApiPolypack(
+          'carton_packing/orderdetailsbarcodemapping',
+        );
 
         params = {
           path: api,
           // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
           colorseqnum: this.colorList[i]['color_seq_num'],
           customerseqnum: this.filterDataList.customer['customer_seq_num'],
+          lineseqnum: this.filterDataList.line['line_seq_num'],
           orderseqnum: this.filterDataList.order['order_seq_num'],
           seasonseqnum: this.filterDataList.season['season_seq_num'],
           barcode_mappings: JSON.stringify(genBarCodeDetails),
-          i: i
+          i: i,
         };
 
-        console.log(this.colorList[i]['color_seq_num'],)
+        console.log(this.colorList[i]['color_seq_num']);
 
         this.dataService.postService(params).then(async (res: any) => {
           if (res['status'].toLowerCase() == 'success') {
@@ -406,7 +421,7 @@ export class MapPolypackPage implements OnInit {
     const value = event.detail.value;
     console.log('cartonInput is triggered', value);
     let isPresent = this.scannedMapSizeList.find(
-      (size: any) => size.barcode_type_details == value
+      (size: any) => size.barcode_type_details == value,
     );
     console.warn(isPresent, 'code already scanned');
     if (isPresent) {
@@ -421,9 +436,9 @@ export class MapPolypackPage implements OnInit {
               this.scannedMapSizeList[index]['barcode_type_details'] = null;
               this.scannedMapSizeList[index]['barcodeModel'] = '';
               this.scannedMapSizeList[index]['mInpF'] = false;
-            }
-          }
-        ]
+            },
+          },
+        ],
       };
       this.reusableService.showAlert(alert);
       return;

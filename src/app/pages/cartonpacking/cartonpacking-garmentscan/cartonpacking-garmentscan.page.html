@@ -53,7 +53,8 @@
   <div class="total">
     <!-- BOX PIECES: {{totalPiecesLoaded}} -->
     <h5>BOX PIECES</h5>
-    <span>{{cumTotalCartonPcs()}}</span>
+    <span>{{this.totalPiecesLoaded}}</span>
+    <!-- <span>{{cumTotalCartonPcs()}}</span> -->
     @if(packedStatus == 'PACKED'){
     <!-- @if(packedStatus == 'S' && packAlterStatus !='cl'){ -->
     <span class="packed">Box Packed</span>

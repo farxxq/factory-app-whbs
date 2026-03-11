@@ -26,7 +26,10 @@ export class DataService {
   tracerArr: any = [];
 
   ip = this.storageService.getData('ip');
-  public apiUrl: string = this.ip == 'localip' ? 'http://192.168.16.127/gannet_v5/' : `https://${this.ip}/`; // Live url
+  public apiUrl: string =
+    this.ip == 'localip'
+      ? 'http://192.168.16.127/gannet_v5/'
+      : `https://${this.ip}/`; // Live url
   // public apiUrl: string = 'http://192.168.16.127/gannet_v5/'; // Local url
 
   // **NOTE** : NOT IN USE DUE TO FACTORY SECURITY REASONS AND WIFI DISRUPTIONS
@@ -209,14 +212,15 @@ export class DataService {
       postData.append('companyshortname', userData.companyshortname);
       postData.append('processseqnum', '1');
       postData.append('locationseqnum', userData.branchcode);
-      postData.append('qc_device_details', qc_device_details);
+      postData.append('qc_device_details', JSON.stringify(qc_device_details));
       postData.append('app_type', app_type);
       postData.append('ip', ip);
     }
 
     return new Promise(async (resolve, reject) => {
       this.http
-        .post('https://gannet.online/console/login/getapp_type', postData)
+        // .post('https://gannet.online/console/login/getapp_type', postData)
+        .post('http://192.168.16.127/gannet_v5/login/getapp_type', postData) // temp only for local debugging remove later
         .subscribe(
           async (res) => {
             resolve(res);
@@ -240,6 +244,8 @@ export class DataService {
                 },
               ],
             };
+
+            this.reusableService.cancelLoading();
 
             this.reusableService.showAlert(alert);
             console.log(err);

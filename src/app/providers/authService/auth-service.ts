@@ -43,13 +43,12 @@ export class AuthService {
     const deviceDetails = {
       model: info.model,
       platform: info.platform,
-      osVersion: info.osVersion,
+      version: info.osVersion,
       manufacturer: info.manufacturer,
-      uuid: id.identifier,
+      UUID: id.identifier,
       connectionType: net.connectionType,
+      serial: 123456,
     };
-
-    console.log(deviceDetails);
 
     this.storageService.setData('qc_device_details', deviceDetails);
   }

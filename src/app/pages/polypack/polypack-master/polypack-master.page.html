@@ -20,151 +20,211 @@
         </ion-segment>
         <ion-segment-view scrollable="false">
           <ion-segment-content id="map">
-            <ion-grid class="filters">
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Season</div>
-                  <p-select
-                    [disabled]="!seasonList.length"
-                    [options]="seasonList"
-                    [(ngModel)]="seasonModel"
-                    [filter]="true"
-                    filterBy="season_name"
-                    [checkmark]="true"
-                    (onChange)="clearbelowAttrbutes(1)"
-                    optionLabel="season_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Customer</div>
-                  <p-select
-                    [disabled]="!customerList.length"
-                    [options]="customerList"
-                    [(ngModel)]="customerModel"
-                    [filter]="true"
-                    filterBy="customer_short_name"
-                    [checkmark]="true"
-                    (onChange)="clearbelowAttrbutes(2)"
-                    (click)="actionType = 'M'"
-                    optionLabel="customer_short_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Order</div>
-                  <p-select
-                    [disabled]="!orderList.length"
-                    [options]="orderList"
-                    [(ngModel)]="orderModel"
-                    [filter]="true"
-                    (onChange)="clearbelowAttrbutes(4)"
-                    filterBy="order_name"
-                    [checkmark]="true"
-                    optionLabel="order_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Color</div>
-                  <p-select
-                    [disabled]="!colorList.length"
-                    [options]="colorList"
-                    [(ngModel)]="colorModel"
-                    [filter]="true"
-                    filterBy="color_name"
-                    [checkmark]="true"
-                    optionLabel="color_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <ion-button
-                    [disabled]="!colorList.length"
-                    (click)="barcodeAction('map')"
-                    expand="block"
-                    color="primary"
-                  >
-                    <ion-icon slot="start" name="scan-outline"></ion-icon>
-                    Map
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <div class="filters">
+              <div class="row-content">
+                <div class="col">
+                  <div class="form-grid">
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!seasonList.length"
+                          [options]="seasonList"
+                          [(ngModel)]="seasonModel"
+                          [filter]="true"
+                          inputId="Season"
+                          filterBy="season_name"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(1)"
+                          optionLabel="season_name"
+                        ></p-select>
+                        <label for="Season">Season</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!customerList.length"
+                          [options]="customerList"
+                          [(ngModel)]="customerModel"
+                          [filter]="true"
+                          inputId="Customer"
+                          filterBy="customer_short_name"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(2)"
+                          (click)="actionType = 'M'"
+                          optionLabel="customer_short_name"
+                        ></p-select>
+                        <label for="Customer">Customer</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!lineList.length"
+                          [options]="lineList"
+                          [(ngModel)]="lineModel"
+                          [filter]="true"
+                          inputId="Line"
+                          filterBy="line_seq_num"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(3)"
+                          (click)="actionType = 'M'"
+                          optionLabel="line_name"
+                        ></p-select>
+                        <label for="Line">Line Details</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!orderList.length"
+                          [options]="orderList"
+                          [(ngModel)]="orderModel"
+                          [filter]="true"
+                          inputId="Order"
+                          filterBy="order_name"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(5)"
+                          optionLabel="order_name"
+                        ></p-select>
+                        <label for="Order">Order</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!colorList.length"
+                          [options]="colorList"
+                          [(ngModel)]="colorModel"
+                          [filter]="true"
+                          inputId="Color"
+                          filterBy="color_name"
+                          [checkmark]="true"
+                          optionLabel="color_name"
+                        ></p-select>
+                        <label for="Color">Color</label>
+                      </p-floatlabel>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-btn">
+                <ion-button
+                  [disabled]="!colorList.length"
+                  (click)="barcodeAction('map')"
+                  expand="block"
+                  color="primary"
+                >
+                  <ion-icon slot="start" name="scan-outline"></ion-icon>
+                  Map
+                </ion-button>
+              </div>
+            </div>
           </ion-segment-content>
           <ion-segment-content id="generate">
-            <ion-grid class="filters">
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Season</div>
-                  <p-select
-                    [disabled]="!seasonList.length"
-                    [options]="seasonList"
-                    [(ngModel)]="seasonModel"
-                    [filter]="true"
-                    filterBy="season_name"
-                    [checkmark]="true"
-                    (onChange)="clearbelowAttrbutes(1)"
-                    optionLabel="season_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Customer</div>
-                  <p-select
-                    [disabled]="!customerList.length"
-                    [options]="customerList"
-                    [(ngModel)]="customerModel"
-                    [filter]="true"
-                    filterBy="customer_short_name"
-                    [checkmark]="true"
-                    (onChange)="clearbelowAttrbutes(2)"
-                    (click)="actionType = 'G'"
-                    optionLabel="customer_short_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <div class="label-text">Order</div>
-                  <p-select
-                    [disabled]="!orderList.length"
-                    [options]="orderList"
-                    [(ngModel)]="orderModel"
-                    [filter]="true"
-                    filterBy="order_name"
-                    [checkmark]="true"
-                    optionLabel="order_name"
-                    placeholder="Select"
-                  />
-                </ion-col>
-              </ion-row>
-              <ion-row>
-                <ion-col>
-                  <ion-button
-                    [disabled]="!orderList.length"
-                    (click)="barcodeAction('generate')"
-                    expand="block"
-                    color="primary"
-                  >
-                    <ion-icon slot="start" name="scan-outline"></ion-icon>
-                    {{orderModel.barcode_type == "G"? 'View Barcode' :
-                    'Generate'}}
-                  </ion-button>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
+            <div class="filters">
+              <div class="row-content">
+                <div class="col">
+                  <div class="form-grid">
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!seasonList.length"
+                          [options]="seasonList"
+                          [(ngModel)]="seasonModel"
+                          [filter]="true"
+                          inputId="Season"
+                          filterBy="season_name"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(1)"
+                          optionLabel="season_name"
+                        ></p-select>
+                        <label for="Season">Season</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!customerList.length"
+                          [options]="customerList"
+                          [(ngModel)]="customerModel"
+                          [filter]="true"
+                          inputId="Customer"
+                          filterBy="customer_short_name"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(2)"
+                          (click)="actionType = 'G'"
+                          optionLabel="customer_short_name"
+                        ></p-select>
+                        <label for="Customer">Customer</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!lineList.length"
+                          [options]="lineList"
+                          [(ngModel)]="lineModel"
+                          [filter]="true"
+                          inputId="Line"
+                          filterBy="line_seq_num"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(3)"
+                          (click)="actionType = 'G'"
+                          optionLabel="line_name"
+                        ></p-select>
+                        <label for="Line">Line Details</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!orderList.length"
+                          [options]="orderList"
+                          [(ngModel)]="orderModel"
+                          [filter]="true"
+                          inputId="Order"
+                          filterBy="order_name"
+                          [checkmark]="true"
+                          optionLabel="order_name"
+                        ></p-select>
+                        <label for="Order">Order</label>
+                      </p-floatlabel>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row-btn">
+                <ion-button
+                  [disabled]="!orderList.length"
+                  (click)="barcodeAction('generate')"
+                  expand="block"
+                  color="primary"
+                >
+                  <ion-icon slot="start" name="scan-outline"></ion-icon>
+                  {{orderModel.barcode_type == "G" ? 'View Barcode' :
+                  'Generate'}}
+                </ion-button>
+              </div>
+            </div>
           </ion-segment-content>
         </ion-segment-view>
       </ion-content>
@@ -176,17 +236,17 @@
       <!-- <app-header [logoutBtn]="false" [iconTray]="assignAddPolyPageHeaderIcons()"
       [headerData]="'Add Poly Pack'"></app-header> -->
       <ion-content class="ion-padding">
-        <ion-grid class="filters">
+        <div class="filters">
           @if(deviceType == 'tab' && isScanner){
-          <ion-row>
-            <ion-col size="12">
+          <div class="form-grid">
+            <div class="form-field">
               <div class="sizeScan-input">
                 <ion-input
                   #sizeInput
                   class="inp-size"
                   placeholder="SCAN SIZE TAG"
                   inputmode="none"
-                  [ngClass]="sInpF? 'inputFocus':'inputNotFocus'"
+                  [ngClass]="sInpF ? 'inputFocus' : 'inputNotFocus'"
                   (ionFocus)="setFocus()"
                   (ionInput)="onSizeInput($event)"
                   (ionBlur)="sInpF = false"
@@ -195,131 +255,159 @@
                 >
                 </ion-input>
               </div>
-            </ion-col>
-          </ion-row>
+            </div>
+          </div>
           } @if(!isScanner || sizeBarcode) {
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Season</div>
-              <!-- added isScanner here alone -->
-              <p-select
-                [disabled]="!seasonList.length || sizeBarcode"
-                [options]="seasonList"
-                [(ngModel)]="seasonModel"
-                [filter]="true"
-                filterBy="season_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(1)"
-                optionLabel="season_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Customer</div>
-              <p-select
-                [disabled]="!customerList.length || sizeBarcode"
-                [options]="customerList"
-                [(ngModel)]="customerModel"
-                (onChange)="clearbelowAttrbutes(2)"
-                [filter]="true"
-                filterBy="customer_short_name"
-                [checkmark]="true"
-                optionLabel="customer_short_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Order</div>
-              <!-- <p-select  [disabled]="!orderList.length || sizeBarcode" [options]="orderList" [(ngModel)]="orderModel"
-              [filter]="true" filterBy="order_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(3)"
-              optionLabel="order_name" placeholder="Select" /> -->
-              <p-select
-                [disabled]="!orderList.length || sizeBarcode"
-                [options]="orderList"
-                [(ngModel)]="orderModel"
-                [filter]="true"
-                filterBy="order_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(3);clearbelowAttrbutes(4)"
-                optionLabel="order_name"
-                placeholder="Select"
-              />
-              <!-- when we don't have a po in the polist but have it in hardcopy -->
-            </ion-col>
-          </ion-row>
-          @if(poList.length > 0 && !isScanner){
-          <!-- @if(poList.length > 0 && poList['order_ponumber'] !== null){ -->
-          <ion-row>
-            <ion-col>
-              <div class="label-text">PO</div>
-              <p-select
-                [disabled]="!poList.length || sizeBarcode"
-                [options]="poList"
-                [(ngModel)]="poModel"
-                [filter]="true"
-                filterBy="order_ponumber"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(4)"
-                optionLabel="order_ponumber"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
+
+          <div class="row-content">
+            <div class="col">
+              <div class="form-grid">
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!seasonList.length || sizeBarcode"
+                      [options]="seasonList"
+                      [(ngModel)]="seasonModel"
+                      [filter]="true"
+                      inputId="Season"
+                      filterBy="season_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(1)"
+                      optionLabel="season_name"
+                    ></p-select>
+                    <label for="Season">Season</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!customerList.length || sizeBarcode"
+                      [options]="customerList"
+                      [(ngModel)]="customerModel"
+                      (onChange)="clearbelowAttrbutes(2)"
+                      [filter]="true"
+                      inputId="Customer"
+                      filterBy="customer_short_name"
+                      [checkmark]="true"
+                      optionLabel="customer_short_name"
+                    ></p-select>
+                    <label for="Customer">Customer</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!lineList.length || sizeBarcode"
+                      [options]="lineList"
+                      [(ngModel)]="lineModel"
+                      (onChange)="clearbelowAttrbutes(3)"
+                      [filter]="true"
+                      inputId="Line"
+                      filterBy="line_seq_num"
+                      [checkmark]="true"
+                      optionLabel="line_name"
+                    ></p-select>
+                    <label for="Line">Line Details</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!orderList.length || sizeBarcode"
+                      [options]="orderList"
+                      [(ngModel)]="orderModel"
+                      [filter]="true"
+                      inputId="Order"
+                      filterBy="order_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
+                      optionLabel="order_name"
+                    ></p-select>
+                    <label for="Order">Order</label>
+                  </p-floatlabel>
+                </div>
+
+                @if(poList.length > 0 && !isScanner){
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!poList.length || sizeBarcode"
+                      [options]="poList"
+                      [(ngModel)]="poModel"
+                      [filter]="true"
+                      inputId="PO"
+                      filterBy="order_ponumber"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(5)"
+                      optionLabel="order_ponumber"
+                    ></p-select>
+                    <label for="PO">PO</label>
+                  </p-floatlabel>
+                </div>
+                }
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!colorList.length || sizeBarcode"
+                      [options]="colorList"
+                      [(ngModel)]="colorModel"
+                      [filter]="true"
+                      inputId="Color"
+                      filterBy="color_name"
+                      [checkmark]="true"
+                      optionLabel="color_name"
+                    ></p-select>
+                    <label for="Color">Color</label>
+                  </p-floatlabel>
+                </div>
+
+                @if(poList.length > 0 && isScanner){
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!poList.length > 0 && poF"
+                      [options]="poList"
+                      [(ngModel)]="poModel"
+                      [filter]="true"
+                      inputId="POScanner"
+                      filterBy="order_ponumber"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(5)"
+                      optionLabel="order_ponumber"
+                    ></p-select>
+                    <label for="POScanner">PO</label>
+                  </p-floatlabel>
+                </div>
+                }
+              </div>
+            </div>
+          </div>
+
+          <div class="row-btn">
+            <ion-button
+              (click)="addQuantityPage('add')"
+              [disabled]="!colorModel"
+              expand="block"
+              color="primary"
+            >
+              <ion-icon slot="start" name="add-circle"></ion-icon>
+              Add Quantity
+            </ion-button>
+          </div>
+
           }
-          <!-- when it is manual mode we need color to navigate next -->
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Color</div>
-              <p-select
-                [disabled]="!colorList.length || sizeBarcode"
-                [options]="colorList"
-                [(ngModel)]="colorModel"
-                [filter]="true"
-                filterBy="color_name"
-                [checkmark]="true"
-                optionLabel="color_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          @if(poList.length > 0 && isScanner){
-          <!-- @if(poList.length > 0 && poList['order_ponumber'] !== null){ -->
-          <ion-row>
-            <ion-col>
-              <div class="label-text">PO</div>
-              <p-select
-                [disabled]="!poList.length > 0 && poF"
-                [options]="poList"
-                [(ngModel)]="poModel"
-                [filter]="true"
-                filterBy="order_ponumber"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(4)"
-                optionLabel="order_ponumber"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          }
-          <ion-row>
-            <ion-col size="12">
-              <ion-button
-                (click)="addQuantityPage('add')"
-                [disabled]="!colorModel"
-                expand="block"
-                color="primary"
-              >
-                <ion-icon slot="start" name="add-circle"></ion-icon>
-                Add Quantity
-              </ion-button>
-            </ion-col>
-          </ion-row>
-          }
-        </ion-grid>
+        </div>
       </ion-content>
     </ion-tab>
 
@@ -327,94 +415,114 @@
     <ion-tab tab="mappo-polypack">
       <!-- <app-header [logoutBtn]="false" [headerData]="'Map PO'"></app-header> -->
       <ion-content class="ion-padding">
-        <ion-grid class="filters">
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Season</div>
-              <p-select
-                [disabled]="!seasonList.length"
-                [options]="seasonList"
-                [(ngModel)]="seasonModel"
-                [filter]="true"
-                filterBy="season_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(1)"
-                optionLabel="season_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Customer</div>
-              <p-select
-                [disabled]="!customerList.length"
-                [options]="customerList"
-                [(ngModel)]="customerModel"
-                [filter]="true"
-                filterBy="customer_short_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(2)"
-                optionLabel="customer_short_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Order</div>
-              <p-select
-                [disabled]="!orderList.length"
-                [options]="orderList"
-                [(ngModel)]="orderModel"
-                [filter]="true"
-                (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(3)"
-                filterBy="order_name"
-                [checkmark]="true"
-                optionLabel="order_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Color</div>
-              <p-select
-                [disabled]="!colorList.length || !poList.length"
-                [options]="colorList"
-                [(ngModel)]="colorModel"
-                [filter]="true"
-                filterBy="color_name"
-                [checkmark]="true"
-                optionLabel="color_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
+        <div class="filters">
+          <div class="row-content">
+            <div class="col">
+              <div class="form-grid">
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!seasonList.length"
+                      [options]="seasonList"
+                      [(ngModel)]="seasonModel"
+                      [filter]="true"
+                      inputId="Season"
+                      filterBy="season_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(1)"
+                      optionLabel="season_name"
+                    ></p-select>
+                    <label for="Season">Season</label>
+                  </p-floatlabel>
+                </div>
 
-          <!-- temp if they wanted po outside instead of color -->
-          <!-- <ion-row>
-          <ion-col>
-            <div class="label-text">PO</div>
-            <p-select [disabled]="!poList.length || sizeBarcode" [options]="poList" [(ngModel)]="poModel"
-              [filter]="true" filterBy="order_ponumber" [checkmark]="true" (onChange)="poMapQuantityPage()"
-              optionLabel="order_ponumber" placeholder="Select" />
-          </ion-col>
-        </ion-row> -->
-          <ion-row>
-            <ion-col size="12">
-              <ion-button
-                (click)="poMapQuantityPage()"
-                [disabled]="!orderModel || !poList.length"
-                expand="block"
-                color="primary"
-              >
-                <ion-icon slot="start" name="receipt-outline"></ion-icon>
-                Assign PO
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!customerList.length"
+                      [options]="customerList"
+                      [(ngModel)]="customerModel"
+                      [filter]="true"
+                      inputId="Customer"
+                      filterBy="customer_short_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(2)"
+                      optionLabel="customer_short_name"
+                    ></p-select>
+                    <label for="Customer">Customer</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!lineList.length || sizeBarcode"
+                      [options]="lineList"
+                      [(ngModel)]="lineModel"
+                      (onChange)="clearbelowAttrbutes(3)"
+                      [filter]="true"
+                      inputId="Line"
+                      filterBy="line_seq_num"
+                      [checkmark]="true"
+                      optionLabel="line_name"
+                    ></p-select>
+                    <label for="Line">Line Details</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!orderList.length"
+                      [options]="orderList"
+                      [(ngModel)]="orderModel"
+                      [filter]="true"
+                      inputId="Order"
+                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
+                      filterBy="order_name"
+                      [checkmark]="true"
+                      optionLabel="order_name"
+                    ></p-select>
+                    <label for="Order">Order</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!colorList.length || !poList.length"
+                      [options]="colorList"
+                      [(ngModel)]="colorModel"
+                      [filter]="true"
+                      inputId="Color"
+                      filterBy="color_name"
+                      [checkmark]="true"
+                      optionLabel="color_name"
+                    ></p-select>
+                    <label for="Color">Color</label>
+                  </p-floatlabel>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-btn">
+            <ion-button
+              (click)="poMapQuantityPage()"
+              [disabled]="!orderModel || !poList.length"
+              expand="block"
+              color="primary"
+            >
+              <ion-icon slot="start" name="receipt-outline"></ion-icon>
+              Assign PO
+            </ion-button>
+          </div>
+        </div>
       </ion-content>
     </ion-tab>
 
@@ -422,74 +530,106 @@
     <ion-tab tab="list-polypack">
       <!-- <app-header [logoutBtn]="false" [headerData]="'Poly Pack List'"></app-header> -->
       <ion-content class="ion-padding">
-        <ion-grid class="filters">
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Season</div>
-              <p-select
-                [disabled]="!seasonList.length"
-                [options]="seasonList"
-                [(ngModel)]="seasonModel"
-                [filter]="true"
-                filterBy="season_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(1)"
-                optionLabel="season_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Customer</div>
-              <p-select
-                [disabled]="!customerList.length"
-                [options]="customerList"
-                [(ngModel)]="customerModel"
-                [filter]="true"
-                filterBy="customer_short_name"
-                [checkmark]="true"
-                (onChange)="clearbelowAttrbutes(2)"
-                optionLabel="customer_short_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col>
-              <div class="label-text">Order</div>
-              <p-select
-                [disabled]="!orderList.length"
-                [options]="orderList"
-                [(ngModel)]="orderModel"
-                [filter]="true"
-                filterBy="order_name"
-                [checkmark]="true"
-                optionLabel="order_name"
-                placeholder="Select"
-              />
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="12">
-              <ion-button
-                (click)="listQuantityPage()"
-                [disabled]="!orderModel"
-                expand="block"
-                color="primary"
-              >
-                <ion-icon slot="start" name="search"></ion-icon>
-                Search
-              </ion-button>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <div class="filters">
+          <div class="row-content">
+            <div class="col">
+              <div class="form-grid">
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!seasonList.length"
+                      [options]="seasonList"
+                      [(ngModel)]="seasonModel"
+                      [filter]="true"
+                      inputId="Season"
+                      filterBy="season_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(1)"
+                      optionLabel="season_name"
+                    ></p-select>
+                    <label for="Season">Season</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!customerList.length"
+                      [options]="customerList"
+                      [(ngModel)]="customerModel"
+                      [filter]="true"
+                      inputId="Customer"
+                      filterBy="customer_short_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(2)"
+                      optionLabel="customer_short_name"
+                    ></p-select>
+                    <label for="Customer">Customer</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!lineList.length || sizeBarcode"
+                      [options]="lineList"
+                      [(ngModel)]="lineModel"
+                      (onChange)="clearbelowAttrbutes(3)"
+                      [filter]="true"
+                      inputId="Line"
+                      filterBy="line_seq_num"
+                      [checkmark]="true"
+                      optionLabel="line_name"
+                    ></p-select>
+                    <label for="Line">Line Details</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!orderList.length"
+                      [options]="orderList"
+                      [(ngModel)]="orderModel"
+                      [filter]="true"
+                      inputId="Order"
+                      filterBy="order_name"
+                      [checkmark]="true"
+                      optionLabel="order_name"
+                    ></p-select>
+                    <label for="Order">Order</label>
+                  </p-floatlabel>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row-btn">
+            <ion-button
+              (click)="listQuantityPage()"
+              [disabled]="!orderModel"
+              expand="block"
+              color="primary"
+            >
+              <ion-icon slot="start" name="search"></ion-icon>
+              Search
+            </ion-button>
+          </div>
+        </div>
       </ion-content>
     </ion-tab>
     <!-- <ion-button color="primary" (click)="scanCode()">Click</ion-button>
   <h1>{{barcodeData}}</h1> -->
 
-    <ion-tab-bar [selectedTab]="'add-polypack'" slot="bottom" style="--background: #e9f0fd">
+    <ion-tab-bar
+      [selectedTab]="'add-polypack'"
+      slot="bottom"
+      style="--background: #e9f0fd"
+    >
       <ion-tab-button tab="size-map">
         <ion-icon name="scan-outline"></ion-icon>
         <ion-label>Size Mapping</ion-label>

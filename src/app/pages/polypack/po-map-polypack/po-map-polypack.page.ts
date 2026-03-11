@@ -1,11 +1,17 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import {
   IonInput,
   IonRouterOutlet,
   NavController,
   Platform,
 } from '@ionic/angular';
-
 
 import { DataService } from '../../../providers/dataService/data-service';
 import { ReusableService } from '../../../providers/reusables/reusable-service';
@@ -19,10 +25,11 @@ import { StorageService } from 'src/app/providers/storage/storage-service';
   selector: 'app-po-map-polypack',
   templateUrl: './po-map-polypack.page.html',
   styleUrls: [
-    '../polypack-master/polypack-master.page.scss', './po-map-polypack.page.scss',
+    '../polypack-master/polypack-master.page.scss',
+    './po-map-polypack.page.scss',
   ],
 
-  standalone: false
+  standalone: false,
 })
 export class PoMapPolypackPage implements OnInit {
   deviceType: string;
@@ -52,22 +59,19 @@ export class PoMapPolypackPage implements OnInit {
     private platform: Platform,
     private navCtrl: NavController,
     private ionicGuards: IonicGuards,
-    private ionRouterOutlet: IonRouterOutlet
-  ) {
-  }
+    private ionRouterOutlet: IonRouterOutlet,
+  ) {}
 
   ngOnInit() {
     this.filterDataList = this.polypackService.getAddData();
     this.deviceType = this.reusableService.deviceType();
-
-
 
     if (this.filterDataList) {
       this.poList = this.filterDataList.poList;
       // this.orderwiseQtyFunc(); // not needed i guess as we will be having the info in addQuantityInital
     }
 
-    console.log(this.poList)
+    console.log(this.poList);
 
     // po dropdowns
     setTimeout(() => {
@@ -76,30 +80,33 @@ export class PoMapPolypackPage implements OnInit {
   }
 
   async orderwiseQtyFunc() {
-    let api = this.polypackService.changeApiPolypack('carton_packing/getorderpomappingqty');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/getorderpomappingqty',
+    );
 
     let params = {
       path: api,
       // path: 'apppolypack/controllers/getorderpomappingqty.php',
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      colorseqnum: this.filterDataList.color['color_seq_num']
+      colorseqnum: this.filterDataList.color['color_seq_num'],
     };
 
     this.dataService.postService(params).then((res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         this.rawQtyList = res['data'];
 
-        console.log(this.poList)
+        console.log(this.poList);
       }
-    })
+    });
   }
 
   async addQuantityInitialData(action?: string) {
     //flags
     this.fullSizeList = '';
-    this.orderwiseQtyFunc();
+    // this.orderwiseQtyFunc();
 
     let selectedValue = this.filterDataList;
     if (!selectedValue) {
@@ -114,13 +121,16 @@ export class PoMapPolypackPage implements OnInit {
       return;
     }
 
-    let api = this.polypackService.changeApiPolypack('carton_packing/getordersizeqty');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/getordersizeqty',
+    );
     //http post
     let params = {
       path: api,
       // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       orderponum: this.poModel && !action ? this.poModel.order_ponumber : '',
     };
 
@@ -130,24 +140,20 @@ export class PoMapPolypackPage implements OnInit {
         for (const item of res['sizedata']) {
           let data = {
             size_name: item['size_name'],
-            total_pcssize_poly_qty: item['total_pcssize_poly_qty']
-          }
+            total_pcssize_poly_qty: item['total_pcssize_poly_qty'],
+          };
           rawList.push(data);
         }
-        // this.rawQtyList = rawList;
+        this.rawQtyList = rawList;
 
-        console.log(rawList, 'rawlist')
-
-        // some random concept *** remove it probably
-        // for (const item of this.rawQtyList.sizedata) {
-        //   if(item.barcode != item.barcode){
-
-        //   }
-        // }
+        console.log(rawList, 'rawlist');
 
         // this.fullSizeList = JSON.parse(JSON.stringify(this.rawQtyList));
         if (!action && this.poModel) {
-          this.fullSizeList = this.reusableService.rearrangeData(res['sizedata'], 'size_name');
+          this.fullSizeList = this.reusableService.rearrangeData(
+            res['sizedata'],
+            'size_name',
+          );
         }
         let totalnum = 0;
         let map = 0;
@@ -156,7 +162,6 @@ export class PoMapPolypackPage implements OnInit {
 
         for (const list of this.fullSizeList) {
           list['polypack_qty'] = null;
-
 
           let balance = list.total_order_size_qty - list.total_pcssize_poly_qty;
           list['polypack_balance'] = Math.max(0, balance);
@@ -177,16 +182,18 @@ export class PoMapPolypackPage implements OnInit {
           //for attractive data
           const remaining = list.order_polypack_qty - list.mapped_polypack_qty;
 
-          const percentage = list.order_polypack_qty
-            ? (remaining / list.order_polypack_qty) * 100
-            : 0;
+          const percentage =
+            list.order_polypack_qty && remaining >= 0
+              ? (remaining / list.order_polypack_qty) * 100 // if it gets 0
+              : 0;
 
           list['stockClass'] = '';
-          list['progress'] = (list.mapped_polypack_qty / list.order_polypack_qty);
-          if (percentage <= 0) list['stockClass'] = 'qty-no-stock';
-          else if (percentage < 45) list['stockClass'] = 'qty-low-stock';
-          else list['stockClass'] = 'qty-in-stock';
-          console.log(remaining, percentage)
+          list['progress'] =
+            list.mapped_polypack_qty / list.order_polypack_qty || 0;
+          if (percentage < 45) list['stockClass'] = 'qty-low-stock';
+          else if (percentage > 45) list['stockClass'] = 'qty-in-stock';
+          else list['stockClass'] = 'qty-no-stock';
+          console.log(remaining, percentage);
         }
 
         // this.poNum = this.filterDataList.poNum['order_ponumber'] ? this.filterDataList.poNum['order_ponumber'] : '';
@@ -196,7 +203,7 @@ export class PoMapPolypackPage implements OnInit {
         console.log('fullSizeListInitial: ', this.fullSizeList);
         console.log('orderQtyList', this.rawQtyList);
       } else {
-        this.conditionalInfo = res['message'] + ', Choose a different PO'
+        this.conditionalInfo = res['message'] + ', Choose a different PO';
         let toast = {
           message: res['message'],
           color: 'warning',
@@ -238,13 +245,16 @@ export class PoMapPolypackPage implements OnInit {
   }
 
   onSubmit() {
-    let api = this.polypackService.changeApiPolypack('carton_packing/cartonpackingpomappingstore');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/cartonpackingpomappingstore',
+    );
 
     //http post
     let params = {
       path: api,
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       order_ponumber: this.poModel.order_ponumber,
@@ -292,7 +302,7 @@ export class PoMapPolypackPage implements OnInit {
 
     // Find balance from raw list
     const sizeData = this.rawQtyList.find(
-      (size: any) => size.size_seq_num == item.size_seq_num
+      (size: any) => size.size_seq_num == item.size_seq_num,
     );
 
     const balanceQty = Number(item?.balance_polypack_qty || 0);
@@ -302,14 +312,16 @@ export class PoMapPolypackPage implements OnInit {
     if (balanceQty < 1) {
       await this.reusableService.showAlert({
         msg: `No Qty to be mapped in size ${item.size_name}`,
-        btn: [{
-          text: 'OK',
-          role: 'confirm',
-          func: () => {
-            item.polypack_qty = null;
-            this.totalAddedQty();
-          }
-        }]
+        btn: [
+          {
+            text: 'OK',
+            role: 'confirm',
+            func: () => {
+              item.polypack_qty = null;
+              this.totalAddedQty();
+            },
+          },
+        ],
       });
       return;
     }
@@ -325,7 +337,7 @@ export class PoMapPolypackPage implements OnInit {
             func: () => {
               item.polypack_qty = null;
               this.totalAddedQty();
-            }
+            },
           },
           // {
           //   text: 'Reset',
@@ -342,7 +354,7 @@ export class PoMapPolypackPage implements OnInit {
           //     this.totalAddedQty();
           //   }
           // }
-        ]
+        ],
       });
       return;
     }
@@ -382,7 +394,7 @@ export class PoMapPolypackPage implements OnInit {
   // }
 
   clearQty() {
-    this.fullSizeList.forEach(item => {
+    this.fullSizeList.forEach((item) => {
       item.polypack_qty = null;
     });
   }
@@ -401,7 +413,6 @@ export class PoMapPolypackPage implements OnInit {
     this.totalAddedQty();
   }
 
-
   // check this
   canLeave() {
     console.log('fullsizeList from canLeave', this.fullSizeList);
@@ -416,5 +427,4 @@ export class PoMapPolypackPage implements OnInit {
 
     this.ionicGuards.canLeave(false);
   }
-
 }

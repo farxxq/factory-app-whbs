@@ -15,21 +15,28 @@ export class ProfilePage implements OnInit {
   username: string = '';
   userData: any = {};
 
+  rfid: any = {};
+
   constructor(
     private storageService: StorageService,
     private authService: AuthService,
     public navCtrl: NavController,
     private reusableService: ReusableService,
     private dataService: DataService,
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.getUser();
+    this.getUserDetails();
   }
 
-  getUser() {
+  getUserDetails() {
+    this.rfid = this.storageService.getData('rfid') || '';
     this.userData = this.storageService.getData('userData');
     if (this.userData) this.username = this.userData.username;
+
+    // if (!this.rfid.operator) {
+    //   this.reusableService.loginOperator();
+    // }
   }
 
   canLogout() {
@@ -54,10 +61,14 @@ export class ProfilePage implements OnInit {
     this.reusableService.showAlert(alert);
   }
 
-  logout() {
-    this.authService.logout();
-    // this.showMenu = false;
-    console.log('Logged out');
+  logout(action?: string) {
+    if (action === 'checkout') {
+      this.reusableService.loginOperator();
+      console.log('Checkout');
+    } else {
+      this.authService.logout();
+      console.log('Logged out');
+    }
   }
 
   isCheckOut = false;
@@ -65,7 +76,7 @@ export class ProfilePage implements OnInit {
   canCheckout() {
     let rfid = this.storageService.getData('rfid');
 
-    if (rfid.operator) {
+    if (rfid.operator == this.id) {
       this.isCheckOut = true;
       rfid.operator = null;
       this.storageService.setData('rfid', rfid);

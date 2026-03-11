@@ -1,66 +1,138 @@
 <ion-content class="ion-padding">
   <ion-tabs (ionTabsDidChange)="tabChange($event)">
-
     <!-- Panel Check -->
     <ion-tab selectedTab="panel-check" tab="panel-check">
-      <app-header [logoutBtn]="false" [headerData]="'Panel Check'" [iconTray]="assignHeaderIcons()"></app-header>
+      <app-header
+        [logoutBtn]="false"
+        [headerData]="'Panel Check'"
+        [iconTray]="assignHeaderIcons()"
+      ></app-header>
       <ion-content class="ion-padding">
         <div class="filters">
           @if(isScanner){
           <div class="row">
             <div class="col-12">
-              <div class="scanner-box sizeScan-input" [ngClass]="{
+              <div
+                class="scanner-box sizeScan-input"
+                [ngClass]="{
                   'inputNotFocus':!lInpF,
                   'inputFocus': lInpF,
                   'scanner-focus': lInpF
-                  }" (click)="setFocus()">
+                  }"
+                (click)="setFocus()"
+              >
                 <ion-icon name="qr-code-outline"></ion-icon>
-                <ion-input #laySlipInput class="inp-size" fill="solid" (dblClick)="barcodeData = 'PDK-329'"
-                  placeholder="SCAN LAY SLIP" inputmode="none" [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'"
-                  (ionInput)="onLaySlipInput($event)" (ionBlur)="lInpF = false" (ionFocus)="lInpF = true"
-                  [(ngModel)]="barcodeData" type="text"></ion-input>
+                <ion-input
+                  #laySlipInput
+                  class="inp-size"
+                  fill="solid"
+                  (dblClick)="barcodeData = 'PDK-329'"
+                  placeholder="SCAN LAY SLIP"
+                  inputmode="none"
+                  [ngClass]="lInpF ? 'inputFocus' : 'inputNotFocus'"
+                  (ionInput)="onLaySlipInput($event)"
+                  (ionBlur)="lInpF = false"
+                  (ionFocus)="lInpF = true"
+                  [(ngModel)]="barcodeData"
+                  type="text"
+                ></ion-input>
               </div>
             </div>
           </div>
-          }
-          @if(!isScanner){
+          } @if(!isScanner){
           <div class="row-content">
             <div class="col">
               <div class="form-grid">
                 <div class="form-field">
                   <p-floatlabel variant="on">
-                    <p-select class="large-text" [disabled]="!seasonList.length || panelBarcode" [options]="seasonList"
-                      [(ngModel)]="seasonModel" [filter]="true" inputId="Season" filterBy="season_name"
-                      [checkmark]="true" (onChange)="clearbelowAttrbutes(1)" optionLabel="season_name"
-                      size="large"></p-select>
+                    <p-select
+                      class="large-text"
+                      [disabled]="!seasonList.length || panelBarcode"
+                      [options]="seasonList"
+                      [(ngModel)]="seasonModel"
+                      [filter]="true"
+                      inputId="Season"
+                      filterBy="season_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(1)"
+                      optionLabel="season_name"
+                      size="large"
+                    ></p-select>
                     <label for="Season">Season</label>
                   </p-floatlabel>
                 </div>
 
                 <div class="form-field">
                   <p-floatlabel variant="on">
-                    <p-select class="large-text" [disabled]="!customerList.length || panelBarcode"
-                      [options]="customerList" [(ngModel)]="customerModel" [filter]="true" inputId="Customer"
-                      filterBy="customer_short_name" [checkmark]="true" (onChange)="clearbelowAttrbutes(2)"
-                      optionLabel="customer_short_name" size="large"></p-select>
+                    <p-select
+                      class="large-text"
+                      [disabled]="!customerList.length || panelBarcode"
+                      [options]="customerList"
+                      [(ngModel)]="customerModel"
+                      [filter]="true"
+                      inputId="Customer"
+                      filterBy="customer_short_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(2)"
+                      optionLabel="customer_short_name"
+                      size="large"
+                    ></p-select>
                     <label for="Customer">Customer</label>
                   </p-floatlabel>
                 </div>
 
                 <div class="form-field">
                   <p-floatlabel variant="on">
-                    <p-select class="large-text" [disabled]="!orderList.length || panelBarcode" [options]="orderList"
-                      [(ngModel)]="orderModel" [filter]="true" inputId="Order" filterBy="order_name" [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(3)" optionLabel="order_name" size="large"></p-select>
+                    <p-select
+                      class="large-text"
+                      [disabled]="!orderList.length || panelBarcode"
+                      [options]="orderList"
+                      [(ngModel)]="orderModel"
+                      [filter]="true"
+                      inputId="Order"
+                      filterBy="order_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(3)"
+                      optionLabel="order_name"
+                      size="large"
+                    ></p-select>
                     <label for="Order">Order</label>
                   </p-floatlabel>
                 </div>
 
                 <div class="form-field">
                   <p-floatlabel variant="on">
-                    <p-select class="large-text" [disabled]="!colorList.length || panelBarcode" [options]="colorList"
-                      [(ngModel)]="colorModel" [filter]="true" inputId="Color" filterBy="color_name" [checkmark]="true"
-                      optionLabel="color_name" size="large"></p-select>
+                    <p-select
+                      class="large-text"
+                      [disabled]="!laycutList.length || panelBarcode"
+                      [options]="laycutList"
+                      [(ngModel)]="laycutListModel"
+                      [filter]="true"
+                      inputId="laycut"
+                      filterBy="laycut_seq_num"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(4)"
+                      optionLabel="laycut_seq_num"
+                      size="large"
+                    ></p-select>
+                    <label for="Order">Laycut number</label>
+                  </p-floatlabel>
+                </div>
+
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!layColorList.length || panelBarcode"
+                      [options]="layColorList"
+                      [(ngModel)]="layColorModel"
+                      [filter]="true"
+                      inputId="Color"
+                      filterBy="color_name"
+                      [checkmark]="true"
+                      optionLabel="color_name"
+                      size="large"
+                    ></p-select>
                     <label for="Color">Color</label>
                   </p-floatlabel>
                 </div>
@@ -72,10 +144,26 @@
           <!-- Start Panel Check Button -->
           <div class="row-btn">
             <div class="">
-              <ion-button (click)="addPcsPage()" [disabled]="!colorModel" expand="block" color="primary">
+              <ion-button
+                (click)="addPcsPage()"
+                [disabled]="!layColorModel"
+                expand="block"
+                color="primary"
+              >
                 <ion-icon slot="start" name="add-circle"></ion-icon>
                 Start panel check
               </ion-button>
+              @if(username == 'mesadmin' || 'admin'){
+              <ion-button
+                (click)="goToSupervisorHourlyEntry()"
+                expand="block"
+                color="primary"
+              >
+                <!-- [disabled]="!layColorModel" -->
+                <ion-icon slot="start" name="add-circle"></ion-icon>
+                Hourly Entry
+              </ion-button>
+              }
             </div>
           </div>
         </div>
@@ -84,34 +172,50 @@
 
     <!-- Replace panel -->
     <ion-tab tab="replace-panel">
-      <app-header [logoutBtn]="false" [headerData]="'Replace Panel'"></app-header>
+      <app-header
+        [logoutBtn]="false"
+        [headerData]="'Replace Panel'"
+      ></app-header>
       <ion-content class="ion-padding">
         <div class="scanner-box-container">
-          <div class="scanner-box" [ngClass]="{
+          <div
+            class="scanner-box"
+            [ngClass]="{
               'onScanned': isReplaceScanned, 
               'scanner-focus': rInpF
-            }" (click)="setFocus('replace')">
+            }"
+            (click)="setFocus('replace')"
+          >
             @if(isReplaceScanned){
             <ion-icon slot="primary" name="checkmark-circle"></ion-icon>
             <p>{{replaceBarcode}}</p>
-            }
-            @else {
+            } @else {
             <ion-icon name="qr-code-outline"></ion-icon>
             <h3>SCAN TO REPLACE</h3>
-            <ion-input fill="solid" class="qrScan-Input" #replaceInput id="inpRejbarcode" placeholder="Ready to Scan"
-              inputmode="none" (ionInput)="onReplaceInput($event)" (ionFocus)="rInpF = true" (ionBlur)="rInpF = false"
-              [(ngModel)]="barcodeData" type="text" [ngClass]="{
+            <ion-input
+              fill="solid"
+              class="qrScan-Input"
+              #replaceInput
+              id="inpRejbarcode"
+              placeholder="Ready to Scan"
+              inputmode="none"
+              (ionInput)="onReplaceInput($event)"
+              (ionFocus)="rInpF = true"
+              (ionBlur)="rInpF = false"
+              [(ngModel)]="barcodeData"
+              type="text"
+              [ngClass]="{
             'inputNotFocus': !rInpF,
               'inputFocus': rInpF, 
-            }"></ion-input>
+            }"
+            ></ion-input>
             }
           </div>
         </div>
-
       </ion-content>
     </ion-tab>
 
-    <ion-tab-bar slot="bottom" style="--background: #e9f0fd;">
+    <ion-tab-bar slot="bottom" style="--background: #e9f0fd">
       <ion-tab-button tab="panel-check">
         <ion-icon name="file-tray-stacked-outline"></ion-icon>
         <ion-label>Panel Check</ion-label>

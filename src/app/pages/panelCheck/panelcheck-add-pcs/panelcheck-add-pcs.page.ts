@@ -19,17 +19,19 @@ import { Spanelcheck } from '../panelcheckService/spanelcheck';
   standalone: false,
 })
 export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
-  filterDataList: any = {
-    season: { season_name: 'seasonModel' },
-    customer: { customer_name: 'customerModel' },
-    order: { order_name: 'orderModel' },
-    poNum: { ponum: 'poModel' },
-    color: { color_name: 'colorModel' },
-    sizeBarcode: 'sizeBarcode',
-    // this will be given in the service and we will directly apply it from their
-    lay_slip: 'PCL25261401',
-    bundle: 10,
-  };
+  // filterDataList: any = {
+  //   season: { season_name: 'seasonModel' },
+  //   customer: { customer_name: 'customerModel' },
+  //   order: { order_name: 'orderModel' },
+  //   poNum: { ponum: 'poModel' },
+  //   color: { color_name: 'colorModel' },
+  //   sizeBarcode: 'sizeBarcode',
+  //   // this will be given in the service and we will directly apply it from their
+  //   lay_slip: 'PCL25261401',
+  //   bundle: 10,
+  // };
+
+  filterDataList: any = {};
 
   isScanner: any = '';
 
@@ -208,17 +210,18 @@ export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
     private navCtrl: NavController,
     private ionicGuards: IonicGuards,
     private ionRouterOutlet: IonRouterOutlet,
-  ) { }
+  ) {}
 
   // showLoading = async () => await this.reusableService.showLoading();
   // cancelLoading = async () => await this.reusableService.cancelLoading();
 
   ngOnInit() {
-    if (this.pcService.getListData()) { //temp debugging
-      this.filterDataList = this.pcService.getListData();
-    }
+    // if (this.pcService.getListData()) {
+    //   //temp debugging
+    //   this.filterDataList = this.pcService.getListData();
+    // }
 
-    // this.filterDataList = this.pcService.getListData();
+    this.filterDataList = this.pcService.getListData();
     this.isScanner = this.storageService.getData('isScanner');
 
     setTimeout(() => {
@@ -254,48 +257,32 @@ export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
       orderponum: this.filterDataList.lay_slip
         ? this.filterDataList.lay_slip
         : // ? this.filterDataList.lay_slip['lay_slip']
-        null,
+          null,
     };
 
-    // this.dataService.postService(params).then(async (res: any) => {
-    //   if (res['status'].toLowerCase() == 'success') {
-    //     this.rawQtyList = res;
+    this.dataService.postService(params).then(async (res: any) => {
+      if (res['status'].toLowerCase() == 'success') {
+        this.rawQtyList = res;
+        this.fullSizeList = res['laysizelist'];
 
-    //     // this.fullSizeList = this.reusableService.rearrangeData(res['sizedata'], 'size_name');
-    //     // this.fullSizeList = this.rawQtyList['laySlip'];
-    //     let totalnum = 0;
-    //     for (const list of this.fullSizeList) {
-    //       list['polypack_qty'] = null;
+        //may be not needed
+        if (this.isScanner) {
+          setTimeout(() => {
+            let barcode = this.filterDataList?.sizeBarcode;
+            // this.startScan(barcode);
+          }, 300);
+        }
 
-    //       let balance = list.total_order_size_qty - list.total_pcssize_poly_qty;
-    //       list['polypack_balance'] = Math.max(0, balance);
-
-    //       if (list['barcode'] && !this.sizeListBarcodeArr.includes(list['barcode'])) {
-    //         this.sizeListBarcodeArr.push(list['barcode']);
-    //       }
-
-    //       // list['isEdit'] = false; //edit has been disabled for now
-    //       this.totalInitialQty += +list['total_pcssize_poly_qty']
-    //     }
-
-    //     //to increment the scanned size from the polypack-home page
-    //     if (this.isScanner) {
-    //       setTimeout(() => {
-    //         let barcode = this.filterDataList.sizeBarcode;
-    //         this.startScan(barcode);
-    //       }, 300)
-    //     }
-
-    //     console.log('fullSizeListInitial: ', this.fullSizeList);
-    //     console.log('orderQtyList', this.rawQtyList);
-    //   } else {
-    //     let toast = {
-    //       message: res['message'],
-    //       color: 'warning',
-    //     };
-    //     this.reusableService.showToast(toast);
-    //   }
-    // });
+        console.log('fullSizeListInitial: ', this.fullSizeList);
+        console.log('rawlist', this.rawQtyList);
+      } else {
+        let toast = {
+          message: res['message'],
+          color: 'warning',
+        };
+        this.reusableService.showToast(toast);
+      }
+    });
 
     for (const item of this.panelData) {
       item['curr_bundle'] = 0;
@@ -461,14 +448,13 @@ export class PanelcheckAddPcsPage implements OnInit, AfterViewInit {
       this.selectedPart = part;
     }
     this.setFocus();
-
   }
 
   setFocus() {
     setTimeout(() => {
       this.qrInput?.setFocus();
     }, 500);
-    console.log('Focussed on scanner')
+    console.log('Focussed on scanner');
   }
 
   confirmRejection() {

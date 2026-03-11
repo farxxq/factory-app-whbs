@@ -28,6 +28,7 @@ export class PolypackMasterPage implements OnInit {
 
   seasonList: any = [];
   customerList: any = [];
+  lineList: any = []; //new addition
   orderList: any = [];
   poList: any = [];
   colorList: any = [];
@@ -36,6 +37,7 @@ export class PolypackMasterPage implements OnInit {
 
   seasonModel: any = '';
   customerModel: any = '';
+  lineModel: any = ''; //new addition
   orderModel: any = '';
   poModel: any = '';
   colorModel: any = '';
@@ -99,14 +101,14 @@ export class PolypackMasterPage implements OnInit {
     this.reusableService.showAlert(alert);
 
     // operatorlogin
-    let rfid = this.storageService.getData('rfid') ||'';
-    if(!rfid.operator){
+    let rfid = this.storageService.getData('rfid') || '';
+    if (!rfid.operator) {
       this.reusableService.loginOperator();
     }
   }
 
   ngAfterContentInit(): void {
-    this.assignListService(0); 
+    this.assignListService(0);
 
     let deviceType = this.storageService.getData('deviceType');
 
@@ -117,6 +119,7 @@ export class PolypackMasterPage implements OnInit {
   rawListArr = [
     'seasonList_seasonModel',
     'customerList_customerModel',
+    'lineList_lineModel', //new addition
     'orderList_orderModel',
     'poList_poModel',
     'colorList_colorModel',
@@ -160,6 +163,7 @@ export class PolypackMasterPage implements OnInit {
       );
 
       params = {
+        // path: 'apppanelcheck/controllers/getlinelist.php',
         path: api,
         seasonseqnum: this.seasonModel['season_seq_num'],
       };
@@ -167,6 +171,15 @@ export class PolypackMasterPage implements OnInit {
       reslist = 'customerlist';
       key = 'customer_short_name';
     } else if (frm == 2) {
+      params = {
+        path: 'apppanelcheck/controllers/getlinelist.php',
+        seasonseqnum: this.seasonModel['season_seq_num'],
+        customerseqnum: this.customerModel['customer_seq_num'],
+      };
+      arrlist = 'lineList';
+      reslist = 'linelist';
+      key = 'line_name';
+    } else if (frm == 3) {
       let api = this.polypackService.changeApiPolypack(
         'carton_packing/getordername',
       );
@@ -175,12 +188,13 @@ export class PolypackMasterPage implements OnInit {
         path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
+        lineseqnum: this.lineModel['line_seq_num'],
         tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'orderList';
       reslist = 'ordernamelist';
       key = 'order_name';
-    } else if (frm == 3) {
+    } else if (frm == 4) {
       let api = this.polypackService.changeApiPolypack(
         'carton_packing/getponumlist',
       );
@@ -195,7 +209,7 @@ export class PolypackMasterPage implements OnInit {
       arrlist = 'poList';
       reslist = 'ponumberlist';
       key = 'order_ponumber';
-    } else if (frm == 4) {
+    } else if (frm == 5) {
       let api = this.polypackService.changeApiPolypack(
         'carton_packing/getcolors',
       );
@@ -316,6 +330,8 @@ export class PolypackMasterPage implements OnInit {
     this.seasonModel = '';
     this.customerList = [];
     this.customerModel = '';
+    this.lineList = [];
+    this.lineModel = '';
     this.orderList = [];
     this.orderModel = '';
     this.colorList = [];
@@ -382,6 +398,7 @@ export class PolypackMasterPage implements OnInit {
     let data = {
       season: this.seasonModel,
       customer: this.customerModel,
+      line: this.lineModel,
       order: this.orderModel,
       poNum: this.poModel,
       color: this.colorModel,
@@ -395,6 +412,7 @@ export class PolypackMasterPage implements OnInit {
     let data = {
       season: this.seasonModel,
       customer: this.customerModel,
+      line: this.lineModel,
       order: this.orderModel,
       poNum: this.poModel,
       color: this.colorModel,
@@ -409,6 +427,7 @@ export class PolypackMasterPage implements OnInit {
     let data = {
       season: this.seasonModel,
       customer: this.customerModel,
+      line: this.lineModel,
       order: this.orderModel,
       poList: this.poList,
       color: this.colorModel,
@@ -422,6 +441,7 @@ export class PolypackMasterPage implements OnInit {
     let data = {
       season: this.seasonModel,
       customer: this.customerModel,
+      line: this.lineModel,
       order: this.orderModel,
       poNum: this.poModel,
     };

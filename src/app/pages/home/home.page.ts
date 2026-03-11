@@ -25,12 +25,12 @@ export class HomePage implements OnInit {
     private storageService: StorageService,
     private reusableService: ReusableService,
     private dataService: DataService,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+  ) {}
 
   ngOnInit() {
     this.userRole = this.authService.isLogin();
-    this.data = this.storageService.getData('userData')
+    this.data = this.storageService.getData('userData');
     this.branchModel = this.data.branchModel ? this.data.branchModel : '';
     let params = {
       path: 'material_size/getbranchlist',
@@ -41,28 +41,27 @@ export class HomePage implements OnInit {
         this.branchList = res['branchdetails'];
       }
     });
-
   }
 
   navigateTo(appName: string, app_type: string) {
     if (this.data.branchcode == 0) {
       let alert = {
-        msg: 'Please select a branch'
-      }
+        msg: 'Please select a branch',
+      };
       this.reusableService.showAlert(alert);
     } else {
-      this.storageService.setData('app_type', app_type);      
+      this.storageService.setData('app_type', app_type);
       this.dataService.app_typeService().then((res: any) => {
-        
         let uinno = res['uinno'];
 
         let userData = this.storageService.getData('userData') || {};
-        
+
         userData.uinno = uinno;
         this.storageService.setData('userData', userData);
-      })
+      });
       setTimeout(() => {
         this.navCtrl.navigateRoot([`${appName}`]);
+        this.reusableService.cancelLoading();
       }, 100);
     }
   }
@@ -72,15 +71,13 @@ export class HomePage implements OnInit {
     if (userData) {
       userData.branchcode = this.branchModel.location_seq_num;
       userData.divcode = this.branchModel.location_seq_num;
-      userData.branchModel = this.branchModel
+      userData.branchModel = this.branchModel;
       this.data = userData;
     }
     this.storageService.setData('userData', userData);
   }
 
-
   showDeviceType() {
-    confirm(this.deviceType)
+    confirm(this.deviceType);
   }
-
 }

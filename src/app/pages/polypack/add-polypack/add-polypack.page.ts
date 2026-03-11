@@ -1,11 +1,17 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import {
   IonInput,
   IonRouterOutlet,
   NavController,
   Platform,
 } from '@ionic/angular';
-
 
 import { DataService } from '../../../providers/dataService/data-service';
 import { ReusableService } from '../../../providers/reusables/reusable-service';
@@ -27,7 +33,7 @@ import { StorageService } from 'src/app/providers/storage/storage-service';
 })
 export class AddPolypackPage implements OnInit {
   filterDataList: any = {};
-  poNum: any = ''
+  poNum: any = '';
 
   barcodeData: any = '';
   copyBarcodeData: any;
@@ -63,7 +69,8 @@ export class AddPolypackPage implements OnInit {
   private sizeInputSubject = new Subject<any>();
   @ViewChild('sizeInput', { static: false }) sizeInput!: IonInput;
 
-  @ViewChild('container', { static: false }) container!: ElementRef<HTMLDivElement>;
+  @ViewChild('container', { static: false })
+  container!: ElementRef<HTMLDivElement>;
 
   private inputSub: any;
 
@@ -84,8 +91,8 @@ export class AddPolypackPage implements OnInit {
     private platform: Platform,
     private navCtrl: NavController,
     private ionicGuards: IonicGuards,
-    private ionRouterOutlet: IonRouterOutlet
-  ) { }
+    private ionRouterOutlet: IonRouterOutlet,
+  ) {}
 
   // showLoading = async () => await this.reusableService.showLoading();
   // cancelLoading = async () => await this.reusableService.cancelLoading();
@@ -93,8 +100,8 @@ export class AddPolypackPage implements OnInit {
   ngOnInit() {
     this.filterDataList = this.polypackService.getAddData();
     this.isScanner = this.storageService.getData('isScanner');
-    this.deviceType = this.reusableService.deviceType()
-    console.log(this.filterDataList, 'filterDataList')
+    this.deviceType = this.reusableService.deviceType();
+    console.log(this.filterDataList, 'filterDataList');
 
     setTimeout(() => {
       this.addQuantityInitialData();
@@ -118,7 +125,9 @@ export class AddPolypackPage implements OnInit {
       await this.reusableService.showToast(toast);
       return;
     }
-    let api = this.polypackService.changeApiPolypack('carton_packing/getordersizeqty');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/getordersizeqty',
+    );
 
     //http post
     let params = {
@@ -126,6 +135,7 @@ export class AddPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       orderponum: this.poNum,
     };
 
@@ -141,12 +151,15 @@ export class AddPolypackPage implements OnInit {
         // }
 
         // this.fullSizeList = JSON.parse(JSON.stringify(this.rawQtyList));
-        this.fullSizeList = this.reusableService.rearrangeData(res['sizedata'], 'size_name');
+        this.fullSizeList = this.reusableService.rearrangeData(
+          res['sizedata'],
+          'size_name',
+        );
         let totalnum = 0;
         for (const list of this.fullSizeList) {
           list['polypack_qty'] = null;
 
-          // let balance = 
+          // let balance =
           // list.total_pcssize_elc_qty
           //   ? list.total_pcssize_elc_qty <= list.total_order_size_qty
           //     ? list.total_pcssize_elc_qty - list.total_pcssize_poly_qty
@@ -156,7 +169,10 @@ export class AddPolypackPage implements OnInit {
           let balance = list.total_order_size_qty - list.total_pcssize_poly_qty;
           list['polypack_balance'] = Math.max(0, balance);
 
-          if (list['barcode'] && !this.sizeListBarcodeArr.includes(list['barcode'])) {
+          if (
+            list['barcode'] &&
+            !this.sizeListBarcodeArr.includes(list['barcode'])
+          ) {
             this.sizeListBarcodeArr.push(list['barcode']);
           }
           // list.total_pcssize_elc_qty
@@ -164,18 +180,20 @@ export class AddPolypackPage implements OnInit {
           //   : list.total_order_size_qty - list.total_pcssize_poly_qty;
 
           // list['isEdit'] = false; //edit has been disabled for now
-          this.totalInitialQty += +list['total_pcssize_poly_qty']
+          this.totalInitialQty += +list['total_pcssize_poly_qty'];
         }
 
-        this.poNum = this.filterDataList.poNum['order_ponumber'] ? this.filterDataList.poNum['order_ponumber'] : '';
+        this.poNum = this.filterDataList.poNum['order_ponumber']
+          ? this.filterDataList.poNum['order_ponumber']
+          : '';
 
         //to increment the scanned size from the polypack-home page
         if (this.isScanner) {
           setTimeout(() => {
             let barcode = this.filterDataList.sizeBarcode;
             this.startScan(barcode);
-            this.totalAddedQty()
-          }, 300)
+            this.totalAddedQty();
+          }, 300);
         }
 
         console.log('fullSizeListInitial: ', this.fullSizeList);
@@ -206,7 +224,7 @@ export class AddPolypackPage implements OnInit {
               role: 'confirm',
               func: () => {
                 this.clearAndRefocus();
-              }
+              },
             },
           ],
         };
@@ -237,21 +255,18 @@ export class AddPolypackPage implements OnInit {
     for (const size of this.fullSizeList) {
       if (size.polypack_qty) {
         inc++;
-      }
-      else if (data.size_name == size.size_name) {
+      } else if (data.size_name == size.size_name) {
         inc++;
-        break
-      };
-      if (size.barcode == data.barcode || size.size_name == data.size_name) break;
+        break;
+      }
+      if (size.barcode == data.barcode || size.size_name == data.size_name)
+        break;
     }
 
-    console.log("inc", inc)
-
+    console.log('inc', inc);
 
     this.scrollToSizeBox(inc); //temp checking
   }
-
-
 
   sInpF: boolean = false;
   setFocus() {
@@ -272,7 +287,6 @@ export class AddPolypackPage implements OnInit {
           this.barcodeData = '';
           this.animateColorTd = '';
         }, 300);
-
       });
   }
 
@@ -309,7 +323,7 @@ export class AddPolypackPage implements OnInit {
             text: 'Cancel',
             role: 'cancel',
             func: () => {
-              this.isScanner ? item.polypack_qty-- : item.polypack_qty = null;
+              this.isScanner ? item.polypack_qty-- : (item.polypack_qty = null);
               this.totalAddedQty();
               return;
             },
@@ -352,15 +366,15 @@ export class AddPolypackPage implements OnInit {
     setTimeout(() => {
       this.animateColorTd = size;
       this.setScrollPostion(size);
-    }, 100)
+    }, 100);
   }
 
   removeSize(item: any) {
     if (!item.polypack_qty) {
       let toast = {
         message: `No pcs to remove!`,
-        color: 'danger'
-      }
+        color: 'danger',
+      };
 
       this.reusableService.showToast(toast);
       return;
@@ -371,7 +385,7 @@ export class AddPolypackPage implements OnInit {
       btn: [
         {
           text: 'Cancel',
-          role: 'cancel'
+          role: 'cancel',
         },
         {
           text: 'Proceed',
@@ -380,15 +394,15 @@ export class AddPolypackPage implements OnInit {
             item.polypack_qty--;
             let toast = {
               message: `Removed pcs from size ${item.size_name}`,
-              color: 'success'
-            }
+              color: 'success',
+            };
 
             this.reusableService.showToast(toast);
             this.totalAddedQty();
-          }
-        }
-      ]
-    }
+          },
+        },
+      ],
+    };
 
     this.reusableService.showAlert(alert);
   }
@@ -414,13 +428,14 @@ export class AddPolypackPage implements OnInit {
 
     console.log(
       'string to int size item?',
-      parseInt(this.editSizeItem.total_pcssize_poly_qty)
+      parseInt(this.editSizeItem.total_pcssize_poly_qty),
     );
 
     let polyTotal = parseInt(this.editSizeItem.total_pcssize_poly_qty);
     let editPoly = parseInt(this.editPolyQty);
 
-    if (editPoly && polyTotal === editPoly && false) { //we can expect the value to be equal
+    if (editPoly && polyTotal === editPoly && false) {
+      //we can expect the value to be equal
       let toast = {
         message: 'Same qty entered',
         color: 'dark',
@@ -431,8 +446,7 @@ export class AddPolypackPage implements OnInit {
       this.isModalOpen = false;
       this.editPolyQty = '';
       // return;
-    }
-    else if (polyTotal > editPoly) {
+    } else if (polyTotal > editPoly) {
       console.log(polyTotal < editPoly, 'quantity less or more?');
 
       for (const list of this.fullSizeList) {
@@ -450,11 +464,12 @@ export class AddPolypackPage implements OnInit {
           let params = {
             path: 'carton_packing/polypack_size_qtyupdate',
             order_seq_num: this.rawQtyList.order_seq_num,
+            lineseqnum: this.rawQtyList.line_seq_num,
             total_pcssize_poly_qty: editPoly,
             color_seq_num: this.rawQtyList.color_seq_num,
             size_seq_num: list['size_seq_num'],
             order_details_seq_num: list['order_details_seq_num'],
-            order_ponumber: this.poNum
+            order_ponumber: this.poNum,
           };
 
           // this.dataService.postService(params).then((res: any) => {
@@ -490,7 +505,7 @@ export class AddPolypackPage implements OnInit {
             func: () => {
               this.editPolyQty = '';
               console.log(
-                'Qty entered cannot be more then the current packed Qty'
+                'Qty entered cannot be more then the current packed Qty',
               );
             },
           },
@@ -507,8 +522,7 @@ export class AddPolypackPage implements OnInit {
   async confirmSubmit() {
     if (this.totalQty == 0 && !this.editSizeItem) {
       let toast = {
-        message:
-          'Atleast one Quantity should be filled',
+        message: 'Atleast one Quantity should be filled',
         color: 'warning',
       };
       this.reusableService.showToast(toast);
@@ -563,7 +577,9 @@ export class AddPolypackPage implements OnInit {
   }
 
   onSubmit(edit_type?: boolean) {
-    let api = this.polypackService.changeApiPolypack('carton_packing/cartonpackinginsert');
+    let api = this.polypackService.changeApiPolypack(
+      'carton_packing/cartonpackinginsert',
+    );
 
     //http post
     let params = {
@@ -571,6 +587,7 @@ export class AddPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/cartonpackinginsert.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
+      lineseqnum: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       order_ponumber: this.poNum,

@@ -116,7 +116,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
     private storageService: StorageService,
     private navCtrl: NavController,
     private cartonService: Scartonpacking,
-  ) { }
+  ) {}
 
   ngOnInit() {
     let cartonData = this.cartonService.getCartonDetails();
@@ -138,50 +138,48 @@ export class CartonpackingGarmentscanPage implements OnInit {
       for (let q of this.poList) {
         if (q['order_ponumber'] == this.mapped_po) {
           this.poModel = q;
-          this.packAlterStatus == 'cl' ? '' : this.isPoSelect = true;
+          this.packAlterStatus == 'cl' ? '' : (this.isPoSelect = true);
         }
       }
     }
 
-    this.refocusSub = this.cartonService.refocus$
-      .subscribe(() => {
-        if (this.inputReady) {
-          this.clearAndRefocus();
-        } else {
-          this.pendingRefocus = true;
-        }
-      });
+    this.refocusSub = this.cartonService.refocus$.subscribe(() => {
+      if (this.inputReady) {
+        this.clearAndRefocus();
+      } else {
+        this.pendingRefocus = true;
+      }
+    });
 
-    this.isAvailablePcsSub = this.cartonService.isAvailablePcs$
-      .subscribe(value => {
+    this.isAvailablePcsSub = this.cartonService.isAvailablePcs$.subscribe(
+      (value) => {
         this.isAvailablePcs = value;
         console.log('Available PCS:', value);
-      });
+      },
+    );
 
-    this.isRemovePcsSub = this.cartonService.isRemovePcs$
-      .subscribe(value => {
-        this.isRemovePcs = value;
-        console.log('Remove PCS:', value);
-      });
+    this.isRemovePcsSub = this.cartonService.isRemovePcs$.subscribe((value) => {
+      this.isRemovePcs = value;
+      console.log('Remove PCS:', value);
+    });
 
-    console.log(this.isAvailablePcs, 'availablePcs')
+    console.log(this.isAvailablePcs, 'availablePcs');
   }
 
   // moved to service...
   setLoadedColor() {
-    const color = this.garmentUpdateList.find(c =>
-      c.sizes.some(s =>
-        s.current_carton_pcs !== 0 || this.packedStatus === 'PACKED'
-      )
+    const color = this.garmentUpdateList.find((c) =>
+      c.sizes.some(
+        (s) => s.current_carton_pcs !== 0 || this.packedStatus === 'PACKED',
+      ),
     );
 
     if (color) {
       this.colorModel = {
         color: color.color,
-        color_seq_num: color.color_seq_num
+        color_seq_num: color.color_seq_num,
       };
-      this.packAlterStatus == 'cl' ? '' : this.isColorSelect = true;
-
+      this.packAlterStatus == 'cl' ? '' : (this.isColorSelect = true);
     }
     // for (let q of this.garmentUpdateList) {
     //   for (let qq of q['sizes']) {
@@ -193,7 +191,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
     //     }
     //   };
     // };
-    console.log(this.colorModel, 'from setLoadedColor')
+    console.log(this.colorModel, 'from setLoadedColor');
   }
 
   scrollToSizeBox(scrollIndex: any) {
@@ -212,9 +210,9 @@ export class CartonpackingGarmentscanPage implements OnInit {
     this.addGarmentinitialData();
     let toast = {
       message: 'Data refreshed by Admin',
-      color: 'success'
-    }
-    this.reusableService.showToast(toast)
+      color: 'success',
+    };
+    this.reusableService.showToast(toast);
   }
 
   async addGarmentinitialData() {
@@ -227,30 +225,40 @@ export class CartonpackingGarmentscanPage implements OnInit {
     let params = {
       path: api,
       order_seq_num: this.cartonBoxQrDetails.order_seq_num,
-      ponumber: this.mapped_po ? this.mapped_po : this.poModel['order_ponumber'],
-      cartonbox_qrcode_seq_num: this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
+      ponumber: this.mapped_po
+        ? this.mapped_po
+        : this.poModel['order_ponumber'],
+      cartonbox_qrcode_seq_num:
+        this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
       cartonbox_qrcode: this.cartonBoxQrDetails.qrcode_format,
-      cartonbox_header_seq_num: this.cartonBoxQrDetails.cartonbox_header_seq_num,
+      cartonbox_header_seq_num:
+        this.cartonBoxQrDetails.cartonbox_header_seq_num,
       cartonpacking_status: this.packedStatus,
     };
     this.dataService.postService(params).then(async (res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         this.garmentRawList = res['garmentpacking'];
         this.garmentUpdateList = JSON.parse(
-          JSON.stringify(this.garmentRawList)
+          JSON.stringify(this.garmentRawList),
         );
         console.log('garmentUpdatelist', this.garmentUpdateList);
 
         //Color seperation being done here
+
+        colorList = this.garmentUpdateList.map((item) => ({
+          color: item.color,
+          color_seq_num: item.color_seq_num,
+        }));
+
         for (const item of this.garmentUpdateList) {
-          colorList.push({
-            color: item.color,
-            color_seq_num: item.color_seq_num,
-          });
-          console.log('colorList', this.colorList);
+          // colorList.push({
+          //   color: item.color,
+          //   color_seq_num: item.color_seq_num,
+          // });
+          // this.colorList = colorList;
+          // console.log('colorList', this.colorList, item);
 
           for (const size of item['sizes']) {
-
             // maxcapacity being added from the accomodate sizeQty
             for (const estQty of this.accomodateSizeQty) {
               if (size.size_seq_num == estQty.size_seq_num) {
@@ -264,31 +272,35 @@ export class CartonpackingGarmentscanPage implements OnInit {
             }
             size['balance_packed'] = Math.max(
               0,
-              +size['max_capacity'] - +size['current_carton_pcs']
+              +size['max_capacity'] - +size['current_carton_pcs'],
             ); // balance_packed gets overwritten for repack in the setInspType()
             if (size['remove_qty_count']) {
-              size['removed_data'] = size['remove_qty_count']
+              size['removed_data'] = size['remove_qty_count'];
             }
 
             if (size['testingpcs_qty_count']) {
-              size['testingpcs_qty_count'] = Math.max(0, +size.testingpcs_qty_count - +size.remove_qty_count)
-              console.log(size[
-                'testingpcs_qty_count'
-              ], size[
-              'barcode_data'
-              ])
+              size['testingpcs_qty_count'] = Math.max(
+                0,
+                +size.testingpcs_qty_count - +size.remove_qty_count,
+              );
+              console.log(size['testingpcs_qty_count'], size['barcode_data']);
             }
 
             //Using HASHMAP
-            this.barcodeToSizeMap.set(size.barcode_data, { color: { color: item.color, color_seq_num: item.color_seq_num }, size: size })
+            this.barcodeToSizeMap.set(size.barcode_data, {
+              color: { color: item.color, color_seq_num: item.color_seq_num },
+              size: size,
+            });
           }
         }
 
-        this.cartonService.addInitalGarmentData(this.barcodeToSizeMap)
-        this.cumTotalCartonPcs();
+        this.cartonService.addInitalGarmentData(this.barcodeToSizeMap);
+        setTimeout(() => {
+          this.cumTotalCartonPcs();
+        }, 500);
         this.colorList = colorList; //to collect all the data and then store in variable
 
-        console.log('barcodeHashMap', this.barcodeToSizeMap)
+        console.log('barcodeHashMap', this.barcodeToSizeMap);
         console.log('garmentList', this.garmentUpdateList);
 
         //flags
@@ -296,12 +308,13 @@ export class CartonpackingGarmentscanPage implements OnInit {
         this.isClosed = false;
         this.isScanReady = true;
         if (this.mapped_po) {
-          // this.setLoadedColor(); 
-          this.colorModel = this.cartonService.setLoadedColor(this.garmentUpdateList);
-          this.colorModel ? this.isColorSelect = true : '';
-          console.log('colorModel', this.colorModel)
-        };
-
+          // this.setLoadedColor();
+          this.colorModel = this.cartonService.setLoadedColor(
+            this.garmentUpdateList,
+          );
+          this.colorModel ? (this.isColorSelect = true) : '';
+          console.log('colorModel', this.colorModel);
+        }
       } else {
         let alert = {
           msg: res['message'],
@@ -336,26 +349,26 @@ export class CartonpackingGarmentscanPage implements OnInit {
   }
 
   async removeGarment(action?: string, size?: any) {
-
     if (action == 'garment') {
       if (size.current_carton_pcs > 0) {
         let toastmsg = '';
 
         //if the remove becomes zero after adding pcs then this will not run
-        if (size.remove_qty_count && !(size.removed_data == size.remove_qty_count)) {
-
+        if (
+          size.remove_qty_count &&
+          !(size.removed_data == size.remove_qty_count)
+        ) {
           size.remove_qty_count++;
-          if (size.current_carton_pcs <= size.max_capacity) size.balance_packed++;
+          if (size.current_carton_pcs <= size.max_capacity)
+            size.balance_packed++;
           size.current_carton_pcs = this.dec(size.current_carton_pcs);
-
         } else if (!size.remove_qty_count) {
-
           size.balance_popp_qty_load++;
-          if (size.current_carton_pcs <= size.max_capacity) size.balance_packed++;
+          if (size.current_carton_pcs <= size.max_capacity)
+            size.balance_packed++;
           size.current_carton_pcs = this.dec(size.current_carton_pcs);
-
         } else {
-          toastmsg = '❌ Can\'t remove more pieces'
+          toastmsg = "❌ Can't remove more pieces";
         }
 
         let toast = {
@@ -363,7 +376,6 @@ export class CartonpackingGarmentscanPage implements OnInit {
           color: toastmsg ? 'dark' : 'success',
         };
         await this.reusableService.showToast(toast);
-
       } else if (size.current_carton_pcs == 0) {
         let toast = {
           message: '⚠️ No more sizes to remove',
@@ -384,19 +396,20 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
     // calling the remark list here
     if (action != 'add') {
-
       // remove remark_type = 1
       // repack remark_type = 2
       // reset remark_type = 3
       // cancel remark_type = 4
 
       // this remark_seq_num updates the row in the alter table overriding the previous (remove)remark_seq_num so we might need to add a new column...(NOTE: need to discuss on this)
-      let api = this.cartonService.changeApi('cartonpacking_scan/getcartonpacking_remark_list');
+      let api = this.cartonService.changeApi(
+        'cartonpacking_scan/getcartonpacking_remark_list',
+      );
 
       let params = {
         path: api,
         // path: 'appcartonpack/controllers/getcartonpacking_remark_list.php',
-        remark_type: action == 'repack' ? '2' : '1'
+        remark_type: action == 'repack' ? '2' : '1',
       };
 
       this.dataService.postService(params).then((res: any) => {
@@ -409,7 +422,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
       console.log(this.alterInspection, 'remove type');
       // we will be calling the removeRemamrksList service here
       this.confirmRemovePcs('carton');
-      console.log('Remove carton triggered')
+      console.log('Remove carton triggered');
     } else if (action == 'add') {
       this.alterInspection = true;
       console.log(this.alterInspection, 'add type');
@@ -467,7 +480,9 @@ export class CartonpackingGarmentscanPage implements OnInit {
     console.log('removing scan with remarks', this.remarkModel);
     this.sizeToRemove['remarks'] = this.remarkModel.remarks;
     this.sizeToRemove['remarks_seq_num'] = this.remarkModel.remarks_seq_num;
-    let api = this.cartonService.changeApi('cartonpacking_scan/cartonpacking_alter_remove');
+    let api = this.cartonService.changeApi(
+      'cartonpacking_scan/cartonpacking_alter_remove',
+    );
 
     //http post
     let params = {
@@ -481,7 +496,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
       cartonpacking_status: this.packedStatus,
       color_seq_num: this.colorModel['color_seq_num'],
       ponumber: this.poModel['order_ponumber'],
-      remove_piece: JSON.stringify(this.sizeToRemove) //if carton remove is true we will send this as empty... (NOTE: USING the 'SAVE_SCANNED_SIZES' service in onSubmit() for the remove Carton)
+      remove_piece: JSON.stringify(this.sizeToRemove), //if carton remove is true we will send this as empty... (NOTE: USING the 'SAVE_SCANNED_SIZES' service in onSubmit() for the remove Carton)
     };
 
     this.dataService.postService(params).then(async (res: any) => {
@@ -498,17 +513,20 @@ export class CartonpackingGarmentscanPage implements OnInit {
       }
     });
 
-    this.remarkModel = ''
+    this.remarkModel = '';
     this.closeModal();
   }
 
   // Submit functions common for cartonpacking and cartonpacking_inspection
   canClose(type?: string) {
-
     // we might probably be checking the quantity before letting them save in repack (so that )
     if (type == 'repack') {
-      let morePcs = this.garmentUpdateList[0].sizes.filter(s => s.display_previous_packed < s.current_carton_pcs);
-      let lessPcs = this.garmentUpdateList[0].sizes.filter(s => s.display_previous_packed > s.current_carton_pcs);
+      let morePcs = this.garmentUpdateList[0].sizes.filter(
+        (s) => s.display_previous_packed < s.current_carton_pcs,
+      );
+      let lessPcs = this.garmentUpdateList[0].sizes.filter(
+        (s) => s.display_previous_packed > s.current_carton_pcs,
+      );
 
       if (morePcs || lessPcs) {
         // can expect seperate remarks here
@@ -525,9 +543,8 @@ export class CartonpackingGarmentscanPage implements OnInit {
         // alertmsg = `Box Qty ${this.totalPiecesLoaded} is lesser than Total Qty ${this.totalPieces},`;
       } else if (this.totalPiecesLoaded > this.totalPieces) {
         // alertmsg = `Box Qty ${this.totalPiecesLoaded} is more than Total Qty ${this.totalPieces},`;
-      }
-      else {
-        alertmsg = ''
+      } else {
+        alertmsg = '';
       }
 
       let alert = {
@@ -537,7 +554,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
           {
             text: 'Cancel',
             role: 'cancel',
-            func: () => { },
+            func: () => {},
           },
           {
             text: 'OK',
@@ -551,19 +568,26 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
       this.reusableService.showAlert(alert);
     }
-
-
   }
 
   onSubmit(action?: string) {
     console.log(this.remarkModel, 'remarkModel');
-    this.packedStatus = 'PACKED'
+    this.packedStatus = 'PACKED';
     //conditions
-    let submitType = (action == 'removeCarton') ? 'TESTCARTON' : 'PACKED';
-    let isRemarkSeqNum = this.remarkModel ? this.remarkModel.remarks_seq_num : '';
+
+    let data = this.garmentUpdateList.find(
+      (item) => item.color_seq_num === this.colorModel.color_seq_num,
+    );
+    let submitList = [data];
+    let submitType = action == 'removeCarton' ? 'TESTCARTON' : 'PACKED';
+    let isRemarkSeqNum = this.remarkModel
+      ? this.remarkModel.remarks_seq_num
+      : '';
     let test_pcs = this.isAvailablePcs ? 'Yes' : 'No';
     let remove_pcs = this.isRemovePcs ? 'Yes' : 'No';
-    let api = this.cartonService.changeApi('cartonpacking_scan/save_scanned_sizes');
+    let api = this.cartonService.changeApi(
+      'cartonpacking_scan/save_scanned_sizes',
+    );
 
     //http post
     let params = {
@@ -581,7 +605,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
       test_pcs_another_box: test_pcs,
       remove_pcs: remove_pcs,
       is_repack: this.repackInspection ? 'REPACK' : '',
-      garmentpacking: JSON.stringify(this.garmentUpdateList),
+      garmentpacking: JSON.stringify(submitList),
     };
 
     this.dataService.postService(params).then((res) => {
@@ -615,7 +639,6 @@ export class CartonpackingGarmentscanPage implements OnInit {
           this.reusableService.showToast(toast);
         }
         this.navCtrl.back();
-
       }
     });
     console.log('this is submitted', this.garmentUpdateList);
@@ -623,7 +646,9 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
   // close(SEALED) thing might be used with this func
   onClose() {
-    let api = this.cartonService.changeApi('cartonpacking_scan/carton_box_close');
+    let api = this.cartonService.changeApi(
+      'cartonpacking_scan/carton_box_close',
+    );
 
     let params = {
       path: api,
@@ -632,7 +657,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
       cartonbox_header_seq_num:
         this.cartonBoxQrDetails.cartonbox_header_seq_num,
       ponumber: this.poModel['order_ponumber'],
-      packing_status: 'SEALED' //recheck function will work just like packed and not like sealed (SEALED WILL BE DISCUSSED LATER)
+      packing_status: 'SEALED', //recheck function will work just like packed and not like sealed (SEALED WILL BE DISCUSSED LATER)
     };
     this.dataService.postService(params).then(async (res: any) => {
       if (res['status'].toLowerCase() == 'success') {
@@ -687,17 +712,28 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
         if (this.packedStatus == 'PACKED') {
           if (this.alterInspection) {
-            this.animateSizeCard = await this.cartonService.handleScan('ADDPCS', this.garmentBarcodeData)
+            this.animateSizeCard = await this.cartonService.handleScan(
+              'ADDPCS',
+              this.garmentBarcodeData,
+            );
           } else if (this.repackInspection) {
-            this.animateSizeCard = await this.cartonService.handleScan('REPACK', this.garmentBarcodeData)
+            this.animateSizeCard = await this.cartonService.handleScan(
+              'REPACK',
+              this.garmentBarcodeData,
+            );
           } else {
             // remove pcs feature
-            this.confirmRemovePcs()
+            this.confirmRemovePcs();
           }
+          this.cumTotalCartonPcs();
           return;
         } else {
           //initial packing
-          this.animateSizeCard = await this.cartonService.handleScan('PACK', this.garmentBarcodeData)
+          this.animateSizeCard = await this.cartonService.handleScan(
+            'PACK',
+            this.garmentBarcodeData,
+          );
+          this.cumTotalCartonPcs();
         }
 
         // flags
@@ -717,14 +753,28 @@ export class CartonpackingGarmentscanPage implements OnInit {
     this.totalPiecesLoaded = 0;
 
     for (let item of this.garmentUpdateList) {
-      for (let size of item['sizes']) {
-        this.totalPiecesLoaded += size.current_carton_pcs;
-
-        if (size.max_capacity > 0 && size.current_carton_pcs == 0) {
-          this.unpackedSize = size;
+      console.log(
+        'garmentUpdateList, totalCarton',
+        this.garmentUpdateList,
+        item,
+        this.colorModel,
+      );
+      if (this.colorModel.color_seq_num == item.color_seq_num) {
+        for (let size of item['sizes']) {
+          this.totalPiecesLoaded += Number(size.current_carton_pcs);
+          console.log(
+            'totalPieces, curr_pcs',
+            this.totalPiecesLoaded,
+            size.current_carton_pcs,
+          );
+          if (size.max_capacity > 0 && Number(size.current_carton_pcs) == 0) {
+            this.unpackedSize = size;
+          }
         }
       }
     }
+
+    console.log(this.totalPiecesLoaded);
     return this.totalPiecesLoaded;
   }
 
@@ -746,7 +796,6 @@ export class CartonpackingGarmentscanPage implements OnInit {
       cartonbox_qrcode_seq_num:
         this.cartonBoxQrDetails.cartonbox_qrcode_seq_num,
       cartonpacking_status: this.packedStatus,
-
     };
 
     console.log('cartonbox', this.cartonBoxQrDetails.qrcode_format);
@@ -761,13 +810,13 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
         for (const colorgrp of this.garmentUpdateList) {
           let sameColor = abspacked.find(
-            (ele: any) => ele.color == colorgrp.color
+            (ele: any) => ele.color == colorgrp.color,
           );
           if (!sameColor) continue;
 
           for (const size of colorgrp['sizes']) {
             let sameSize = sameColor.sizes.find(
-              (ele: any) => ele.size_seq_num == size.size_seq_num
+              (ele: any) => ele.size_seq_num == size.size_seq_num,
             );
             if (size['size_seq_num'] == sameSize['size_seq_num']) {
               for (const estQty of this.accomodateSizeQty) {
@@ -779,13 +828,13 @@ export class CartonpackingGarmentscanPage implements OnInit {
               }
               size['balance_packed'] = Math.max(
                 0,
-                +size['max_capacity'] - +size['current_carton_pcs']
+                +size['max_capacity'] - +size['current_carton_pcs'],
               );
               size['poqty_packed'] = sameSize['poqty_packed'];
               size['current_carton_pcs'] = +sameSize['current_carton_pcs'];
               size['balance_popp_qty_load'] =
                 +sameSize['balance_popp_qty_load'];
-              size['remove_qty_count'] = +sameSize['remove_qty_count']
+              size['remove_qty_count'] = +sameSize['remove_qty_count'];
             }
           }
         }
@@ -816,7 +865,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
   }
 
   async isValidBarcode() {
-    let validBarcode = this.barcodeToSizeMap.get(this.garmentBarcodeData)
+    let validBarcode = this.barcodeToSizeMap.get(this.garmentBarcodeData);
     if (!validBarcode) {
       let barcode = this.garmentBarcodeData || '--';
       this.reusableService.playAudio('warning');
@@ -832,7 +881,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
             func: () => {
               this.reusableService.stopAudio();
               this.clearAndRefocus();
-            }
+            },
           },
         ],
       };
@@ -846,8 +895,8 @@ export class CartonpackingGarmentscanPage implements OnInit {
 
   async canLeave() {
     if (
-      (this.isPoSelect &&
-        this.packedStatus != 'SEALED') || this.pcsAdded
+      (this.isPoSelect && this.packedStatus != 'SEALED') ||
+      this.pcsAdded
       // this.packedStatus != 'S') || this.pcsAdded
     ) {
       this.unsavedChanges = true;
@@ -866,7 +915,7 @@ export class CartonpackingGarmentscanPage implements OnInit {
       this.refocusSub.unsubscribe();
     }
 
-    // this makes the value false and 
+    // this makes the value false and
     this.cartonService.isAvailablePcs.next(false);
     this.isAvailablePcsSub.unsubscribe();
 

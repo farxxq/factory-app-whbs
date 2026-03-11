@@ -34,9 +34,9 @@
       </button>
 
       <button (click)="addNumber('0')">0</button>
-      <ion-button class="submit" (click)="submit()" [disabled]="!operatorId">
+      <ion-button class="submit" (click)="canSubmit()" [disabled]="!operatorId">
         <!-- <ion-icon name="arrow-forward" slot="end"></ion-icon> -->
-        Submit
+        {{ this.rfid.operator ? "Checkout" : "Submit" }}
       </ion-button>
     </div>
     <div class="footer">

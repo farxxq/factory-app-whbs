@@ -7,10 +7,11 @@ import { IonicModule } from '@ionic/angular';
 import { PolypackMasterPageRoutingModule } from './polypack-master-routing.module';
 
 import { PolypackMasterPage } from './polypack-master.page';
-import { HeaderComponent } from "../../../components/header/header.component";
+import { HeaderComponent } from '../../../components/header/header.component';
 
 //prime ng
 import { Select } from 'primeng/select';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @NgModule({
   imports: [
@@ -20,7 +21,8 @@ import { Select } from 'primeng/select';
     PolypackMasterPageRoutingModule,
     Select,
     HeaderComponent,
+    FloatLabelModule,
   ],
-  declarations: [ PolypackMasterPage ],
+  declarations: [PolypackMasterPage],
 })
-export class PolypackMasterPageModule { }
+export class PolypackMasterPageModule {}

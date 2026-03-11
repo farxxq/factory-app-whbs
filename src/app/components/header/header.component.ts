@@ -68,37 +68,6 @@ export class HeaderComponent implements OnInit {
     this.reusableService.showAlert(alert);
   }
 
-  isCheckIn = false;
-  isCheckOut = false;
-  id: any = '';
-  canCheckin_out() {
-    let rfid = this.storageService.getData('rfid');
-
-    if (rfid.operator) {
-      this.isCheckOut = true;
-      rfid.operator = null;
-      this.storageService.setData('rfid', rfid);
-      console.log('Checked out');
-      let toast = {
-        msg: `${this.id} has been checked out`,
-        color: 'warning',
-      };
-
-      this.reusableService.showToast(toast);
-    } else {
-      rfid.operator = this.id;
-      this.storageService.setData('rfid', rfid);
-      let toast = {
-        msg: `${this.id} has been Checked In`,
-        color: 'success',
-      };
-
-      this.reusableService.showToast(toast);
-    }
-  }
-
-  closeModal() {}
-
   logout() {
     this.authService.logout();
     // this.showMenu = false;
