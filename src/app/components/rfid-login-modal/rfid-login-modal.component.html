@@ -45,7 +45,7 @@
           #scanInput
           class="scan-input"
           placeholder="Scan RFID..."
-          [(ngModel)]="operatorId"
+          [(ngModel)]="operatorScanId"
           (ionInput)="onRfidInput($event)"
           (ionBlur)="keepScannerFocus()"
           inputmode="none"

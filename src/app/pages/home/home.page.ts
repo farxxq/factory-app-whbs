@@ -14,10 +14,14 @@ import { StorageService } from '../../providers/storage/storage-service';
 })
 export class HomePage implements OnInit {
   deviceType: string = this.storageService.getData('deviceType');
+
   branchList: any = [];
   branchModel: any = '';
-  userRole: string = '';
+
+  lineList: any = [];
   data: any = {};
+  
+  userRole: string = '';
 
   constructor(
     private navCtrl: NavController,
@@ -39,6 +43,18 @@ export class HomePage implements OnInit {
     this.dataService.branchService(params).then((res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         this.branchList = res['branchdetails'];
+      }
+    });
+  }
+
+  lineDetails(){
+    let params = {
+      path: 'apppanelcheck/controllers/getlinelist.php',
+    };
+
+    this.dataService.postService(params).then((res: any) => {
+      if (res['status'].toLowerCase() == 'success') {
+        this.lineList = res['linelist'];
       }
     });
   }

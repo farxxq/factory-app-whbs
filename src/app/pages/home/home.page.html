@@ -9,6 +9,11 @@
         placeholder="Select Branch" />
     </div>
     }
+    <div class="line-list">
+      Branch:
+      <p-select [options]="branchList" [(ngModel)]="branchModel" optionLabel="location_name" (onChange)="setBranch()"
+        placeholder="Select Branch" />
+    </div>
     @if(userRole){
     <ion-grid fixed>
       <!-- @if(deviceType == 'mobile'){ -->

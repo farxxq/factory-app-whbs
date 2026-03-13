@@ -53,30 +53,11 @@
                           inputId="Customer"
                           filterBy="customer_short_name"
                           [checkmark]="true"
-                          (onChange)="clearbelowAttrbutes(2)"
+                          (onChange)="clearbelowAttrbutes(3)"
                           (click)="actionType = 'M'"
                           optionLabel="customer_short_name"
                         ></p-select>
                         <label for="Customer">Customer</label>
-                      </p-floatlabel>
-                    </div>
-
-                    <div class="form-field">
-                      <p-floatlabel variant="on">
-                        <p-select
-                          class="large-text"
-                          [disabled]="!lineList.length"
-                          [options]="lineList"
-                          [(ngModel)]="lineModel"
-                          [filter]="true"
-                          inputId="Line"
-                          filterBy="line_seq_num"
-                          [checkmark]="true"
-                          (onChange)="clearbelowAttrbutes(3)"
-                          (click)="actionType = 'M'"
-                          optionLabel="line_name"
-                        ></p-select>
-                        <label for="Line">Line Details</label>
                       </p-floatlabel>
                     </div>
 
@@ -91,10 +72,29 @@
                           inputId="Order"
                           filterBy="order_name"
                           [checkmark]="true"
-                          (onChange)="clearbelowAttrbutes(5)"
+                          (onChange)="clearbelowAttrbutes(2)"
                           optionLabel="order_name"
                         ></p-select>
                         <label for="Order">Order</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!lineList.length"
+                          [options]="lineList"
+                          [(ngModel)]="lineModel"
+                          [filter]="true"
+                          inputId="Line"
+                          filterBy="line_seq_num"
+                          [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(5)"
+                          (click)="actionType = 'M'"
+                          optionLabel="line_name"
+                        ></p-select>
+                        <label for="Line">Line Details</label>
                       </p-floatlabel>
                     </div>
 
@@ -177,25 +177,6 @@
                       <p-floatlabel variant="on">
                         <p-select
                           class="large-text"
-                          [disabled]="!lineList.length"
-                          [options]="lineList"
-                          [(ngModel)]="lineModel"
-                          [filter]="true"
-                          inputId="Line"
-                          filterBy="line_seq_num"
-                          [checkmark]="true"
-                          (onChange)="clearbelowAttrbutes(3)"
-                          (click)="actionType = 'G'"
-                          optionLabel="line_name"
-                        ></p-select>
-                        <label for="Line">Line Details</label>
-                      </p-floatlabel>
-                    </div>
-
-                    <div class="form-field">
-                      <p-floatlabel variant="on">
-                        <p-select
-                          class="large-text"
                           [disabled]="!orderList.length"
                           [options]="orderList"
                           [(ngModel)]="orderModel"
@@ -203,9 +184,28 @@
                           inputId="Order"
                           filterBy="order_name"
                           [checkmark]="true"
+                          (onChange)="clearbelowAttrbutes(2)"
                           optionLabel="order_name"
                         ></p-select>
                         <label for="Order">Order</label>
+                      </p-floatlabel>
+                    </div>
+
+                    <div class="form-field">
+                      <p-floatlabel variant="on">
+                        <p-select
+                          class="large-text"
+                          [disabled]="!lineList.length"
+                          [options]="lineList"
+                          [(ngModel)]="lineModel"
+                          [filter]="true"
+                          inputId="Line"
+                          filterBy="line_seq_num"
+                          [checkmark]="true"
+                          (click)="actionType = 'G'"
+                          optionLabel="line_name"
+                        ></p-select>
+                        <label for="Line">Line Details</label>
                       </p-floatlabel>
                     </div>
                   </div>
@@ -287,7 +287,7 @@
                       [disabled]="!customerList.length || sizeBarcode"
                       [options]="customerList"
                       [(ngModel)]="customerModel"
-                      (onChange)="clearbelowAttrbutes(2)"
+                      (onChange)="clearbelowAttrbutes(3)"
                       [filter]="true"
                       inputId="Customer"
                       filterBy="customer_short_name"
@@ -295,6 +295,23 @@
                       optionLabel="customer_short_name"
                     ></p-select>
                     <label for="Customer">Customer</label>
+                  </p-floatlabel>
+                </div>
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
+                      [disabled]="!orderList.length || sizeBarcode"
+                      [options]="orderList"
+                      [(ngModel)]="orderModel"
+                      [filter]="true"
+                      inputId="Order"
+                      filterBy="order_name"
+                      [checkmark]="true"
+                      (onChange)="clearbelowAttrbutes(2)"
+                      optionLabel="order_name"
+                    ></p-select>
+                    <label for="Order">Order</label>
                   </p-floatlabel>
                 </div>
 
@@ -306,7 +323,7 @@
                       [disabled]="!lineList.length || sizeBarcode"
                       [options]="lineList"
                       [(ngModel)]="lineModel"
-                      (onChange)="clearbelowAttrbutes(3)"
+                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
                       [filter]="true"
                       inputId="Line"
                       filterBy="line_seq_num"
@@ -328,7 +345,7 @@
                       inputId="Order"
                       filterBy="order_name"
                       [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
+                      (onChange)="clearbelowAttrbutes(2)"
                       optionLabel="order_name"
                     ></p-select>
                     <label for="Order">Order</label>
@@ -465,14 +482,15 @@
                       inputId="Customer"
                       filterBy="customer_short_name"
                       [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(2)"
+                      (onChange)="clearbelowAttrbutes(3)"
                       optionLabel="customer_short_name"
                     ></p-select>
                     <label for="Customer">Customer</label>
                   </p-floatlabel>
                 </div>
 
-                <div class="form-field">
+                <!-- assignment doesn't need it -->
+                <!-- <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
                       class="large-text"
@@ -488,7 +506,7 @@
                     ></p-select>
                     <label for="Line">Line Details</label>
                   </p-floatlabel>
-                </div>
+                </div> -->
 
                 <div class="form-field">
                   <p-floatlabel variant="on">

@@ -1,9 +1,14 @@
 <app-header [headerData]="'Panel Check hourly Report'"></app-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">panelcheck-hourlyReport</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <div class="header-container">
+    <div class="info-hour"></div>
+    <div class="info"></div>
+    <div class="info-reports"></div>
+  </div>
+  <div class="hourly-report-container">
+    <div class="table-container"></div>
+    <div class="total-container"></div>
+  </div>
+  <div class="interactive-btn-container"></div>
 </ion-content>

@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 // Services
 import { StorageService } from '../../providers/storage/storage-service';
 import { ReusableService } from '../../providers/reusables/reusable-service';
-import { debounceTime, Subject } from 'rxjs';
+import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-rfid-login-modal',
@@ -22,15 +22,26 @@ import { debounceTime, Subject } from 'rxjs';
 export class RfidLoginModalComponent implements OnInit, AfterViewInit {
   rfid: any = '';
   operatorId: any = '';
+  operatorScanId: any = '';
+
+  private operatorSubject = new BehaviorSubject<any>(null);
+  operator$ = this.operatorSubject.asObservable();
+
+  setOperator(data) {
+    this.operatorSubject.next(data);
+  }
+
   @ViewChild('scanInput', { static: false }) scanInput!: IonInput;
   private rfidInputSubject = new Subject<string>();
   private inputSub: any;
+
   constructor(
     private modalCtrl: ModalController,
     private storageService: StorageService,
     private reusableService: ReusableService,
     private navCtrl: NavController,
   ) {}
+
   ngOnInit() {
     this.rfid = this.storageService.getData('rfid') || '';
   }
@@ -56,14 +67,14 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
   }
 
   convertRFID() {
-    let value = this.operatorId;
+    let value = this.operatorId || this.operatorScanId;
     let hex = Number(value).toString(16);
     hex = hex.slice(-4);
     let rfid = parseInt(hex, 16);
 
     let convertId = rfid; // converted id
     console.log(this.operatorId);
-    if (this.operatorId) {
+    if (this.operatorId || this.operatorScanId) {
       console.log('Scanned and converted id', this.operatorId, convertId);
       return convertId;
     } else {
@@ -87,7 +98,8 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
     }
 
     if (this.rfid.operator_rfid !== new_id) {
-      return this.showToast(`${this.operatorId} is not checked in`, 'danger');
+      let operator = this.operatorId || this.operatorScanId;
+      return this.showToast(`${operator} is not checked in`, 'danger');
     }
 
     this.checkOut();
@@ -95,7 +107,8 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
   }
 
   checkIn(id: any) {
-    this.rfid = { operator_rfid: id, operator: this.operatorId };
+    let operator_id = this.operatorId || this.operatorScanId;
+    this.rfid = { operator_rfid: id, operator: operator_id }; //can be taken to the 
     this.storageService.setData('rfid', this.rfid);
 
     this.showToast(`${this.operatorId} has been checked in`, 'success');
@@ -112,7 +125,7 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
     this.rfid.operator = null;
     this.rfid.operator_rfid = null;
 
-    this.storageService.setData('rfid', this.rfid);
+    this.storageService.removeData('rfid');
 
     this.showToast(`${id} has been checked out`, 'warning');
 

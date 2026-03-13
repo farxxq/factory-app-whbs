@@ -103,21 +103,33 @@ export class PolypackMasterPage implements OnInit {
     this.reusableService.showAlert(alert);
 
     // operatorlogin
-    this.rfid = this.storageService.getData('rfid') || '';
-    if (!this.rfid.operator) {
-      this.reusableService.loginOperator();
-    }
+    this.checkOperator();
   }
 
   ngAfterContentInit(): void {
-    if (this.rfid.operator) {
-      this.assignListService(0);
-    }
-
     let deviceType = this.storageService.getData('deviceType');
 
     this.isScanner = this.storageService.getData('isScanner');
     console.log(this.isScanner);
+  }
+
+  checkOperator() {
+    this.rfid = this.storageService.getData('rfid') || {};
+
+    if (!this.rfid.operator) {
+      this.reusableService.loginOperator();
+
+      const interval = setInterval(() => {
+        this.rfid = this.storageService.getData('rfid');
+
+        if (this.rfid?.operator) {
+          clearInterval(interval);
+          this.assignListService(0);
+        }
+      }, 500);
+    } else {
+      this.assignListService(0);
+    }
   }
 
   rawListArr = [
@@ -192,7 +204,9 @@ export class PolypackMasterPage implements OnInit {
         path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
-        line_seq_num: this.lineModel['line_seq_num'],
+        line_seq_num: this.lineModel['line_seq_num']
+          ? this.lineModel['line_seq_num']
+          : '',
         tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'orderList';
