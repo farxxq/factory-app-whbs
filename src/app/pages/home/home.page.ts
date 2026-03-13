@@ -17,8 +17,11 @@ export class HomePage implements OnInit {
 
   branchList: any = [];
   branchModel: any = '';
+<<<<<<< HEAD
 
   lineList: any = [];
+=======
+>>>>>>> 13b21cd (Temp changes made attempting to bring the linedetails after the order and div structuring for the panelcheck-hourly-report-supervisor page)
   data: any = {};
   
   userRole: string = '';
