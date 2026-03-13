@@ -73,7 +73,7 @@ export class MapPolypackPage implements OnInit {
       path: api,
       // path: 'apppolypack/controllers/getcolors.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
@@ -102,7 +102,7 @@ export class MapPolypackPage implements OnInit {
     let params = {
       path: api,
       // path: 'apppolypack/controllers/getsize.php',
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       colorseqnum: this.colorModel['color_seq_num'],
     };
@@ -142,7 +142,7 @@ export class MapPolypackPage implements OnInit {
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
@@ -268,7 +268,7 @@ export class MapPolypackPage implements OnInit {
         // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
         colorseqnum: this.colorModel['color_seq_num'],
         customerseqnum: this.filterDataList.customer['customer_seq_num'],
-        lineseqnum: this.filterDataList.line['line_seq_num'],
+        line_seq_num: this.filterDataList.line['line_seq_num'],
         orderseqnum: this.filterDataList.order['order_seq_num'],
         seasonseqnum: this.filterDataList.season['season_seq_num'],
         barcode_mappings: JSON.stringify(barcodeDetails),
@@ -320,7 +320,7 @@ export class MapPolypackPage implements OnInit {
           // path: 'apppolypack/controllers/orderdetailsbarcodemapping.php',
           colorseqnum: this.colorList[i]['color_seq_num'],
           customerseqnum: this.filterDataList.customer['customer_seq_num'],
-          lineseqnum: this.filterDataList.line['line_seq_num'],
+          line_seq_num: this.filterDataList.line['line_seq_num'],
           orderseqnum: this.filterDataList.order['order_seq_num'],
           seasonseqnum: this.filterDataList.season['season_seq_num'],
           barcode_mappings: JSON.stringify(genBarCodeDetails),

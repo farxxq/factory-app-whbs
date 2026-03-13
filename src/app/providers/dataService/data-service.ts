@@ -219,8 +219,8 @@ export class DataService {
 
     return new Promise(async (resolve, reject) => {
       this.http
-        // .post('https://gannet.online/console/login/getapp_type', postData)
-        .post('http://192.168.16.127/gannet_v5/login/getapp_type', postData) // temp only for local debugging remove later
+        .post('https://gannet.online/console/login/getapp_type', postData)
+        // .post('http://192.168.16.127/gannet_v5/login/getapp_type', postData) // temp only for local debugging remove later
         .subscribe(
           async (res) => {
             resolve(res);

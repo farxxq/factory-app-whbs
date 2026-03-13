@@ -66,7 +66,7 @@ export class ListPolypackPage implements OnInit {
           ? coloritem['color_seq_num']
           : item['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderponum: item.order_ponumber ? item.order_ponumber : null,
     };
 
@@ -102,7 +102,7 @@ export class ListPolypackPage implements OnInit {
       path: api,
       //  path: 'apppolypack/controllers/getponumlist.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
     };
 
     this.dataService.postService(params).then(async (res: any) => {
@@ -136,7 +136,7 @@ export class ListPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/getcolors.php',
       orderseqnum: this.filterDataList.order['order_seq_num'],
       orderponum: po.order_ponumber ? po.order_ponumber : null,
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
     };
 
     console.log('Po', po);
@@ -198,7 +198,7 @@ export class ListPolypackPage implements OnInit {
         // path: 'apppolypack/controllers/cartonpackinginsert.php',
         colorseqnum: this.fullQtyList.color['color_seq_num'],
         customerseqnum: this.fullQtyList.customer['customer_seq_num'],
-        lineseqnum: this.fullQtyList.line['line_seq_num'],
+        line_seq_num: this.fullQtyList.line['line_seq_num'],
         orderseqnum: this.fullQtyList.order['order_seq_num'],
         seasonseqnum: this.fullQtyList.season['season_seq_num'],
         orderponum: this.fullQtyList.poNum

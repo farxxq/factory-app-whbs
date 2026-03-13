@@ -2,15 +2,23 @@
   <ion-toolbar>
     <div class="nav-header">
       <ion-buttons slot="start">
-        <ion-button shape="round" icon="arrow-back-outline" class="ion-no-padding" (click)="canLeave()">
-          <ion-icon slot="start" style="color: white" name="arrow-back-outline"></ion-icon>
+        <ion-button
+          shape="round"
+          icon="arrow-back-outline"
+          class="ion-no-padding"
+          (click)="canLeave()"
+        >
+          <ion-icon
+            slot="start"
+            style="color: white"
+            name="arrow-back-outline"
+          ></ion-icon>
         </ion-button>
         <ion-title class="ion-no-padding back-title">Back</ion-title>
       </ion-buttons>
       <div>
         <h1 class="page-name">{{'Add Polypack' | uppercase}}</h1>
       </div>
-
     </div>
   </ion-toolbar>
 </ion-header>
@@ -22,63 +30,98 @@
       @if (deviceType == 'mobile') {
       <ion-row>
         <ion-col size="6">
-          <div class="info-header"><span>Season</span>
-            <p>{{filterDataList.season.season_name |
-              titlecase}}</p>
+          <div class="info-header">
+            <span>Season</span>
+            <span class="info-span">
+              {{filterDataList.season.season_name | titlecase}}
+            </span>
           </div>
         </ion-col>
+
         <ion-col size="6">
-          <div class="info-header"><span>Order</span>
-            <p>{{filterDataList.order.order_name}}</p>
+          <div class="info-header">
+            <span>Order</span>
+            <span class="info-span"> {{filterDataList.order.order_name}} </span>
           </div>
         </ion-col>
       </ion-row>
+
       <ion-row>
         @if(filterDataList.poNum){
         <ion-col size="6">
-          <div class="info-header"><span>PO</span>
-            <p>{{filterDataList.poNum.order_ponumber}}</p>
+          <div class="info-header">
+            <span>PO</span>
+            <span class="info-span">
+              {{filterDataList.poNum.order_ponumber}}
+            </span>
           </div>
         </ion-col>
         }
+
         <ion-col [size]="poNum ? 6: 12">
-          <div class="info-header"><span>Color</span>
-            <p>{{filterDataList.color.color_name}}</p>
+          <div class="info-header">
+            <span>Color</span>
+            <span class="info-span"> {{filterDataList.color.color_name}} </span>
           </div>
         </ion-col>
       </ion-row>
       } @else {
+
       <ion-row>
         <ion-col size="3">
-          <p>{{filterDataList.season.season_name |
-            titlecase}}</p>
+          <div class="info-header">
+            <span>Season</span>
+            <span class="info-span">
+              {{filterDataList.season.season_name | titlecase}}
+            </span>
+          </div>
         </ion-col>
+
         <ion-col size="3">
-          <p>{{filterDataList.order.order_name}}</p>
+          <div class="info-header">
+            <span>Order</span>
+            <span class="info-span"> {{filterDataList.order.order_name}} </span>
+          </div>
         </ion-col>
+
         @if (poNum) {
         <ion-col size="3">
-          <p>{{filterDataList.poNum.order_ponumber}}</p>
+          <div class="info-header">
+            <span>PO</span>
+            <span class="info-span">
+              {{filterDataList.poNum.order_ponumber}}
+            </span>
+          </div>
         </ion-col>
         }
+
         <ion-col [size]="poNum ? 3: 6">
-          <p>{{filterDataList.color.color_name}}</p>
+          <div class="info-header">
+            <span>Color</span>
+            <span class="info-span"> {{filterDataList.color.color_name}} </span>
+          </div>
         </ion-col>
       </ion-row>
+
       }
     </ion-grid>
+
     <div class="chips">
-      <!-- ,'background-color': item.barcode ? 'var(--ion-color-primary)' : 'var(--ion-color-danger)' -->
-      <ion-chip mode="ios" style="background-color: var(--ion-color-primary-shade);"
-        (click)="showAllSizesEntry = -1; scrollToSizeBox(0) ">
+      <ion-chip
+        mode="ios"
+        style="background-color: var(--ion-color-primary-shade)"
+        (click)="showAllSizesEntry = -1; scrollToSizeBox(0) "
+      >
         <ion-label>ALL</ion-label>
         <ion-label class="qty">{{totalInitialQty}}</ion-label>
       </ion-chip>
-      <!-- [ngStyle]="{'border': item.barcode ? '1px solid var(--ion-color-primary)' : '1px solid var(--ion-color-danger)'}" -->
+
       @for (item of fullSizeList; track $index; let ro = $index) {
-      <ion-chip mode="ios"
+      <ion-chip
+        mode="ios"
         [ngStyle]="{'--background': item.barcode ? 'var(--ion-color-primary)' : 'var(--ion-color-danger)'}"
-        (click)="sizeChip(ro,item)">
+        (click)="sizeChip(ro,item)"
+      >
         <ion-label>{{item.size_name}}</ion-label>
         <ion-label class="qty">{{item.total_pcssize_poly_qty}}</ion-label>
       </ion-chip>
@@ -88,37 +131,51 @@
 
   @if(isScanner){
   <div class="sizeScan-input">
-    <ion-input #sizeInput class="inp-size" placeholder="SCAN SIZE TAG" inputmode="none"
-      [ngClass]="sInpF? 'inputFocus':'inputNotFocus'" (ionFocus)="setFocus()" (ionInput)="onSizeInput($event)"
-      (ionBlur)="sInpF = false" [(ngModel)]="barcodeData" type="text"></ion-input>
+    <ion-input
+      #sizeInput
+      class="inp-size"
+      placeholder="SCAN SIZE TAG"
+      inputmode="none"
+      [ngClass]="sInpF? 'inputFocus':'inputNotFocus'"
+      (ionFocus)="setFocus()"
+      (ionInput)="onSizeInput($event)"
+      (ionBlur)="sInpF = false"
+      [(ngModel)]="barcodeData"
+      type="text"
+    ></ion-input>
   </div>
   }
   <div class="card-container" #container>
     <!-- Adding a provision for using scanner in phone -->
     <!-- @if(isScanner){ -->
-    @for (item of fullSizeList; track $index ; let row = $index) {
-    @if (
-    (isScanner && ((item.polypack_qty || showAllSizesEntry == row) || showAllSizesEntry == -1))
-    ||
-    (!isScanner && (showAllSizesEntry == '-1' || showAllSizesEntry == row))
-    ) {
+    @for (item of fullSizeList; track $index ; let row = $index) { @if (
+    (isScanner && ((item.polypack_qty || showAllSizesEntry == row) ||
+    showAllSizesEntry == -1)) || (!isScanner && (showAllSizesEntry == '-1' ||
+    showAllSizesEntry == row)) ) {
 
-    <ion-card [ngClass]="{
+    <ion-card
+      [ngClass]="{
     'animate-scan': animateColorTd && item.barcode === animateColorTd.barcode
-  }">
+  }"
+    >
       <ion-card-content>
         <ion-grid fixed>
-
           <!-- Size -->
           <ion-row class="highlight-rows">
             <ion-col size="6">Size</ion-col>
-            <ion-col size="6">{{ item?.size_name || 'size name' }}</ion-col>
+            <ion-col size="6" class="hightlight-size"
+              >{{ item?.size_name || 'size name' }}</ion-col
+            >
           </ion-row>
 
           <!-- Barcode -->
           <ion-row class="qr-scan-row">
-            <ion-col class="qrcode" size="12" [ngStyle]="item.barcode ? { color: 'green' } : { color: 'red' }"
-              (dblclick)="isScanner ? barcodeData = item.barcode : null">
+            <ion-col
+              class="qrcode"
+              size="12"
+              [ngStyle]="item.barcode ? { color: 'green' } : { color: 'red' }"
+              (dblclick)="isScanner ? barcodeData = item.barcode : null"
+            >
               Barcode: {{ item.barcode || 'Not Assigned' }}
             </ion-col>
           </ion-row>
@@ -134,9 +191,7 @@
           <!-- PO / Order Qty -->
           @if (item.total_qty_against_order > 0) {
           <ion-row>
-            <ion-col size="6">
-              Ord Qty:
-            </ion-col>
+            <ion-col size="6"> Ord Qty: </ion-col>
             <ion-col size="6">
               {{ item?.total_qty_against_order}}
               <!-- for now this edit is taken down -->
@@ -149,13 +204,8 @@
           </ion-row>
           }
           <ion-row>
-
             <ion-col size="6">
-              @if(filterDataList.poNum.length > 0) {
-              PO Qty:
-              } @else{
-              Ord Qty:
-              }
+              @if(filterDataList.poNum.length > 0) { PO Qty: } @else{ Ord Qty: }
             </ion-col>
             <ion-col size="6">
               {{ item?.total_order_size_qty || '--' }}
@@ -166,10 +216,18 @@
           <ion-row>
             <ion-col size="6">Total Packed Qty:</ion-col>
             <ion-col size="6" class="undo-data">
-              {{ item?.edit_pcssize_poly_qty || item?.total_pcssize_poly_qty || '--' }}
+              {{ item?.edit_pcssize_poly_qty || item?.total_pcssize_poly_qty ||
+              '--' }}
               <!-- Show edit only in non-scan mode -->
-              @if(!isScanner && item['total_pcssize_poly_qty'] && item.barcode) {
-              <ion-button id="open-editModal" (click)="openModal(item)" color="primary" fill="clear" shape="round">
+              @if(!isScanner && item['total_pcssize_poly_qty'] && item.barcode
+              && false) {
+              <ion-button
+                id="open-editModal"
+                (click)="openModal(item)"
+                color="primary"
+                fill="clear"
+                shape="round"
+              >
                 <ion-icon slot="icon-only" name="create-outline"></ion-icon>
               </ion-button>
               }
@@ -191,118 +249,50 @@
             </ion-col>
             <ion-col size="6">
               <!-- Scan mode -->
-              @if(isScanner) {
-              {{ item.polypack_qty }}
-              @if(item.polypack_qty) {
-              <ion-icon style="font-size: 25px; color: red" (click)="removeSize(item)"
-                name="remove-circle-outline"></ion-icon>
-              }
-              }
+              @if(isScanner) { {{ item.polypack_qty }} @if(item.polypack_qty) {
+              <ion-icon
+                style="font-size: 25px; color: red"
+                (click)="removeSize(item)"
+                name="remove-circle-outline"
+              ></ion-icon>
+              } }
               <!--Manual mode  -->
               @else {
-              <ion-input #qtyInput type="text" inputmode="numeric" pattern="[0-9]*$" maxlength="10"
-                [disabled]="!item.barcode" [(ngModel)]="item.polypack_qty" (ionBlur)="isValidQty(item || null)"
-                placeholder="Enter Actual Size Qty">
+              <ion-input
+                #qtyInput
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*$"
+                maxlength="10"
+                [disabled]="!item.barcode"
+                [(ngModel)]="item.polypack_qty"
+                (ionBlur)="isValidQty(item || null)"
+                placeholder="Enter Actual Size Qty"
+              >
               </ion-input>
               }
-
             </ion-col>
           </ion-row>
-
         </ion-grid>
       </ion-card-content>
     </ion-card>
 
-    }
-    }
+    } }
     <!-- } -->
-    <!-- temp may be... -->
-    @if(false) {
-    @for (item of fullSizeList; track $index ; let ro = $index) {
-    @if((showAllSizesEntry=='-1' || showAllSizesEntry==ro)){
-    <ion-card>
-      <ion-card-content>
-        <ion-grid fixed>
-          <ion-row class="highlight-rows">
-            <ion-col size="6">Size</ion-col>
-            <ion-col size="6">{{item?.size_name || 'size name'}}</ion-col>
-          </ion-row>
-          <ion-row class="qr-scan-row">
-            <ion-col class="qrcode" size="12" [ngStyle]="item.barcode? {'color': 'green'}: {'color': 'red'}">
-              Barcode: {{item.barcode || "Not Assigned"}}
-            </ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="6">ELC Qty:</ion-col>
-            <ion-col size="6">{{item?.total_pcssize_elc_qty|| '--'}}</ion-col>
-          </ion-row>
-          <ion-row>
-            <ion-col size="6">PO Qty:</ion-col>
-            <ion-col size="6">{{item?.total_order_size_qty || '--'}}</ion-col>
-          </ion-row>
-          <!-- Need to add a (toggle) poquantity -->
-          <ion-row>
-            <ion-col size="6">Total Packed Qty:</ion-col>
-            <ion-col size="6" class="undo-data">
-              {{item?.edit_pcssize_poly_qty || item?.total_pcssize_poly_qty || '--'}}
-
-              <!-- edit btn -->
-              @if(false){
-              <!-- edit btn needs some work so it has been disabled now -->
-              <!-- @if(item['total_pcssize_poly_qty'] && item.barcode){ -->
-              <ion-button id="open-editModal" (click)="openModal(item)" color="primary" fill="clear" shape="round">
-                <ion-icon slot="icon-only" name="create-outline"></ion-icon>
-              </ion-button>
-              }
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col size="6">Balance Qty:</ion-col>
-            <!-- <ion-col size="6">{{item.polypack_balance|| '--'}}</ion-col> -->
-            <ion-col size="6">{{item['polypack_balance'] || 0 || '--'}}</ion-col>
-          </ion-row>
-          <ion-row class="highlight-rows">
-            <ion-col size="6">
-              <div class="highlight-rows-text">Actual Size Qty:</div>
-            </ion-col>
-            <!-- [disabled]="(item['polypack_balance'] == 0 || null) || !item.barcode"  -->
-            <ion-col size="6">
-              @if(isScanner && false){
-              <ion-input class="inpSize" [placeholder]="item.polypack_qty" inputmode="none" aria-disabled="true"
-                type="text"></ion-input>
-              <ion-input #sizeInput class="inpSize" placeholder="SCAN SIZE TAG" inputmode="none"
-                [ngClass]="scannedMapSizeList[i]['sInpF']? 'inputFocus':'inputNotFocus'" (ionFocus)="setFocus(i)"
-                inputMode="none" (ionInput)="onSizeInput($event, i)" [(ngModel)]="sizeBarcode" type="text"
-                (dblclick)="mapInputData = item.barcode"></ion-input>
-              }@else {
-              <ion-input #qtyInput type="text" inputmode="numeric" pattern="[0-9]*$" maxlength="10"
-                [disabled]="!item.barcode" [(ngModel)]="item.polypack_qty" (ionBlur)="isValidQty(item || null)"
-                placeholder="Enter Actual Size Qty"></ion-input>
-              }
-            </ion-col>
-          </ion-row>
-          <!-- <ion-row class="qr-scan-row">
-              <ion-col class="qrcode" size="12" [ngStyle]="item.barcode? {'color': 'green'}: {'color': 'red'}">
-                Barcode: {{item.barcode || "Yet to be assigned"}}
-              </ion-col>
-            </ion-row> -->
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-    }
-    }
-    }
 
     <!-- Edit modal may be moved to the list page -->
-    <ion-modal id="editPolyQty-modal" [isOpen]="isModalOpen" #modal trigger="open-editModal">
+    <ion-modal
+      id="editPolyQty-modal"
+      [isOpen]="isModalOpen"
+      #modal
+      trigger="open-editModal"
+    >
       <ng-template>
         <div class="editModal-container">
           <h4>Edit Polypack size qty</h4>
           <ion-grid fixed>
             <ion-row>
-              <ion-col size="6">Total size Qty:
-              </ion-col>
+              <ion-col size="6">Total size Qty: </ion-col>
               <ion-col size="6">
                 <span>
                   {{editSizeItem.total_pcssize_poly_qty}}
@@ -314,8 +304,14 @@
               <ion-col size="6">Enter the size qty to change: </ion-col>
               <ion-col size="6">
                 <!-- qty_for_order -->
-                <ion-input type="text" inputmode="numeric" [max]="this.editSizeItem.total_pcssize_poly_qty" min="0"
-                  placeholder="--" [(ngModel)]="editPolyQty"></ion-input>
+                <ion-input
+                  type="text"
+                  inputmode="numeric"
+                  [max]="this.editSizeItem.total_pcssize_poly_qty"
+                  min="0"
+                  placeholder="--"
+                  [(ngModel)]="editPolyQty"
+                ></ion-input>
               </ion-col>
             </ion-row>
             <ion-row>
@@ -325,7 +321,12 @@
                 </ion-button>
               </ion-col>
               <ion-col size="6">
-                <ion-button (click)="onEditSubmit()" [disabled]="!editPolyQty" expand=" block" fill="solid">
+                <ion-button
+                  (click)="onEditSubmit()"
+                  [disabled]="!editPolyQty"
+                  expand=" block"
+                  fill="solid"
+                >
                   Submit
                 </ion-button>
               </ion-col>
@@ -337,16 +338,17 @@
   </div>
   <div class="total-qty">
     <!-- <div>Total Quantity:</div> -->
-    <p>
-      Total Quantity: {{totalQty || '0'}}
-    </p>
+    <p>Total Quantity: {{totalQty || '0'}}</p>
   </div>
   <div class="action-btn">
-    <ion-button [class.invalid]="!totalQty" color="primary" (click)="confirmSubmit()">
+    <ion-button
+      [class.invalid]="!totalQty"
+      color="primary"
+      (click)="confirmSubmit()"
+    >
       <!-- <ion-button [class.invalid]="isSubmitDisabled()" color="primary" (click)="confirmSubmit()"> -->
       Submit
     </ion-button>
-    <br>
+    <br />
   </div>
-
 </ion-content>

@@ -135,7 +135,7 @@ export class AddPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderponum: this.poNum,
     };
 
@@ -464,7 +464,7 @@ export class AddPolypackPage implements OnInit {
           let params = {
             path: 'carton_packing/polypack_size_qtyupdate',
             order_seq_num: this.rawQtyList.order_seq_num,
-            lineseqnum: this.rawQtyList.line_seq_num,
+            line_seq_num: this.rawQtyList.line_seq_num,
             total_pcssize_poly_qty: editPoly,
             color_seq_num: this.rawQtyList.color_seq_num,
             size_seq_num: list['size_seq_num'],
@@ -587,7 +587,7 @@ export class AddPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/cartonpackinginsert.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       order_ponumber: this.poNum,

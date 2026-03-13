@@ -298,6 +298,7 @@
                   </p-floatlabel>
                 </div>
 
+                @if(lineList.length > 0 && !isScanner){
                 <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
@@ -315,7 +316,7 @@
                     <label for="Line">Line Details</label>
                   </p-floatlabel>
                 </div>
-
+                }
                 <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
@@ -376,6 +377,23 @@
                   <p-floatlabel variant="on">
                     <p-select
                       class="large-text"
+                      [disabled]="!lineList.length "
+                      [options]="lineList"
+                      [(ngModel)]="lineModel"
+                      (onChange)="clearbelowAttrbutes(4)"
+                      [filter]="true"
+                      inputId="Line"
+                      filterBy="line_seq_num"
+                      [checkmark]="true"
+                      optionLabel="line_name"
+                    ></p-select>
+                    <label for="Line">Line Details</label>
+                  </p-floatlabel>
+                </div>
+                <div class="form-field">
+                  <p-floatlabel variant="on">
+                    <p-select
+                      class="large-text"
                       [disabled]="!poList.length > 0 && poF"
                       [options]="poList"
                       [(ngModel)]="poModel"
@@ -383,7 +401,6 @@
                       inputId="POScanner"
                       filterBy="order_ponumber"
                       [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(5)"
                       optionLabel="order_ponumber"
                     ></p-select>
                     <label for="POScanner">PO</label>

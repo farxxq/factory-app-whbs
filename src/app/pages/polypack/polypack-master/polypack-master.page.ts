@@ -16,6 +16,8 @@ import { debounceTime, Subject } from 'rxjs';
 export class PolypackMasterPage implements OnInit {
   deviceType: string = '';
 
+  rfid: any = {};
+
   //flags
   poF: boolean = false;
 
@@ -101,14 +103,16 @@ export class PolypackMasterPage implements OnInit {
     this.reusableService.showAlert(alert);
 
     // operatorlogin
-    let rfid = this.storageService.getData('rfid') || '';
-    if (!rfid.operator) {
+    this.rfid = this.storageService.getData('rfid') || '';
+    if (!this.rfid.operator) {
       this.reusableService.loginOperator();
     }
   }
 
   ngAfterContentInit(): void {
-    this.assignListService(0);
+    if (this.rfid.operator) {
+      this.assignListService(0);
+    }
 
     let deviceType = this.storageService.getData('deviceType');
 
@@ -188,7 +192,7 @@ export class PolypackMasterPage implements OnInit {
         path: api,
         customerseqnum: this.customerModel['customer_seq_num'],
         seasonseqnum: this.seasonModel['season_seq_num'],
-        lineseqnum: this.lineModel['line_seq_num'],
+        line_seq_num: this.lineModel['line_seq_num'],
         tabtype: this.actionType !== '' ? this.actionType : null,
       };
       arrlist = 'orderList';
@@ -525,6 +529,8 @@ export class PolypackMasterPage implements OnInit {
       this.seasonModel = res['seasonlist'][0];
       this.customerList = res['customerlist'];
       this.customerModel = res['customerlist'][0];
+      this.lineList = res['linelist'];
+      // this.lineModel = res['linelist'][0];
       this.orderList = res['ordernamelist'];
       this.orderModel = res['ordernamelist'][0];
       this.colorList = res['colordetails'];

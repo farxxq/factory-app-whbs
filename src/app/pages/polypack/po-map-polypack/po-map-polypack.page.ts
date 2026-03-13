@@ -88,7 +88,7 @@ export class PoMapPolypackPage implements OnInit {
       path: api,
       // path: 'apppolypack/controllers/getorderpomappingqty.php',
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       colorseqnum: this.filterDataList.color['color_seq_num'],
@@ -130,7 +130,7 @@ export class PoMapPolypackPage implements OnInit {
       // path: 'apppolypack/controllers/getordersizeqty.php',
       colorseqnum: this.filterDataList.color['color_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderponum: this.poModel && !action ? this.poModel.order_ponumber : '',
     };
 
@@ -254,7 +254,7 @@ export class PoMapPolypackPage implements OnInit {
       path: api,
       colorseqnum: this.filterDataList.color['color_seq_num'],
       customerseqnum: this.filterDataList.customer['customer_seq_num'],
-      lineseqnum: this.filterDataList.line['line_seq_num'],
+      line_seq_num: this.filterDataList.line['line_seq_num'],
       orderseqnum: this.filterDataList.order['order_seq_num'],
       seasonseqnum: this.filterDataList.season['season_seq_num'],
       order_ponumber: this.poModel.order_ponumber,
