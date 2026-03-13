@@ -40,6 +40,17 @@ ion-header {
       align-items: center;
       width: auto;
 
+      .line-dropdown {
+        padding: 5px 15px;
+        border-radius: 20px;
+        background-color: #e9f0fd;
+        color: var(--ion-color-primary);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 10rem;
+      }
+
       .iconBtn {
         ion-icon {
           background-color: var(--ion-color-primary);
@@ -70,7 +81,6 @@ ion-header {
       }
 
       .actionBtns {
-
         .checkoutBtn,
         .homeBtn,
         .iconBtn {

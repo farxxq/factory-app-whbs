@@ -235,11 +235,13 @@ ion-header {
           align-items: center;
         }
 
-        .hightlight-size {
-          padding: 10px;
+        .hightlight-size {          
+          span{
+            padding: 10px;
           color: blue;
           background-color: white;
           border-radius: 5px;
+          }
         }
 
         ion-input {

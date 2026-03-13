@@ -3,16 +3,16 @@
   <!-- (click)="showDeviceType()" -->
   <div class="app-container">
     @if(userRole == 'ad_min' || data.branchcode == 0){
-    <div class="branch">
+    <div class="list">
       Branch:
       <p-select [options]="branchList" [(ngModel)]="branchModel" optionLabel="location_name" (onChange)="setBranch()"
-        placeholder="Select Branch" />
+        placeholder="Select Line" />
     </div>
     }
-    <div class="line-list">
-      Branch:
-      <p-select [options]="branchList" [(ngModel)]="branchModel" optionLabel="location_name" (onChange)="setBranch()"
-        placeholder="Select Branch" />
+    <div class="list">
+      Line list:
+      <p-select [options]="lineList" [(ngModel)]="lineModel" optionLabel="line_name" (onChange)="setLine()"
+        placeholder="Select Line" />
     </div>
     @if(userRole){
     <ion-grid fixed>

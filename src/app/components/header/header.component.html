@@ -2,13 +2,24 @@
   <ion-toolbar class="ion-padding-inline">
     <div class="header">
       <div class="logo">
-          <ion-icon name="gannet-logo"></ion-icon>
+        <ion-icon name="gannet-logo"></ion-icon>
         <!-- make the above as a gannet logo and on clicking that we take the user to the home -->
-        @if(username == 'mesadmin'){
-        <span (dblclick)="changeAPIURL()" style="color: #e9f0fd; cursor: pointer">...</span>
+        @if (username == "mesadmin") {
+          <span
+            (dblclick)="changeAPIURL()"
+            style="color: #e9f0fd; cursor: pointer"
+            >...</span
+          >
         }
       </div>
       <div class="actionBtns">
+        @if(lineModel){
+        <div class="line-dropdown">
+          {{ lineModel.line_name }}
+          <!-- <ion-icon slot="end" name="chevron-down-circle-outline" (click)="setLine()"></ion-icon> -->
+        </div>
+        }
+
         <div class="iconBtn homeBtn" (click)="goToHome()">
           <ion-icon slot="start" name="home"></ion-icon>
         </div>
@@ -45,14 +56,19 @@
   </ion-toolbar>
 </ion-header>
 
-<!-- <ion-content>
-  <ion-modal id="rejectPanel-modal" [isOpen]="isModalOpen" backdrop-dismiss="false" swipe-to-close="false"
-    (didDismiss)="closeModal()">
+<ion-content>
+  <ion-modal
+    id="rejectPanel-modal"
+    [isOpen]="isModalOpen"
+    backdrop-dismiss="false"
+    swipe-to-close="false"
+    (didDismiss)="closeModal()"
+  >
     <ng-template>
-      <ion-icon slot="start" name="add" (click)="closeModal()"></ion-icon>
       <div class="check-id-container">
-
+        <p-select [options]="lineList" [(ngModel)]="lineModel" optionLabel="location_name" (onChange)="setLine()"
+        placeholder="Select Line" />
       </div>
     </ng-template>
   </ion-modal>
-</ion-content> -->
+</ion-content>

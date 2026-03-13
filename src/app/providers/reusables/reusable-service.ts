@@ -13,10 +13,10 @@ import { RfidLoginModalComponent } from 'src/app/components/rfid-login-modal/rfi
   providedIn: 'root',
 })
 export class ReusableService {
+
   //Loading
   activeLoading: any;
   audio = new Audio();
-
 
   isCustomLoading: boolean = false;
 
@@ -24,9 +24,9 @@ export class ReusableService {
     private alertCtrl: AlertController,
     private toastCtrl: ToastController,
     private loadCtrl: LoadingController,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
     // private platform: Platform
-  ) { }
+  ) {}
 
   deviceType() {
     if (window.innerWidth >= 768) {
@@ -50,8 +50,6 @@ export class ReusableService {
     //   return 'desktop';
     // }
     // return 'unknown';
-
-
   }
 
   async showAlert(alert: any) {
@@ -62,25 +60,25 @@ export class ReusableService {
       buttons: alert.btn
         ? Array.isArray(alert.btn)
           ? alert.btn.map((b) => ({
-            text: b.text || 'OK',
-            role: b.role || 'cancel',
-            handler: b.func
-              ? () => b.func()
-              : () => {
-                console.log('Alert closed');
-              },
-          }))
-          : [
-            {
-              text: alert.btn.text || 'OK',
-              role: alert.btn.role || 'cancel',
-              handler: alert.btn.func
-                ? () => alert.btn.func()
+              text: b.text || 'OK',
+              role: b.role || 'cancel',
+              handler: b.func
+                ? () => b.func()
                 : () => {
-                  console.log('Alert closed');
-                },
-            },
-          ]
+                    console.log('Alert closed');
+                  },
+            }))
+          : [
+              {
+                text: alert.btn.text || 'OK',
+                role: alert.btn.role || 'cancel',
+                handler: alert.btn.func
+                  ? () => alert.btn.func()
+                  : () => {
+                      console.log('Alert closed');
+                    },
+              },
+            ]
         : [{ text: 'OK', role: 'cancel' }],
       cssClass: 'alertBox',
       backdropDismiss: alert.backdropDismiss || false,
@@ -98,7 +96,7 @@ export class ReusableService {
       cssClass: 'toast',
       mode: 'ios',
       keyboardClose: true,
-      swipeGesture: 'vertical'
+      swipeGesture: 'vertical',
     });
     // cssClass: toast?.cssClass,
 
@@ -150,12 +148,13 @@ export class ReusableService {
     console.log('audio paused');
   }
 
-
   rearrangeData(arr: any, key?: string) {
     let rearrangeData = arr;
     // console.log('rearrangeData from reusable', rearrangeData)
     if (rearrangeData) {
-      rearrangeData.sort((obj1: any, obj2: any) => obj1[key].localeCompare(obj2[key], undefined, { numeric: true }))
+      rearrangeData.sort((obj1: any, obj2: any) =>
+        obj1[key].localeCompare(obj2[key], undefined, { numeric: true }),
+      );
       if (rearrangeData.length > 0) return rearrangeData;
     } else {
       return console.log('rearrange data is empty');
@@ -163,11 +162,11 @@ export class ReusableService {
   }
 
   //operator login
-    async loginOperator() {
-    const modal =await this.modalCtrl.create({
+  async loginOperator() {
+    const modal = await this.modalCtrl.create({
       component: RfidLoginModalComponent,
       cssClass: 'operator-login-modal',
-       backdropDismiss: false
+      backdropDismiss: false,
     });
 
     await modal.present();

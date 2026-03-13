@@ -72,14 +72,15 @@
                           inputId="Order"
                           filterBy="order_name"
                           [checkmark]="true"
-                          (onChange)="clearbelowAttrbutes(2)"
+                          (onChange)="clearbelowAttrbutes(5)"
                           optionLabel="order_name"
                         ></p-select>
                         <label for="Order">Order</label>
                       </p-floatlabel>
                     </div>
 
-                    <div class="form-field">
+                    <!-- not needed -->
+                    <!-- <div class="form-field">
                       <p-floatlabel variant="on">
                         <p-select
                           class="large-text"
@@ -96,7 +97,7 @@
                         ></p-select>
                         <label for="Line">Line Details</label>
                       </p-floatlabel>
-                    </div>
+                    </div> -->
 
                     <div class="form-field">
                       <p-floatlabel variant="on">
@@ -190,8 +191,8 @@
                         <label for="Order">Order</label>
                       </p-floatlabel>
                     </div>
-
-                    <div class="form-field">
+                    <!-- line not needed -->
+                    <!-- <div class="form-field">
                       <p-floatlabel variant="on">
                         <p-select
                           class="large-text"
@@ -207,7 +208,7 @@
                         ></p-select>
                         <label for="Line">Line Details</label>
                       </p-floatlabel>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
               </div>
@@ -257,7 +258,9 @@
               </div>
             </div>
           </div>
-          } @if(!isScanner || sizeBarcode) {
+          }
+          <!-- we need to show the scanner option always -->
+          <!-- @if(!isScanner || sizeBarcode) { -->
 
           <div class="row-content">
             <div class="col">
@@ -308,13 +311,13 @@
                       inputId="Order"
                       filterBy="order_name"
                       [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(2)"
+                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
                       optionLabel="order_name"
                     ></p-select>
                     <label for="Order">Order</label>
                   </p-floatlabel>
                 </div>
-
+                <!-- not needed itseems
                 @if(lineList.length > 0 && !isScanner){
                 <div class="form-field">
                   <p-floatlabel variant="on">
@@ -333,24 +336,7 @@
                     <label for="Line">Line Details</label>
                   </p-floatlabel>
                 </div>
-                }
-                <div class="form-field">
-                  <p-floatlabel variant="on">
-                    <p-select
-                      class="large-text"
-                      [disabled]="!orderList.length || sizeBarcode"
-                      [options]="orderList"
-                      [(ngModel)]="orderModel"
-                      [filter]="true"
-                      inputId="Order"
-                      filterBy="order_name"
-                      [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(2)"
-                      optionLabel="order_name"
-                    ></p-select>
-                    <label for="Order">Order</label>
-                  </p-floatlabel>
-                </div>
+                } -->
 
                 @if(poList.length > 0 && !isScanner){
                 <div class="form-field">
@@ -390,7 +376,8 @@
                 </div>
 
                 @if(poList.length > 0 && isScanner){
-                <div class="form-field">
+                <!-- not needed -->
+                <!-- <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
                       class="large-text"
@@ -406,7 +393,7 @@
                     ></p-select>
                     <label for="Line">Line Details</label>
                   </p-floatlabel>
-                </div>
+                </div> -->
                 <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
@@ -440,7 +427,7 @@
             </ion-button>
           </div>
 
-          }
+          <!-- } -->
         </div>
       </ion-content>
     </ion-tab>
@@ -517,7 +504,7 @@
                       [(ngModel)]="orderModel"
                       [filter]="true"
                       inputId="Order"
-                      (onChange)="clearbelowAttrbutes(4);clearbelowAttrbutes(5)"
+                      (onChange)="clearbelowAttrbutes(5)"
                       filterBy="order_name"
                       [checkmark]="true"
                       optionLabel="order_name"
@@ -530,7 +517,7 @@
                   <p-floatlabel variant="on">
                     <p-select
                       class="large-text"
-                      [disabled]="!colorList.length || !poList.length"
+                      [disabled]="!colorList.length"
                       [options]="colorList"
                       [(ngModel)]="colorModel"
                       [filter]="true"
@@ -598,14 +585,14 @@
                       inputId="Customer"
                       filterBy="customer_short_name"
                       [checkmark]="true"
-                      (onChange)="clearbelowAttrbutes(2)"
+                      (onChange)="clearbelowAttrbutes(3)"
                       optionLabel="customer_short_name"
                     ></p-select>
                     <label for="Customer">Customer</label>
                   </p-floatlabel>
                 </div>
-
-                <div class="form-field">
+                <!-- not needed -->
+                <!-- <div class="form-field">
                   <p-floatlabel variant="on">
                     <p-select
                       class="large-text"
@@ -621,7 +608,7 @@
                     ></p-select>
                     <label for="Line">Line Details</label>
                   </p-floatlabel>
-                </div>
+                </div> -->
 
                 <div class="form-field">
                   <p-floatlabel variant="on">

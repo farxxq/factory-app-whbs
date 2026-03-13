@@ -63,7 +63,7 @@ export class PolypackMasterPage implements OnInit {
 
   ngOnInit() {
     this.deviceType = this.storageService.getData('deviceType');
-    // Scanner type
+    // Scanner type we need not ask this and can be removed
     let alert = {
       msg: 'External Scanner connected?',
       btn: [
@@ -100,10 +100,14 @@ export class PolypackMasterPage implements OnInit {
       ],
     };
 
-    this.reusableService.showAlert(alert);
+    // this.reusableService.showAlert(alert);
+    this.storageService.setData('isScanner', true);
+    this.isScanner = this.storageService.getData('isScanner')
 
     // operatorlogin
-    this.checkOperator();
+    // this.checkOperator();
+          this.assignListService(0);
+
   }
 
   ngAfterContentInit(): void {
@@ -187,6 +191,7 @@ export class PolypackMasterPage implements OnInit {
       reslist = 'customerlist';
       key = 'customer_short_name';
     } else if (frm == 2) {
+      // probably remove this from here, this needs no params too
       params = {
         path: 'apppanelcheck/controllers/getlinelist.php',
         seasonseqnum: this.seasonModel['season_seq_num'],

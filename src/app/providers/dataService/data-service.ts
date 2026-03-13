@@ -61,6 +61,7 @@ export class DataService {
     let app_type: APP_TYPE = this.storageService.getData('app_type');
     let qc_device_details = this.storageService.getData('qc_device_details'); //will have the tab device details itseems
     let rfid = this.storageService.getData('rfid') || '';
+    let line = this.storageService.getData('line') || '';
 
     // temp try but didn't work
     // if (this.apiUrl == `https://${this.ipAdd}/pdkgannet.whindia.in/`) {
@@ -89,6 +90,7 @@ export class DataService {
       postData.append('app_type', app_type);
       postData.append('uinno', uinno);
       postData.append('rfid_operator', rfid.operator); //discuss on this (rfid for operator?, supervisor?)
+      postData.append('lineseqnum', line? line.line_seq_num : '')
     }
 
     for (var q in params) {
@@ -204,6 +206,7 @@ export class DataService {
     let ip = this.storageService.getData('ip');
     let app_type: APP_TYPE = this.storageService.getData('app_type');
     let qc_device_details = this.storageService.getData('qc_device_details');
+    let line = this.storageService.getData('line');
 
     if (userData) {
       postData.append('key', 'MTAwMCMjTEtNSiMjMTc1ODI2NjM5MDQ4OTAwMA==');
@@ -215,6 +218,7 @@ export class DataService {
       postData.append('qc_device_details', JSON.stringify(qc_device_details));
       postData.append('app_type', app_type);
       postData.append('ip', ip);
+      postData.append('lineseqnum', line.line_seq_num);
     }
 
     return new Promise(async (resolve, reject) => {

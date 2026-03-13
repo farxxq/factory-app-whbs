@@ -22,6 +22,9 @@ export class HeaderComponent implements OnInit {
     | [] = [];
 
   // Variables
+  lineList: any = [];
+  lineModel: any = '';
+
   username: string = '';
   showMenu: boolean = false;
 
@@ -40,11 +43,30 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.authService.isLogin();
+
+    this.lineModel = this.storageService.getData('line');
   }
 
   getUser() {
     let userData = this.storageService.getData('userData');
     if (userData) this.username = userData.username;
+  }
+
+  setLine() {
+    if (!this.isModalOpen) {
+      this.isModalOpen = true;
+      let params = {
+        path: 'apppanelcheck/controllers/getlinelist.php',
+      };
+
+      this.dataService.postService(params).then((res: any) => {
+        if (res['status'].toLowerCase() == 'success') {
+          this.lineList = res['linelist'];
+        }
+      });
+    } else {
+      this.storageService.setData('line', this.lineModel);
+    }
   }
 
   canLogout() {
@@ -119,5 +141,10 @@ export class HeaderComponent implements OnInit {
     setTimeout(() => {
       this.apiToggleLock = false;
     }, 300);
+  }
+
+  //modal func
+  closeModal() {
+    this.isModalOpen = false;
   }
 }

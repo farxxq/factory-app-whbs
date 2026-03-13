@@ -19,8 +19,9 @@ export class HomePage implements OnInit {
   branchModel: any = '';
 
   lineList: any = [];
+  lineModel = '';
   data: any = {};
-  
+
   userRole: string = '';
 
   constructor(
@@ -36,6 +37,12 @@ export class HomePage implements OnInit {
     this.userRole = this.authService.isLogin();
     this.data = this.storageService.getData('userData');
     this.branchModel = this.data.branchModel ? this.data.branchModel : '';
+    this.branchDetails();
+    this.lineDetails();
+  }
+
+  branchDetails() {
+    // branch details
     let params = {
       path: 'material_size/getbranchlist',
     };
@@ -47,7 +54,9 @@ export class HomePage implements OnInit {
     });
   }
 
-  lineDetails(){
+  //line details
+  lineDetails() {
+    // line details
     let params = {
       path: 'apppanelcheck/controllers/getlinelist.php',
     };
@@ -55,6 +64,9 @@ export class HomePage implements OnInit {
     this.dataService.postService(params).then((res: any) => {
       if (res['status'].toLowerCase() == 'success') {
         this.lineList = res['linelist'];
+        if (this.lineList) {
+          this.setLine();
+        }
       }
     });
   }
@@ -63,6 +75,11 @@ export class HomePage implements OnInit {
     if (this.data.branchcode == 0) {
       let alert = {
         msg: 'Please select a branch',
+      };
+      this.reusableService.showAlert(alert);
+    } else if (!this.lineModel) {
+      let alert = {
+        msg: 'Please select a Line',
       };
       this.reusableService.showAlert(alert);
     } else {
@@ -91,6 +108,21 @@ export class HomePage implements OnInit {
       this.data = userData;
     }
     this.storageService.setData('userData', userData);
+  }
+
+  setLine() {
+    if (this.lineList.length == 1) {
+      this.lineModel = this.lineList[0];
+    }
+    this.storageService.setData('line', this.lineModel);
+
+    let toast = {
+      message: `${this.lineModel['line_name']} has been set`,
+      color: 'success',
+      position: 'top',
+    };
+
+    this.reusableService.showToast(toast);
   }
 
   showDeviceType() {
