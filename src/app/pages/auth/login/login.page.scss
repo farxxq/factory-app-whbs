@@ -26,10 +26,26 @@
     }
   }
 
-  .inputFields {
-    background-color: white;
+  // login field container
+  .login-fields {
     width: 100%;
-    height: 50%;
+    height: 100%;
+    background-color: #fff;
+  }
+  //slides
+  swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  // input fields
+  .input-fields {
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -74,6 +90,26 @@
         margin-bottom: 0;
       }
     }
+
+    // login field container
+    .login-fields {
+      width: 50%;
+      height: 100%;
+    }
+
+    //slides
+    swiper-container {
+      width: 100%;
+      height: 100%;
+    }
+
+    swiper-slide {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    // input fields
     .inputFields {
       width: 50%;
       height: 100%;

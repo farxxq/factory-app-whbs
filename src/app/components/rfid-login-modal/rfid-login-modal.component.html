@@ -1,46 +1,46 @@
-<ion-content class="modal-wrapper">
-  <div class="login-card">
-    <div class="icon">
-      <ion-icon name="id-card-outline"></ion-icon>
-    </div>
+<div class="login-card">
+  <div class="icon">
+    <ion-icon name="id-card-outline"></ion-icon>
+  </div>
 
-    <h2>Next Operator Login</h2>
-    <p>Please scan badge or enter ID to continue operation</p>
+  <h2>Operator Login</h2>
+  <p>Please scan badge or enter ID to continue operation</p>
 
-    <div class="input-wrapper">
-      <input
-        type="text"
-        placeholder="Enter Operator ID"
-        [(ngModel)]="operatorId"
-        readonly
-      />
-    </div>
+  <div class="input-wrapper">
+    <input
+      type="text"
+      placeholder="Enter Operator ID"
+      [(ngModel)]="operatorId"
+      readonly
+    />
+  </div>
 
-    <div class="keypad">
-      <button (click)="addNumber('1')">1</button>
-      <button (click)="addNumber('2')">2</button>
-      <button (click)="addNumber('3')">3</button>
+  <div class="keypad">
+    <button (click)="addNumber('1')">1</button>
+    <button (click)="addNumber('2')">2</button>
+    <button (click)="addNumber('3')">3</button>
 
-      <button (click)="addNumber('4')">4</button>
-      <button (click)="addNumber('5')">5</button>
-      <button (click)="addNumber('6')">6</button>
+    <button (click)="addNumber('4')">4</button>
+    <button (click)="addNumber('5')">5</button>
+    <button (click)="addNumber('6')">6</button>
 
-      <button (click)="addNumber('7')">7</button>
-      <button (click)="addNumber('8')">8</button>
-      <button (click)="addNumber('9')">9</button>
+    <button (click)="addNumber('7')">7</button>
+    <button (click)="addNumber('8')">8</button>
+    <button (click)="addNumber('9')">9</button>
 
-      <button class="delete" (click)="delete()">
-        <ion-icon name="backspace-outline"></ion-icon>
-      </button>
+    <button class="delete" (click)="delete()">
+      <ion-icon name="backspace-outline"></ion-icon>
+    </button>
 
-      <button (click)="addNumber('0')">0</button>
-      <ion-button class="submit" (click)="canSubmit()" [disabled]="!operatorId">
-        <!-- <ion-icon name="arrow-forward" slot="end"></ion-icon> -->
-        {{ this.rfid.operator ? "Checkout" : "Submit" }}
-      </ion-button>
-    </div>
-    <div class="footer">
-      <div class="scanner-box">
+    <button (click)="addNumber('0')">0</button>
+    <ion-button class="submit" (click)="canSubmit()" [disabled]="!operatorId">
+      <!-- <ion-icon name="arrow-forward" slot="end"></ion-icon> -->
+      {{ this.rfid.operator ? "Checkout" : "Submit" }}
+    </ion-button>
+  </div>
+  <div class="footer">
+    <div class="scanner-box">
+      @if (deviceType != "mobile") {
         <ion-input
           #scanInput
           class="scan-input"
@@ -50,15 +50,7 @@
           (ionBlur)="keepScannerFocus()"
           inputmode="none"
         ></ion-input>
-        <!-- <input
-          type="text"
-          class="scan-input"
-          placeholder="Scan RFID..."
-          [(ngModel)]="operatorId"
-          (blur)="convertRFID()"
-          /> -->
-        <!-- readonly -->
-      </div>
+      }
     </div>
   </div>
-</ion-content>
+</div>

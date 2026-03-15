@@ -54,10 +54,12 @@
     <ion-button
       expand="block"
       [color]="rfid.operator ? 'warning' : 'danger'"
-      (click)="rfid.operator ? logout('checkout') : canLogout()"
+      (click)="canLogout()"
     >
+      <!-- (click)="rfid.operator ? logout('checkout') : canLogout()" -->
       <ion-icon name="exit-outline" slot="start"></ion-icon>
-      {{rfid.operator ? 'Checkout' : 'Logout'}}
+      {{'Logout'}}
+      <!-- {{rfid.operator ? 'Checkout' : 'Logout'}} -->
     </ion-button>
   </div>
 </ion-content>

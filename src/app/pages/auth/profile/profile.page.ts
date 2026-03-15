@@ -62,13 +62,13 @@ export class ProfilePage implements OnInit {
   }
 
   logout(action?: string) {
-    if (action === 'checkout') {
-      this.reusableService.loginOperator();
-      console.log('Checkout');
-    } else {
-      this.authService.logout();
-      console.log('Logged out');
-    }
+    // if (action === 'checkout') {
+    //   this.reusableService.loginOperator();
+    //   console.log('Checkout');
+    // } else {
+    this.authService.logout();
+    console.log('Logged out');
+    // }
   }
 
   isCheckOut = false;

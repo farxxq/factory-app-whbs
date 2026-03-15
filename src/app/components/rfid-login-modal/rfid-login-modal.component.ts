@@ -20,6 +20,8 @@ import { BehaviorSubject, debounceTime, Subject } from 'rxjs';
   imports: [IonicModule, CommonModule, FormsModule],
 })
 export class RfidLoginModalComponent implements OnInit, AfterViewInit {
+  deviceType: string = '';
+
   rfid: any = '';
   operatorId: any = '';
   operatorScanId: any = '';
@@ -44,6 +46,7 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.rfid = this.storageService.getData('rfid') || '';
+    this.deviceType = this.reusableService.deviceType();
   }
 
   addNumber(num: string) {
@@ -108,7 +111,7 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
 
   checkIn(id: any) {
     let operator_id = this.operatorId || this.operatorScanId;
-    this.rfid = { operator_rfid: id, operator: operator_id }; //can be taken to the 
+    this.rfid = { operator_rfid: id, operator: operator_id }; //can be taken to the
     this.storageService.setData('rfid', this.rfid);
 
     this.showToast(`${this.operatorId} has been checked in`, 'success');
@@ -122,10 +125,8 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
     this.isCheckOut = true;
     this.rfid = this.storageService.getData('rfid');
     let id = this.rfid.operator; // operator typed id
-    this.rfid.operator = null;
-    this.rfid.operator_rfid = null;
 
-    this.storageService.removeData('rfid');
+    this.storageService.removeData('rfid'); // remove rfid
 
     this.showToast(`${id} has been checked out`, 'warning');
 
@@ -146,6 +147,9 @@ export class RfidLoginModalComponent implements OnInit, AfterViewInit {
     this.modalCtrl.dismiss();
 
     this.convertRFID(); //to convert and send to api?
+
+    this.operatorId = '';
+    this.operatorScanId = '';
 
     // to have multiple id (supervisor,operator,admin)
 

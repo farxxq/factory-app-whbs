@@ -77,12 +77,15 @@ export class HomePage implements OnInit {
         msg: 'Please select a branch',
       };
       this.reusableService.showAlert(alert);
-    } else if (!this.lineModel) {
-      let alert = {
-        msg: 'Please select a Line',
-      };
-      this.reusableService.showAlert(alert);
-    } else {
+    }
+    // want the line to be inside the app
+    // else if (!this.lineModel) {
+    //   let alert = {
+    //     msg: 'Please select a Line',
+    //   };
+    //   this.reusableService.showAlert(alert);
+    // }
+    else {
       this.storageService.setData('app_type', app_type);
       this.dataService.app_typeService().then((res: any) => {
         let uinno = res['uinno'];
@@ -111,9 +114,14 @@ export class HomePage implements OnInit {
   }
 
   setLine() {
+    if (!this.lineModel) {
+      return;
+    }
+
     if (this.lineList.length == 1) {
       this.lineModel = this.lineList[0];
     }
+
     this.storageService.setData('line', this.lineModel);
 
     let toast = {

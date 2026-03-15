@@ -13,18 +13,30 @@
         }
       </div>
       <div class="actionBtns">
-        @if(lineModel){
-        <div class="line-dropdown">
-          {{ lineModel.line_name }}
-          <!-- <ion-icon slot="end" name="chevron-down-circle-outline" (click)="setLine()"></ion-icon> -->
-        </div>
+        @if (line) {
+          <div class="line-dropdown">
+            <ion-select
+              label="Line"
+              interface="action-sheet"
+              placeholder="Select"
+              cancelText="Close"
+              (ionChange)="setLine($event)"
+              (ionFocus)="setLine()"
+            >
+              @for (item of lineList; track $index) {
+                <ion-select-option [value]="item">{{
+                  item.line_name
+                }}</ion-select-option>
+              }
+            </ion-select>
+          </div>
         }
 
         <div class="iconBtn homeBtn" (click)="goToHome()">
           <ion-icon slot="start" name="home"></ion-icon>
         </div>
         <!-- language button -->
-        <!-- <div class="iconBtn" (click)="canCheckin_out()">
+        <!-- <div class="iconBtn" (click)="changeLanguage()">
           <ion-icon name="language"></ion-icon>
         </div> -->
 
@@ -55,20 +67,23 @@
     </div>
   </ion-toolbar>
 </ion-header>
-
-<ion-content>
-  <ion-modal
-    id="rejectPanel-modal"
-    [isOpen]="isModalOpen"
-    backdrop-dismiss="false"
-    swipe-to-close="false"
-    (didDismiss)="closeModal()"
-  >
-    <ng-template>
-      <div class="check-id-container">
-        <p-select [options]="lineList" [(ngModel)]="lineModel" optionLabel="location_name" (onChange)="setLine()"
-        placeholder="Select Line" />
-      </div>
-    </ng-template>
-  </ion-modal>
-</ion-content>
+<!-- no need of the modal to be in the header as it doesn't spread on the ion-content of other pages but only take up the height of the header component alone
+<ion-modal
+  id="rejectPanel-modal"
+  [isOpen]="isModalOpen"
+  backdrop-dismiss="false"
+  swipe-to-close="false"
+  (didDismiss)="closeModal()"
+>
+  <ng-template>
+    <div class="check-id-container">
+      <p-select
+        [options]="lineList"
+        [(ngModel)]="lineModel"
+        optionLabel="location_name"
+        (onChange)="setLine()"
+        placeholder="Select Line"
+      />
+    </div>
+  </ng-template>
+</ion-modal> -->

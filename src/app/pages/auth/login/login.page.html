@@ -3,63 +3,94 @@
     <div class="logo">
       <img src="../../../assets/icon/Gannetlogo.svg" />
     </div>
-    @if(isSetIp){
-    <div class="inputFields">
-      <div class="inputContainer">
-        <ion-label>IP Address</ion-label>
-        <ion-input
-          type="text"
-          name="ip"
-          [value]="ip"
-          [(ngModel)]="ip"
-          placeholder="Enter Ip address"
-        ></ion-input>
-        <ion-button
-          (click)="setIp()"
-          [disabled]="!ip"
-          expand="block"
-          color="primary"
-        >
-          <ion-icon slot="end" name="globe-outline"></ion-icon>
-          Set IP address
-        </ion-button>
+    <div class="login-fields">
+      @if(isSetIp){
+      <div class="input-fields">
+        <div class="inputContainer">
+          <ion-label
+            ><span (dblclick)="ipSection('ip')">IP</span> Address</ion-label
+          >
+          <ion-input
+            type="text"
+            name="ip"
+            [value]="ip"
+            [(ngModel)]="ip"
+            placeholder="Enter Ip address"
+          ></ion-input>
+          <ion-button
+            (click)="setIp()"
+            [disabled]="!ip"
+            expand="block"
+            color="primary"
+          >
+            <ion-icon slot="end" name="globe-outline"></ion-icon>
+            Set IP address
+          </ion-button>
+        </div>
       </div>
-    </div>
-    }@else{
-    <div class="inputFields">
-      <h3>
-        <span (dblclick)="ipSection()">Login</span> to
-        <span (dblclick)="addUserTemp()">you</span>r
-        <span (dblclick)="addDefaultTemp()">acc</span>ount
-      </h3>
-      <div class="inputContainer">
-        <ion-label>UserName</ion-label>
-        <ion-input
-          type="text"
-          name="username"
-          [(ngModel)]="loginData.username"
-          placeholder="Enter username"
-        ></ion-input>
-        <ion-label>Password</ion-label>
-        <ion-input
-          type="password"
-          name="password"
-          [(ngModel)]="loginData.password"
-          placeholder="Enter password"
-        >
-          <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-        </ion-input>
-      </div>
-      <ion-button
-        (click)="loginUser()"
-        [disabled]="!(loginData.username && loginData.password)"
-        expand="block"
-        color="primary"
+      }@else{
+      <swiper-container
+        [loop]="true"
+        [spaceBetween]="30"
+        [slidesPerView]="1"
+        (swiperslidechange)="slideChange($event)"
+        #swiper
       >
-      {{ip? 'Login' : 'Set Ip Address'}}
-        <ion-icon slot="end" [name]="ip? 'arrow-forward' : 'globe-outline'"></ion-icon>
-      </ion-button>
+        <!-- Slide 1 -->
+        <swiper-slide>
+          <div class="rfid-input">
+            <app-rfid-login-modal></app-rfid-login-modal>
+          </div>
+        </swiper-slide>
+
+        <!-- Slide 2 -->
+        <swiper-slide>
+          <div class="input-fields">
+            <h3>
+              <span (dblclick)="ipSection()">Login</span> to
+              <span (dblclick)="addUserTemp()">you</span>r
+              <span (dblclick)="addDefaultTemp()">acc</span>ount
+            </h3>
+
+            <div class="inputContainer">
+              <ion-label>UserName</ion-label>
+              <ion-input
+                type="text"
+                name="username"
+                [(ngModel)]="loginData.username"
+                placeholder="Enter username"
+              ></ion-input>
+
+              <ion-label>Password</ion-label>
+              <ion-input
+                type="password"
+                name="password"
+                [(ngModel)]="loginData.password"
+                placeholder="Enter password"
+              >
+                <ion-input-password-toggle
+                  slot="end"
+                ></ion-input-password-toggle>
+              </ion-input>
+            </div>
+
+            <ion-button
+              (click)="loginUser()"
+              [disabled]="!(loginData.username && loginData.password)"
+              expand="block"
+              color="primary"
+            >
+              {{!ip && loginData.password == 'admin_setip@123' ? 'Set Ip
+              Address' : 'Login'}}
+              <ion-icon
+                slot="end"
+                [name]="!ip && loginData.password == 'admin_setip@123'? 'globe-outline':'arrow-forward'"
+              ></ion-icon>
+            </ion-button>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+      }
     </div>
-    }
   </div>
 </ion-content>

@@ -1,11 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonInput, ModalController, NavController } from '@ionic/angular';
+import { IonInput, NavController } from '@ionic/angular';
+import { debounceTime, Subject } from 'rxjs';
+import { ThemeService } from 'ng2-charts';
+
+//services
+import { Spolypack } from '../service/spolypack';
 import { AuthService } from '../../../providers/authService/auth-service';
 import { DataService } from '../../../providers/dataService/data-service';
 import { ReusableService } from '../../../providers/reusables/reusable-service';
 import { StorageService } from '../../../providers/storage/storage-service';
-import { Spolypack } from '../service/spolypack';
-import { debounceTime, Subject } from 'rxjs';
+import { LineState } from 'src/app/providers/dataService/lineService/lineState';
 
 @Component({
   selector: 'app-polypack-master',
@@ -49,6 +53,8 @@ export class PolypackMasterPage implements OnInit {
   actionType: string = '';
   isScanner: boolean = false;
 
+  lineSub: any = '';
+
   constructor(
     public dataService: DataService,
     public authService: AuthService,
@@ -56,7 +62,7 @@ export class PolypackMasterPage implements OnInit {
     private storageService: StorageService,
     private polypackService: Spolypack,
     private navCtrl: NavController,
-    private modalCtrl: ModalController,
+    private lineState: LineState,
   ) {
     this.authService.isLogin();
   }
@@ -102,12 +108,11 @@ export class PolypackMasterPage implements OnInit {
 
     // this.reusableService.showAlert(alert);
     this.storageService.setData('isScanner', true);
-    this.isScanner = this.storageService.getData('isScanner')
+    this.isScanner = this.storageService.getData('isScanner');
 
-    // operatorlogin
-    // this.checkOperator();
-          this.assignListService(0);
-
+    // check the line
+    this.checkLine();
+    // this.assignListService(0);
   }
 
   ngAfterContentInit(): void {
@@ -117,23 +122,46 @@ export class PolypackMasterPage implements OnInit {
     console.log(this.isScanner);
   }
 
-  checkOperator() {
-    this.rfid = this.storageService.getData('rfid') || {};
+  // checkLine() {
+  //   // this.rfid = this.storageService.getData('rfid') || {};
+  //   this.line = this.storageService.getData('line') || '';
 
-    if (!this.rfid.operator) {
-      this.reusableService.loginOperator();
+  //   // if (!this.rfid.operator) {
+  //   if (!this.line) {
+  //     // this.reusableService.loginOperator(); // for checking operator (old request now need to add this in the login place itself)
+  //     let alert = {
+  //       msg: 'Please select a Line',
+  //     };
 
-      const interval = setInterval(() => {
-        this.rfid = this.storageService.getData('rfid');
+  //     this.reusableService.showAlert(alert);
 
-        if (this.rfid?.operator) {
-          clearInterval(interval);
-          this.assignListService(0);
-        }
-      }, 500);
-    } else {
+  //     const interval = setInterval(() => {
+  //       this.line = this.storageService.getData('line');
+
+  //       if (this.line) {
+  //         clearInterval(interval);
+  //         this.assignListService(0);
+  //       }
+  //     }, 500);
+  //   } else {
+  //     // won't really come to this condition for the line checking
+  //     this.assignListService(0);
+  //   }
+  // }
+  checkLine() {
+    this.lineSub = this.lineState.line$.subscribe((line) => {
+      if (!line) {
+        this.reusableService.showAlert({
+          msg: 'Please select a Line',
+        });
+
+        return;
+      }
+
+      this.lineModel = line;
+
       this.assignListService(0);
-    }
+    });
   }
 
   rawListArr = [
@@ -548,8 +576,6 @@ export class PolypackMasterPage implements OnInit {
       this.seasonModel = res['seasonlist'][0];
       this.customerList = res['customerlist'];
       this.customerModel = res['customerlist'][0];
-      this.lineList = res['linelist'];
-      // this.lineModel = res['linelist'][0];
       this.orderList = res['ordernamelist'];
       this.orderModel = res['ordernamelist'][0];
       this.colorList = res['colordetails'];
@@ -617,6 +643,9 @@ export class PolypackMasterPage implements OnInit {
   }
 
   ngOnDestroy(): void {
+    // unsubscribe lineState
+    this.lineSub?.unsubscribe();
+
     for (const item of this.rawListArr) {
       let val: any = item.split('_');
       this[val[1]] = '';

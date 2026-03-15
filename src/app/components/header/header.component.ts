@@ -5,6 +5,7 @@ import { AuthService } from '../../providers/authService/auth-service';
 import { DataService } from '../../providers/dataService/data-service';
 import { ReusableService } from '../../providers/reusables/reusable-service';
 import { StorageService } from '../../providers/storage/storage-service';
+import { LineState } from 'src/app/providers/dataService/lineService/lineState';
 
 @Component({
   selector: 'app-header',
@@ -14,9 +15,12 @@ import { StorageService } from '../../providers/storage/storage-service';
 })
 export class HeaderComponent implements OnInit {
   @Input() headerData!: string;
+
   @Input() homeBtn: boolean = true;
   @Input() checkoutBtn: boolean = true;
+  @Input() line: boolean = true;
   @Input() logoutBtn: boolean = true;
+
   @Input() iconTray:
     | [{ iconName: string; navTo: string; color?: string; func?: any }]
     | [] = [];
@@ -36,6 +40,7 @@ export class HeaderComponent implements OnInit {
     public navCtrl: NavController,
     private reusableService: ReusableService,
     private dataService: DataService,
+    private lineState: LineState,
   ) {
     this.getUser();
     console.log('HeaderComponent constructed');
@@ -43,8 +48,14 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.authService.isLogin();
+    const savedLine = this.storageService.getData('line');
 
-    this.lineModel = this.storageService.getData('line');
+    if (savedLine) {
+      this.lineModel = savedLine;
+
+      this.lineState.setLine(savedLine);
+    }
+    // this.setLine(); // checks for line in storage and sets it in the header
   }
 
   getUser() {
@@ -52,20 +63,48 @@ export class HeaderComponent implements OnInit {
     if (userData) this.username = userData.username;
   }
 
-  setLine() {
-    if (!this.isModalOpen) {
-      this.isModalOpen = true;
+  // setLine(line?: string) {
+  //   // to open the popover and fetch the list
+  //   if (!this.lineList.length) {
+  //     let params = {
+  //       path: 'apppanelcheck/controllers/getlinelist.php',
+  //     };
+
+  //     this.dataService.postService(params).then((res: any) => {
+  //       if (res['status'].toLowerCase() == 'success') {
+  //         this.lineList = res['linelist'];
+  //       }
+  //     });
+  //   } else {
+  //     // to select and set the line in storage
+  //     this.lineModel = line;
+  //     this.storageService.setData('line', this.lineModel);
+  //     console.log('Line set to', this.lineModel);
+  //     setTimeout(() => {}, 500);
+  //   }
+  // }
+
+  setLine(e?: any) {
+    if (!this.lineList.length) {
       let params = {
         path: 'apppanelcheck/controllers/getlinelist.php',
       };
 
       this.dataService.postService(params).then((res: any) => {
-        if (res['status'].toLowerCase() == 'success') {
-          this.lineList = res['linelist'];
+        if (res.status.toLowerCase() === 'success') {
+          this.lineList = res.linelist;
         }
       });
-    } else {
+
+      return;
+    }
+
+    if (e) {
+      console.log(e.detail.value);
+      this.lineModel = e.detail.value;
       this.storageService.setData('line', this.lineModel);
+      this.lineState.setLine(this.lineModel);
+      console.log('Line set:', this.lineModel);
     }
   }
 
